@@ -21,6 +21,7 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(EvacuationPlan.class);
         ParseObject.registerSubclass(Incident.class);
         ParseObject.registerSubclass(Training.class);
+        ParseObject.registerSubclass(UserTraining.class);
 
         Parse.initialize(this, "f7TM8VHqrH17pUmlzPSgq567RryuYOjvnB96FC0P", "vdB7HpL58bnYc6TOij3NolTyq72PDh32fXiwYjiL");
     }

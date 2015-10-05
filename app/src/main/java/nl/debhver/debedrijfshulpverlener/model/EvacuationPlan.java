@@ -13,5 +13,16 @@ public class EvacuationPlan extends ParseObject {
         super();
     }
 
-
+    public void setEvacuationPlan(ImageModel evacuationPlan) {
+        put("evacuation_plan", evacuationPlan);
+    }
+    public ImageModel getEvacuationPlan()  {
+        return (ImageModel) getParseObject("evacuation_plan");
+    }
+    public void setBranch(Branch branch) {
+        put("branch", branch);
+    }
+    public Branch getBranch()  {
+        return (Branch) getParseObject("branch");
+    }
 }
