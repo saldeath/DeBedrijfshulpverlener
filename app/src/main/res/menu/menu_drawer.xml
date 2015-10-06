@@ -2,5 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_item_1"
-        android:title="Cursus" />
+        android:title="@string/course"
+        android:icon="@drawable/ic_file_document_box_white_18dp"/>
+    <item
+        android:id="@+id/navigation_item_2"
+        android:title="@string/devices"
+        android:icon="@drawable/ic_radio_white_18dp"/>
+    <item
+        android:id="@+id/navigation_item_3"
+        android:title="@string/incidents"
+        android:icon="@drawable/ic_account_alert_white_18dp"
+        />
 </menu>
