@@ -15,4 +15,9 @@
     <string name="hint_branch">Branch</string>
     <string name="add_user">Add user</string>
 
+
+    <string name="action_logout">Logout</string>
+    <string name="course">Cursus</string>
+    <string name="devices">Apparatuur</string>
+    <string name="incidents">Incidenten</string>
 </resources>
