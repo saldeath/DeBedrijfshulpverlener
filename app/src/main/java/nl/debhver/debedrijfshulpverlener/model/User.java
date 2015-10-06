@@ -1,13 +1,13 @@
 package nl.debhver.debedrijfshulpverlener.model;
 
 import com.parse.ParseClassName;
-import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 /**
  * Created by Tim on 10/5/15.
  */
 @ParseClassName("user")
-public class User extends ParseObject{
+public class User extends ParseUser {
     public User() {
         super();
     }

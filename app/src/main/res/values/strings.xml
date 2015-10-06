@@ -6,4 +6,13 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
     <string name="action_logout">logout</string>
+
+    <string name="hint_firstandlastname">First and last name</string>
+    <string name="hint_Telephonenumber">Telephonenumber</string>
+    <string name="hint_email">Email address</string>
+    <string name="hint_ERO">ERO functions</string>
+    <string name="hint_rights">Adminrights</string>
+    <string name="hint_branch">Branch</string>
+    <string name="add_user">Add user</string>
+
 </resources>

@@ -18,24 +18,26 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab1"
+        android:id="@+id/AdminAddUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin_all"
         android:clickable="true"
         android:src="@drawable/ic_add"
         app:layout_anchor="@id/viewA"
-        app:layout_anchorGravity="bottom|right|end"/>
+        app:layout_anchorGravity="bottom|right|end"
+        android:onClick="FABClicked" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab3"
+        android:id="@+id/AdminSearchUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:src="@drawable/ic_search"
-        app:layout_anchor="@id/fab1"
+        app:layout_anchor="@id/AdminAddUser"
         app:layout_anchorGravity="top|right|end"
         android:layout_marginBottom="@dimen/fab_margin_bottom_anchor"
-        android:layout_marginRight="@dimen/fab_margin_right" />
+        android:layout_marginRight="@dimen/fab_margin_right"
+        android:onClick="FABClicked" />
 
 </android.support.design.widget.CoordinatorLayout>
