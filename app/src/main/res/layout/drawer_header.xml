@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="256dp"
+    xmlns:style="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name here"
+        android:id="@+id/app_header_name"
+        android:layout_gravity="bottom"
+        android:textSize="50sp"
+        android:layout_marginLeft="10dp"/>
+</FrameLayout>
