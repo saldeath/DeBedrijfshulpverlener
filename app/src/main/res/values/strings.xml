@@ -12,6 +12,7 @@
     <string name="hint_ERO">ERO functions</string>
     <string name="hint_rights">Adminrights</string>
     <string name="hint_branch">Branch</string>
+    <string name="hint_password">Password</string>
     <string name="add_user">Add user</string>
 
 
@@ -42,4 +43,11 @@
     <string name="training_type_basis">Basis</string>
     <string name="training_type_repeat">Herhaling</string>
 
+    <string name="error_empty_name">Name cannot be empty.</string>
+    <string name="error_empty_email">Email cannot be empty.</string>
+    <string name="error_empty_telephone">Telephone cannot be empty.</string>
+    <string name="error_empty_branch">Branch cannot be empty.</string>
+    <string name="error_empty_adminrights">Adminrights cannot be empty.</string>
+    <string name="error_empty_erofunctions">No ERO functions selected. Are you sure you want to create this user without an ERO function?</string>
+    <string name="error_empty_password">Password cannot be empty.</string>
 </resources>

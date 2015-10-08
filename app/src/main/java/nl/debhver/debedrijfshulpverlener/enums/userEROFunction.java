@@ -8,7 +8,7 @@ import nl.debhver.debedrijfshulpverlener.parse.ParseApplication;
  */
 public enum userEROFunction {
     FIRE(R.string.user_ERO_function_fire), FIRST_AID(R.string.user_ERO_function_first_aid),
-    AED(R.string.user_ERO_function_AED), NONE(R.string.user_ERO_function_none);
+    AED(R.string.user_ERO_function_AED);
 
     private final int resourceId;
 
