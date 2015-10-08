@@ -92,6 +92,7 @@ public class AdminAddUserActivity extends AppCompatActivity {
             EditText tempField = (EditText)findViewById(R.id.inputName);
             userToCreate.setName(tempField.getText().toString());
             tempField = (EditText)findViewById(R.id.inputEmail);
+            userToCreate.setUsername(tempField.getText().toString()); // username is also email
             userToCreate.setEmail(tempField.getText().toString());
             tempField = (EditText)findViewById(R.id.inputTelephonenumber);
             userToCreate.setTelephoneNumber(tempField.getText().toString());

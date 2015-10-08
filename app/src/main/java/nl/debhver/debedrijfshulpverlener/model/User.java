@@ -30,12 +30,6 @@ public class User extends ParseUser {
     public void setTelephoneNumber(String telephoneNumber) {
         put("telephone_number", telephoneNumber);
     }
-    public String getEmail() {
-        return getString("email");
-    }
-    public void setEmail(String email) {
-        put("email", email);
-    }
     public String getRight() {
         return getString("right");
     }
