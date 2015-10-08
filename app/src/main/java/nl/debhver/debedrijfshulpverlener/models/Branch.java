@@ -37,4 +37,8 @@ public class Branch extends ParseObject{
     public void setAddress(String address) {
         put("address", address);
     }
+    @Override
+    public String toString(){
+        return getName();
+    }
 }

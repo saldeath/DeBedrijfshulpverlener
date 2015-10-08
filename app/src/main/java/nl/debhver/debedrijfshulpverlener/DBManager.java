@@ -6,7 +6,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
+import com.parse.SignUpCallback;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class DBManager {
     public static DBManager getInstance(){
         if(instance == null){
             instance = new DBManager();
-           //createFakeBranches();
+            //createFakeBranches();
         }
         return instance;
     }
@@ -40,13 +40,15 @@ public class DBManager {
     }
 
     void createUser(User u, final AdminAddUserActivity adminAddUserActivity){
-        u.saveInBackground(new SaveCallback() {
+        u.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                   adminAddUserActivity.popupShortToastMessage("User saved to database.");
+                    adminAddUserActivity.popupShortToastMessage("User saved to database.");
+                    adminAddUserActivity.clearFieldsAfterAddingUser();
                 } else {
-                   adminAddUserActivity.popupShortToastMessage("ERROR: User was not saved to database.");
+                    Log.d("ParseError",e.toString());
+                    adminAddUserActivity.popupShortToastMessage("ERROR: User was not saved to database.");
                 }
             }
         });
@@ -59,25 +61,14 @@ public class DBManager {
                 if (e == null) {
                     adminAddUserActivity.populateBranchesDropdown(objects);
                 } else {
+                    Log.d("ParseError",e.toString());
                     adminAddUserActivity.popupShortToastMessage("ERROR: Nothing was retrieved from database.");
                 }
             }
         });
     }
 
-    void getEROFunctions(final AdminAddUserActivity aaua){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("EROFunction");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null) {
-                    aaua.populateEROFunctionList(objects);
-                } else {
-                    aaua.popupShortToastMessage("ERROR: Nothing was retrieved from database.");
-                }
-            }
-        });
 
-    }
 
 
 }
