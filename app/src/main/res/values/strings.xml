@@ -21,25 +21,25 @@
     <string name="incidents">Incidenten</string>
 
 
-    <string name="user_right_none"></string>
-    <string name="user_right_admin"></string>
-    <string name="user_right_equipment"></string>
-    <string name="user_right_user"></string>
-    <string name="user_right_equipment_user"></string>
+    <string name="user_right_none">Geen</string>
+    <string name="user_right_admin">Admin</string>
+    <string name="user_right_equipment">Alleen apparaten</string>
+    <string name="user_right_user">Alleen gebruikers</string>
+    <string name="user_right_equipment_user">apparaten en gebruikers</string>
 
-    <string name="user_ERO_function_fire"></string>
-    <string name="user_ERO_function_first_aid"></string>
-    <string name="user_ERO_function_AED"></string>
-    <string name="user_ERO_function_none"></string>
+    <string name="user_ERO_function_fire">Brand blussen</string>
+    <string name="user_ERO_function_first_aid">EHBO</string>
+    <string name="user_ERO_function_AED">AED</string>
+    <string name="user_ERO_function_none">Geen</string>
 
-    <string name="equipment_type_fire"></string>
-    <string name="equipment_type_medical"></string>
-    <string name="equipment_type_personnel_equipment"></string>
+    <string name="equipment_type_fire">Brand</string>
+    <string name="equipment_type_medical">Mediesch</string>
+    <string name="equipment_type_personnel_equipment">Personeel\'s uitrusting</string>
 
-    <string name="incident_type_fire"></string>
-    <string name="incident_type_medical"></string>
+    <string name="incident_type_fire">Brand</string>
+    <string name="incident_type_medical">Mediesch</string>
 
-    <string name="training_type_basis"></string>
-    <string name="training_type_repeat"></string>
+    <string name="training_type_basis">Basis</string>
+    <string name="training_type_repeat">Herhaling</string>
 
 </resources>
