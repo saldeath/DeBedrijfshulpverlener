@@ -15,10 +15,6 @@
 
         <include layout="@layout/tool_bar" />
 
-        <FrameLayout
-            android:id="@+id/activity_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
