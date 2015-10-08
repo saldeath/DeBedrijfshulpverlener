@@ -1,4 +1,4 @@
-package nl.debhver.debedrijfshulpverlener.model;
+package nl.debhver.debedrijfshulpverlener.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;

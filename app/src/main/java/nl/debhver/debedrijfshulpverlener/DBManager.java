@@ -10,8 +10,8 @@ import com.parse.SaveCallback;
 
 import java.util.List;
 
-import nl.debhver.debedrijfshulpverlener.model.Branch;
-import nl.debhver.debedrijfshulpverlener.model.User;
+import nl.debhver.debedrijfshulpverlener.models.Branch;
+import nl.debhver.debedrijfshulpverlener.models.User;
 
 /**
  * Created by Koen on 6-10-2015.

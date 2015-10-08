@@ -1,7 +1,9 @@
-package nl.debhver.debedrijfshulpverlener.model;
+package nl.debhver.debedrijfshulpverlener.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 /**
  * Created by Tim on 10/5/15.
@@ -18,10 +20,10 @@ public class User extends ParseUser {
     public void setName(String name) {
         put("name", name);
     }
-    public String getEROFunction() {
-        return getString("ERO_function");
+    public List<String> getEROFunction() {
+        return getList("ERO_function");
     }
-    public void setEROFunction(String EROFunction) {
+    public void setEROFunction(List<String> EROFunction) {
         put("ERO_function", EROFunction);
     }
     public String getTelephoneNumber() {

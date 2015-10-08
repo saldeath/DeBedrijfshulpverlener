@@ -1,8 +1,7 @@
-package nl.debhver.debedrijfshulpverlener.model;
+package nl.debhver.debedrijfshulpverlener.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
-import java.util.Date;
 
 /**
  * Created by Tim on 10/5/15.

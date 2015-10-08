@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import nl.debhver.debedrijfshulpverlener.model.User;
+import nl.debhver.debedrijfshulpverlener.models.User;
 
 /**
  * Created by Koen on 6-10-2015.
