@@ -5,4 +5,5 @@
     <dimen name="fab_margin_all">16dp</dimen>
     <dimen name="fab_margin_right">16dp</dimen>
     <dimen name="fab_margin_bottom_anchor">85dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
