@@ -19,8 +19,8 @@ import com.parse.ParseObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.debhver.debedrijfshulpverlener.enums.userEROFunction;
-import nl.debhver.debedrijfshulpverlener.enums.userRight;
+import nl.debhver.debedrijfshulpverlener.enums.UserEROFunction;
+import nl.debhver.debedrijfshulpverlener.enums.UserRight;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
 import nl.debhver.debedrijfshulpverlener.models.User;
 
@@ -41,7 +41,7 @@ public class AdminAddUserActivity extends AppCompatActivity {
 
     public void populateUserRightsDropdown(){
         Spinner dropdown = (Spinner)findViewById(R.id.spinner_adminrights);
-        ArrayAdapter<userRight> adapter = new ArrayAdapter<userRight>(this, android.R.layout.simple_spinner_dropdown_item, userRight.values());
+        ArrayAdapter<UserRight> adapter = new ArrayAdapter<UserRight>(this, android.R.layout.simple_spinner_dropdown_item, UserRight.values());
         dropdown.setAdapter(adapter);
     }
 
@@ -60,7 +60,10 @@ public class AdminAddUserActivity extends AppCompatActivity {
 
     public void populateEROFunctionList(){
         LinearLayout ero_functions_ll = (LinearLayout)findViewById(R.id.ero_functions_ll);
-        for (userEROFunction function : userEROFunction.values()) {
+        for (UserEROFunction function : UserEROFunction.values()) {
+            if(function == UserEROFunction.NONE){
+                continue;
+            }
             CheckBox checkBox = new CheckBox(getApplicationContext());
             checkBox.setTextColor(Color.BLACK);
             checkBox.setText(function.toString());
@@ -203,7 +206,10 @@ public class AdminAddUserActivity extends AppCompatActivity {
         userToCreate.setPassword(tempField.getText().toString());
 
         Spinner tempSpinner = (Spinner)findViewById(R.id.spinner_adminrights);
-        userToCreate.setRight(tempSpinner.getSelectedItem().toString());
+        int id = tempSpinner.getSelectedItemPosition();
+        UserRight[] userRights = UserRight.values();
+        System.out.println(userRights[id] + " " + userRights[id+1]);
+        userToCreate.setRight(userRights[id + 1]);
 
         //tempSpinner = (Spinner)findViewById(R.id.spinner_working_at_branch);
         //userToCreate.setRight(tempSpinner.getSelectedItem().toString());
@@ -214,16 +220,19 @@ public class AdminAddUserActivity extends AppCompatActivity {
         LinearLayout layout = (LinearLayout) findViewById(R.id.ero_functions_ll);
         int count = layout.getChildCount();
         CheckBox checkBox = null;
-        ArrayList<String> ERO = new ArrayList<String>();
+        ArrayList<UserEROFunction> ERO = new ArrayList<UserEROFunction>();
         for(int i=0; i<count; i++) {
             checkBox = (CheckBox)layout.getChildAt(i);
             if(checkBox != null && checkBox.isChecked()){
-                ERO.add(checkBox.getText().toString());
+                UserEROFunction[] userEROFunctions = UserEROFunction.values();
+                ERO.add(userEROFunctions[i]);
+                System.out.println(userEROFunctions[i]);
+                //ERO.add(checkBox.getText().toString());
             }
         }
 
         if(ERO.isEmpty()){
-            ERO.add("none"); // replace with enum
+            ERO.add(UserEROFunction.NONE); // replace with enum
         }
         userToCreate.setEROFunction(ERO);
 

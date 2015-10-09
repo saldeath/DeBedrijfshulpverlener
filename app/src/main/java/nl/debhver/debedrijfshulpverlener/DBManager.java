@@ -1,6 +1,8 @@
 package nl.debhver.debedrijfshulpverlener;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -28,28 +30,16 @@ public class DBManager {
         return instance;
     }
 
-    static void createFakeBranchesAndAdminRights(){
-        Branch b = new Branch();
-        Branch c = new Branch();
-        b.setName("coolName");
-        c.setName("secondBranchName");
-
-        b.saveInBackground();
-        c.saveInBackground();
-        Log.d("score", " saved in background");
-
-    }
-
     void createUser(User u, final AdminAddUserActivity adminAddUserActivity){
         u.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    adminAddUserActivity.popupShortToastMessage("User saved to database.");
+                    doToastMessageInView(adminAddUserActivity, "User saved to database.");
                     adminAddUserActivity.clearFieldsAfterAddingUser();
                 } else {
                     Log.d("ParseError", e.toString());
-                    adminAddUserActivity.popupShortToastMessage("ERROR: User was not saved to database.");
+                    doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
                 }
             }
         });
@@ -63,7 +53,7 @@ public class DBManager {
                     adminAddUserActivity.populateBranchesDropdown(objects);
                 } else {
                     Log.d("ParseError", e.toString());
-                    adminAddUserActivity.popupShortToastMessage("ERROR: Nothing was retrieved from database.");
+                    doToastMessageInView(adminAddUserActivity, "ERROR: Nothing was retrieved from database.");
                 }
             }
         });
@@ -75,14 +65,33 @@ public class DBManager {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    adminAddBranchActivity.popupShortToastMessage("Branch saved to database.");
+                    doToastMessageInView(adminAddBranchActivity, "Branch saved to database.");
                     adminAddBranchActivity.clearFieldsAfterAddingBranch();
                 } else {
                     Log.d("ParseError", e.toString());
-                    adminAddBranchActivity.popupShortToastMessage("ERROR: Branch was not saved to database.");
+                    doToastMessageInView(adminAddBranchActivity, "ERROR: Branch was not saved to database.");
                 }
             }
         });
     }
+
+    void getUsers(final AdminSearchActivity adminSearchActivity){
+        ParseQuery<User> query = ParseQuery.getQuery(User.class);
+        query.findInBackground(new FindCallback<User>() {
+            public void done(List<User> objects, ParseException e) {
+                if (e == null) {
+                    adminSearchActivity.populateListView(objects);
+                } else {
+                    Log.d("ParseError", e.toString());
+                    doToastMessageInView(adminSearchActivity, "ERROR: Failed to retrieve users.");
+                }
+            }
+        });
+    }
+
+    void doToastMessageInView(Context context, String msg){
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+
 
 }
