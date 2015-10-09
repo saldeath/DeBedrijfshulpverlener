@@ -6,6 +6,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class DBManager {
                     adminAddUserActivity.popupShortToastMessage("User saved to database.");
                     adminAddUserActivity.clearFieldsAfterAddingUser();
                 } else {
-                    Log.d("ParseError",e.toString());
+                    Log.d("ParseError", e.toString());
                     adminAddUserActivity.popupShortToastMessage("ERROR: User was not saved to database.");
                 }
             }
@@ -61,7 +62,7 @@ public class DBManager {
                 if (e == null) {
                     adminAddUserActivity.populateBranchesDropdown(objects);
                 } else {
-                    Log.d("ParseError",e.toString());
+                    Log.d("ParseError", e.toString());
                     adminAddUserActivity.popupShortToastMessage("ERROR: Nothing was retrieved from database.");
                 }
             }
@@ -69,6 +70,19 @@ public class DBManager {
     }
 
 
-
+    void createBranch(Branch b, final AdminAddBranchActivity adminAddBranchActivity){
+        b.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    adminAddBranchActivity.popupShortToastMessage("Branch saved to database.");
+                    adminAddBranchActivity.clearFieldsAfterAddingBranch();
+                } else {
+                    Log.d("ParseError", e.toString());
+                    adminAddBranchActivity.popupShortToastMessage("ERROR: Branch was not saved to database.");
+                }
+            }
+        });
+    }
 
 }

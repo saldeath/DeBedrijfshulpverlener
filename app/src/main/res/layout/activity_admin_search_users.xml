@@ -4,17 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/viewA"
+        <ListView
+            android:id="@+id/userListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:orientation="horizontal"/>
-
-    </LinearLayout>
-
+            android:layout_height="wrap_content"/>
 </LinearLayout>
