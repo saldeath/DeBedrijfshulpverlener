@@ -17,25 +17,68 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 
 import com.parse.ParseUser;
 
+import java.util.List;
+
+import nl.debhver.debedrijfshulpverlener.enums.incidentType;
+
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private Toolbar toolbar;
+      //Old attributes for navigation drawer
+//    private Toolbar toolbar;
+//    private NavigationView drawer;
+//    private DrawerLayout drawerLayout;
+//    private ActionBarDrawerToggle drawerToggle;
+//    private Spinner incidentSpinner;
+
+    private DrawerLayout fullView;
+    private ActionBarDrawerToggle drawerToggle;
     private NavigationView drawer;
-    private DrawerLayout drawerLayout;
-    ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        initMenu();
+        //setContentView(R.layout.activity_home);
+        //initMenu();
+
+
+
+//        incidentSpinner = (Spinner)findViewById(R.id.incident_spinner);
+//
+//        String[] incidentTypes = new String[] {incidentType.FIRE.toString(), incidentType.MEDICAL.toString()};
+//
+//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, incidentTypes);
+//        incidentSpinner.setAdapter(dataAdapter);
 
     }
 
+    @Override
+    public void setContentView(int layoutResID) {
+
+        fullView = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_home, null);
+        FrameLayout activityContainer = (FrameLayout) fullView.findViewById(R.id.activity_content);
+        getLayoutInflater().inflate(layoutResID, activityContainer, true);
+        super.setContentView(fullView);
+        drawer = (NavigationView)findViewById(R.id.main_drawer);
+        drawer.setNavigationItemSelectedListener(this);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerToggle = new ActionBarDrawerToggle(this,
+                fullView,
+                toolbar,
+                R.string.drawer_open,
+                R.string.drawer_close);
+
+
+        fullView.setDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -64,22 +107,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    private void initMenu() {
-        toolbar = (Toolbar)findViewById(R.id.app_bar);
-        setSupportActionBar(toolbar);
 
-        drawer = (NavigationView)findViewById(R.id.main_drawer);
-        drawer.setNavigationItemSelectedListener(this);
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        drawerToggle = new ActionBarDrawerToggle(this,
-                drawerLayout,
-                toolbar,
-                R.string.drawer_open,
-                R.string.drawer_close);
 
-        drawerLayout.setDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-    }
+      //Old method for invoking the Navigation drawer
+//    private void initMenu() {
+//        toolbar = (Toolbar)findViewById(R.id.app_bar);
+//        setSupportActionBar(toolbar);
+//
+//        drawer = (NavigationView)findViewById(R.id.main_drawer);
+//        drawer.setNavigationItemSelectedListener(this);
+//        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+//        drawerToggle = new ActionBarDrawerToggle(this,
+//                drawerLayout,
+//                toolbar,
+//                R.string.drawer_open,
+//                R.string.drawer_close);
+//
+//        drawerLayout.setDrawerListener(drawerToggle);
+//        drawerToggle.syncState();
+//    }
 
 
     @Override
@@ -94,7 +140,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         switch (menuItem.getItemId()){
             case R.id.navigation_item_1:
-                drawerLayout.closeDrawer(GravityCompat.START);
+                fullView.closeDrawer(GravityCompat.START);
                 //intent down here
                 return true;
         }

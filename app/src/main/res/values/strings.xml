@@ -42,6 +42,8 @@
 
     <string name="training_type_basis">Basis</string>
     <string name="training_type_repeat">Herhaling</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home_user">HomeUserActivity</string>
 
     <string name="error_empty_name">Name cannot be empty.</string>
     <string name="error_empty_email">Email cannot be empty.</string>
