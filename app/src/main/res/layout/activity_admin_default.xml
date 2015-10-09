@@ -5,15 +5,59 @@
     android:layout_height="match_parent">
 
     <LinearLayout android:layout_width="match_parent"
+        android:id="@+id/viewA"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/viewA"
+
+
+            <SearchView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/searchView" />
+
+        <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:orientation="horizontal"/>
+            android:layout_height="40dp"
+            android:id="@+id/horizontalScrollView"
+            android:layout_gravity="center_horizontal" >
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New CheckBox"
+                    android:id="@+id/checkBox" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New CheckBox"
+                    android:id="@+id/checkBox2" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New CheckBox"
+                    android:id="@+id/checkBox3" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New CheckBox"
+                    android:id="@+id/checkBox4" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <ListView
+                android:id="@+id/userListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
 
     </LinearLayout>
 
@@ -26,18 +70,6 @@
         android:src="@drawable/ic_add"
         app:layout_anchor="@id/viewA"
         app:layout_anchorGravity="bottom|right|end"
-        android:onClick="FABClicked" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/AdminSearchUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:src="@drawable/ic_search"
-        app:layout_anchor="@id/AdminAddUser"
-        app:layout_anchorGravity="top|right|end"
-        android:layout_marginBottom="@dimen/fab_margin_bottom_anchor"
-        android:layout_marginRight="@dimen/fab_margin_right"
         android:onClick="FABClicked" />
 
 </android.support.design.widget.CoordinatorLayout>

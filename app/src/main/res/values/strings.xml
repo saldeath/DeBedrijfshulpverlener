@@ -14,6 +14,7 @@
     <string name="hint_branch">Branch</string>
     <string name="hint_password">Password</string>
     <string name="add_user">Add user</string>
+    <string name="update_user">Update user</string>
 
 
     <string name="action_logout">Logout</string>
