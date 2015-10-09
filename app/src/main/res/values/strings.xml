@@ -59,4 +59,15 @@
     <string name="add_branch">Add branch</string>
     <string name="title_activity_home_user">HomeUserActivity</string>
 
+    <string name="hint_equipment_name">Naam</string>
+    <string name="hint_equipment_description">Beschrijving</string>
+    <string name="hint_equipment_location">Locatie</string>
+    <string name="hint_equipment_date_of_purchase">Aanschaffing\'s datum</string>
+    <string name="hint_equipment_expiration_date">Afschaffing\'s datum</string>
+    <string name="hint_equipment_date_of_inspection">Laatste inspectie datum</string>
+    <string name="hint_equipment_image">Afbeelding</string>
+    <string name="hint_equipment_branch">Afdeling</string>
+    <string name="title_activity_admin_equipment_add">Apparaten toevoegen</string>
+    <string name="title_activity_admin_equipment_default">Apparaten Beheren</string>
+
 </resources>

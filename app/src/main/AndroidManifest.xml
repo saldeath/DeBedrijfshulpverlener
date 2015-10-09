@@ -22,7 +22,7 @@
         </activity>
         <activity android:name=".HomeActivity" >
         </activity>
-        <activity android:name=".AdminDefaultActivity" />
+        <activity android:name=".AdminDefaultActivity"/>
         <activity android:name=".AdminSearchActivity" />
         <activity android:name=".AdminAddUserActivity" />
         <activity android:name=".AdminAddBranchActivity" >
@@ -31,6 +31,15 @@
             android:name=".HomeUserActivity"
             android:label="@string/title_activity_home_user"
             android:theme="@style/AppTheme" >
+        </activity>
+        <activity
+            android:name=".AdminEquipmentAddActivity"
+            android:label="@string/title_activity_admin_equipment_add" >
+        </activity>
+        <activity
+            android:name=".AdminEquipmentDefaultActivity"
+            android:label="@string/title_activity_admin_equipment_default" >
+
         </activity>
     </application>
 
