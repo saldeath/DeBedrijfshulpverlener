@@ -50,4 +50,11 @@
     <string name="error_empty_adminrights">Adminrights cannot be empty.</string>
     <string name="error_empty_erofunctions">No ERO functions selected. Are you sure you want to create this user without an ERO function?</string>
     <string name="error_empty_password">Password cannot be empty.</string>
+
+    <string name="branch_name">Name</string>
+    <string name="branch_city">City</string>
+    <string name="branch_postal_code">Postal code</string>
+    <string name="branch_address">Address</string>
+    <string name="add_branch">Add branch</string>
+
 </resources>
