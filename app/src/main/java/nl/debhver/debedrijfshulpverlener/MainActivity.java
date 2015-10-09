@@ -16,6 +16,8 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import nl.debhver.debedrijfshulpverlener.models.User;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signinButtonClicked(View view) {
-        ParseUser user = new ParseUser();
+
         EditText email = (EditText)findViewById(R.id.inputEmail);
         EditText password = (EditText)findViewById(R.id.inputPassword);
         //System.out.println("Email: " + email.getText().toString());
