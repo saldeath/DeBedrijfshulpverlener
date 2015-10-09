@@ -6,13 +6,13 @@ import nl.debhver.debedrijfshulpverlener.parse.ParseApplication;
 /**
  * Created by timvn on 10/8/15.
  */
-public enum userEROFunction {
+public enum UserEROFunction {
     FIRE(R.string.user_ERO_function_fire), FIRST_AID(R.string.user_ERO_function_first_aid),
     AED(R.string.user_ERO_function_AED);
 
     private final int resourceId;
 
-    private userEROFunction(int resourceId) {
+    private UserEROFunction(int resourceId) {
         this.resourceId = resourceId;
     }
 
