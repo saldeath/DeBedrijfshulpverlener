@@ -39,32 +39,9 @@ public class AdminAddUserActivity extends AppCompatActivity {
         populateUserRightsDropdown();
     }
 
-    public static String[] userRightStrings() {
-        userRight[] rights = userRight.values();
-        String[] rightsStringArray = new String[rights.length];
-
-        for (int i = 0; i < rights.length; i++) {
-            rightsStringArray[i] = rights[i].toString();
-        }
-
-        return rightsStringArray;
-    }
-
-    public static String[] EROFunctionsStrings() {
-        userEROFunction[] erofunctions = userEROFunction.values();
-        String[] functionsStringArray = new String[erofunctions.length];
-
-        for (int i = 0; i < erofunctions.length; i++) {
-            functionsStringArray[i] = erofunctions[i].toString();
-        }
-
-        return functionsStringArray;
-    }
-
     public void populateUserRightsDropdown(){
-        String[] items = userRightStrings();
         Spinner dropdown = (Spinner)findViewById(R.id.spinner_adminrights);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        ArrayAdapter<userRight> adapter = new ArrayAdapter<userRight>(this, android.R.layout.simple_spinner_dropdown_item, userRight.values());
         dropdown.setAdapter(adapter);
     }
 
@@ -73,12 +50,7 @@ public class AdminAddUserActivity extends AppCompatActivity {
     }
 
     public void populateBranchesDropdown(List<ParseObject> branches){
-        List<Branch> items = new ArrayList<Branch>();
-
-        for (ParseObject branch : branches) {
-            items.add((Branch)branch);
-        }
-
+        List<Branch> items = (List)branches;
         Spinner dropdown = (Spinner)findViewById(R.id.spinner_working_at_branch);
         ArrayAdapter<Branch> adapter = new ArrayAdapter<Branch>(this, android.R.layout.simple_spinner_dropdown_item, items);
 
@@ -88,11 +60,10 @@ public class AdminAddUserActivity extends AppCompatActivity {
 
     public void populateEROFunctionList(){
         LinearLayout ero_functions_ll = (LinearLayout)findViewById(R.id.ero_functions_ll);
-        String[] functions = EROFunctionsStrings();
-        for (String function : functions) {
+        for (userEROFunction function : userEROFunction.values()) {
             CheckBox checkBox = new CheckBox(getApplicationContext());
             checkBox.setTextColor(Color.BLACK);
-            checkBox.setText(function);
+            checkBox.setText(function.toString());
             //checkBox.setButtonDrawable(Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android")); // needed to make the button more visible
             ero_functions_ll.addView(checkBox);
         }
@@ -255,6 +226,9 @@ public class AdminAddUserActivity extends AppCompatActivity {
             ERO.add("none"); // replace with enum
         }
         userToCreate.setEROFunction(ERO);
+
+
+
         DBManager.getInstance().createUser(userToCreate, this);
     }
 
