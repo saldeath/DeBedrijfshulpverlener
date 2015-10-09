@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -27,7 +26,7 @@ import nl.debhver.debedrijfshulpverlener.models.User;
 /**
  * Created by Koen on 6-10-2015.
  */
-public class AdminAddUserActivity extends AppCompatActivity {
+public class AdminAddUserActivity extends HomeActivity {
     private boolean anyCheckboxChecked = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
