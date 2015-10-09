@@ -56,5 +56,6 @@
     <string name="branch_postal_code">Postal code</string>
     <string name="branch_address">Address</string>
     <string name="add_branch">Add branch</string>
+    <string name="title_activity_home_user">HomeUserActivity</string>
 
 </resources>

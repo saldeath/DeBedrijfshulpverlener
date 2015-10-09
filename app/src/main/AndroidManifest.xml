@@ -27,6 +27,11 @@
         <activity android:name=".AdminAddUserActivity" />
         <activity android:name=".AdminAddBranchActivity" >
         </activity>
+        <activity
+            android:name=".HomeUserActivity"
+            android:label="@string/title_activity_home_user"
+            android:theme="@style/AppTheme" >
+        </activity>
     </application>
 
 </manifest>

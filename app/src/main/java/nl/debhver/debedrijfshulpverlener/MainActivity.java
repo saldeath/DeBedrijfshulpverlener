@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private void checkLoggedin() {
         if(ParseUser.getCurrentUser() != null)
         {
-            Intent i = new Intent(MainActivity.this, HomeActivity.class);
+            Intent i = new Intent(MainActivity.this, HomeUserActivity.class);
             startActivity(i);
         }
     }
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         ParseUser.logInInBackground(email.getText().toString(), password.getText().toString(), new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
-                    Intent i = new Intent(MainActivity.this, HomeActivity.class);
+                    Intent i = new Intent(MainActivity.this, HomeUserActivity.class);
                     startActivity(i);
                 } else {
                     Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_LONG).show();
