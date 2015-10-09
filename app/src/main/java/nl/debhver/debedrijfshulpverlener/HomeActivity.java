@@ -23,16 +23,43 @@ import com.parse.ParseUser;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private Toolbar toolbar;
+//    private Toolbar toolbar;
+//    private NavigationView drawer;
+//    private DrawerLayout drawerLayout;
+//    ActionBarDrawerToggle drawerToggle;
+
+    private DrawerLayout fullView;
+    private ActionBarDrawerToggle drawerToggle;
     private NavigationView drawer;
-    private DrawerLayout drawerLayout;
-    ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        initMenu();
+        //setContentView(R.layout.activity_home);
+        //initMenu();
+
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+
+        fullView = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_home, null);
+        FrameLayout activityContainer = (FrameLayout) fullView.findViewById(R.id.activity_content);
+        getLayoutInflater().inflate(layoutResID, activityContainer, true);
+        super.setContentView(fullView);
+        drawer = (NavigationView)findViewById(R.id.main_drawer);
+        drawer.setNavigationItemSelectedListener(this);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerToggle = new ActionBarDrawerToggle(this,
+                fullView,
+                toolbar,
+                R.string.drawer_open,
+                R.string.drawer_close);
+
+
+        fullView.setDrawerListener(drawerToggle);
+        drawerToggle.syncState();
 
     }
 
@@ -64,22 +91,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    private void initMenu() {
-        toolbar = (Toolbar)findViewById(R.id.app_bar);
-        setSupportActionBar(toolbar);
-
-        drawer = (NavigationView)findViewById(R.id.main_drawer);
-        drawer.setNavigationItemSelectedListener(this);
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        drawerToggle = new ActionBarDrawerToggle(this,
-                drawerLayout,
-                toolbar,
-                R.string.drawer_open,
-                R.string.drawer_close);
-
-        drawerLayout.setDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-    }
+//    private void initMenu() {
+//        toolbar = (Toolbar)findViewById(R.id.app_bar);
+//        setSupportActionBar(toolbar);
+//
+//        drawer = (NavigationView)findViewById(R.id.main_drawer);
+//        drawer.setNavigationItemSelectedListener(this);
+//        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+//        drawerToggle = new ActionBarDrawerToggle(this,
+//                drawerLayout,
+//                toolbar,
+//                R.string.drawer_open,
+//                R.string.drawer_close);
+//
+//        drawerLayout.setDrawerListener(drawerToggle);
+//        drawerToggle.syncState();
+//    }
 
 
     @Override
@@ -94,7 +121,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         switch (menuItem.getItemId()){
             case R.id.navigation_item_1:
-                drawerLayout.closeDrawer(GravityCompat.START);
+                fullView.closeDrawer(GravityCompat.START);
                 //intent down here
                 return true;
         }
