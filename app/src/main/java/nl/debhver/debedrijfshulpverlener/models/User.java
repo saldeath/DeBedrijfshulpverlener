@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Tim on 10/5/15.
  */
-@ParseClassName("user")
+@ParseClassName("_User")
 public class User extends ParseUser {
     public User() {
         super();
@@ -53,5 +53,9 @@ public class User extends ParseUser {
     }
     public Branch getBranch()  {
         return (Branch) getParseObject("branch");
+    }
+    @Override
+    public String toString(){
+        return getName();
     }
 }
