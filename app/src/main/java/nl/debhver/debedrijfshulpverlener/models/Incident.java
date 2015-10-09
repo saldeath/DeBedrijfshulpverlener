@@ -2,6 +2,7 @@ package nl.debhver.debedrijfshulpverlener.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import nl.debhver.debedrijfshulpverlener.enums.IncidentType;
 
 import java.util.Date;
 
@@ -20,11 +21,11 @@ public class Incident extends ParseObject{
     public void setTime(Date time) {
         put("time", time);
     }
-    public String getType() {
-        return getString("type");
+    public IncidentType getType() {
+        return IncidentType.valueOf(getString("type"));
     }
-    public void setType(String type) {
-        put("type", type);
+    public void setType(IncidentType type) {
+        put("type", type.name());
     }
     public String getLocation() {
         return getString("location");
