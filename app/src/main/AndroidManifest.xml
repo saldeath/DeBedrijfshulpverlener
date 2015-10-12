@@ -22,8 +22,7 @@
         </activity>
         <activity android:name=".HomeActivity" >
         </activity>
-        <activity android:name=".AdminDefaultActivity"/>
-        <activity android:name=".AdminSearchActivity" />
+        <activity android:name=".AdminUserDefaultActivity"/>
         <activity android:name=".AdminAddUserActivity"
             android:noHistory="true">
         </activity>

@@ -89,7 +89,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 //if(!currentActivityName.equals(getString(R.string.title_activity_admin_equipment_default))){
-                    Intent i = new Intent(HomeActivity.this, AdminDefaultActivity.class);
+                    Intent i = new Intent(HomeActivity.this, AdminUserDefaultActivity.class);
                     startActivity(i);
                     return true;
                 //}
