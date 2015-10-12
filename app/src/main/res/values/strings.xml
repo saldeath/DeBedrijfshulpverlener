@@ -71,5 +71,5 @@
     <string name="hint_equipment_branch">Afdeling</string>
     <string name="title_activity_admin_equipment_add">Apparaten toevoegen</string>
     <string name="title_activity_admin_equipment_default">Apparaten Beheren</string>
-
+	<string name="filter_apply_button">Apply filter</string>
 </resources>
