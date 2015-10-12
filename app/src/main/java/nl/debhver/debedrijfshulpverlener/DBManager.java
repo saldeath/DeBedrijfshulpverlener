@@ -11,6 +11,7 @@ import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nl.debhver.debedrijfshulpverlener.models.Branch;
@@ -71,6 +72,18 @@ public class DBManager {
                 }
             }
         });
+    }
+
+    public List<ParseObject> getBranches() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("branch");
+        List<ParseObject> list = null;
+        try {
+            list = query.find();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } finally {
+            return list;
+        }
     }
 
 

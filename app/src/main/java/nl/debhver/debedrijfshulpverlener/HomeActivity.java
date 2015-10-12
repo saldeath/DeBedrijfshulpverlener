@@ -73,13 +73,27 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if(!currentActivityName.equals(getString(R.string.title_activity_admin_equipment_default))){
+                if (!currentActivityName.equals(getString(R.string.title_activity_admin_equipment_default))) {
                     Intent i = new Intent(HomeActivity.this, AdminEquipmentDefaultActivity.class);
                     startActivity(i);
                     return true;
                 }
                 fullView.closeDrawer(GravityCompat.START);
                 return false;
+            }
+        });
+        menu.add(R.string.title_activity_admin_equipment_add);
+        item = menu.getItem(menu.size()-1);
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                //if(!currentActivityName.equals(getString(R.string.title_activity_admin_equipment_default))){
+                    Intent i = new Intent(HomeActivity.this, AdminDefaultActivity.class);
+                    startActivity(i);
+                    return true;
+                //}
+                //fullView.closeDrawer(GravityCompat.START);
+                //return false;
             }
         });
     }
@@ -157,7 +171,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 ParseUser.logOut();
-                HomeActivity.this.finish();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 dialog.dismiss();
             }
         });

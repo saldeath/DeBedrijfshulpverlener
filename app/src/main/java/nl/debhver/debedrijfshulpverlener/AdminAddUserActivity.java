@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -65,7 +66,12 @@ public class AdminAddUserActivity extends HomeActivity {
     }
 
     public void retrieveBranches(){
-        DBManager.getInstance().getBranchNames(this);
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                populateBranchesDropdown(DBManager.getInstance().getBranches());
+            }
+        });
+        t.start();
     }
 
     public void loadSingleUserDetails(List<User> users){
@@ -113,12 +119,16 @@ public class AdminAddUserActivity extends HomeActivity {
     }
 
     public void populateBranchesDropdown(List<ParseObject> branches){
-        List<Branch> items = (List)branches;
-        Spinner dropdown = (Spinner)findViewById(R.id.spinner_working_at_branch);
-        ArrayAdapter<Branch> adapter = new ArrayAdapter<Branch>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        final List<Branch> items = (List)branches;
+        final Spinner dropdown = (Spinner)findViewById(R.id.spinner_working_at_branch);
+        dropdown.post(new Runnable() {
+            @Override
+            public void run() {
+                ArrayAdapter<Branch> adapter = new ArrayAdapter<Branch>(AdminAddUserActivity.this, android.R.layout.simple_spinner_dropdown_item, items);
 
-        dropdown.setAdapter(adapter);
-
+                dropdown.setAdapter(adapter);
+            }
+        });
     }
 
     public void populateEROFunctionList(){
