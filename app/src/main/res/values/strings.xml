@@ -14,6 +14,7 @@
     <string name="hint_branch">Branch</string>
     <string name="hint_password">Password</string>
     <string name="add_user">Add user</string>
+    <string name="update_user">Update user</string>
 
 
     <string name="action_logout">Logout</string>
@@ -59,5 +60,16 @@
     <string name="title_activity_home_user">HomeUserActivity</string>
     <string name="incident_description">Beschrijving</string>
     <string name="incident_location">Locatie</string>
+
+    <string name="hint_equipment_name">Naam</string>
+    <string name="hint_equipment_description">Beschrijving</string>
+    <string name="hint_equipment_location">Locatie</string>
+    <string name="hint_equipment_date_of_purchase">Aanschaffing\'s datum</string>
+    <string name="hint_equipment_expiration_date">Afschaffing\'s datum</string>
+    <string name="hint_equipment_date_of_inspection">Laatste inspectie datum</string>
+    <string name="hint_equipment_image">Afbeelding</string>
+    <string name="hint_equipment_branch">Afdeling</string>
+    <string name="title_activity_admin_equipment_add">Apparaten toevoegen</string>
+    <string name="title_activity_admin_equipment_default">Apparaten Beheren</string>
 
 </resources>

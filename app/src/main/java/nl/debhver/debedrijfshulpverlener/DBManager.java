@@ -11,6 +11,7 @@ import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nl.debhver.debedrijfshulpverlener.models.Branch;
@@ -45,6 +46,20 @@ public class DBManager {
         });
     }
 
+    void updateUser(User u, final AdminAddUserActivity adminAddUserActivity){
+        u.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    doToastMessageInView(adminAddUserActivity, "User updated to database.");
+                } else {
+                    Log.d("ParseError", e.toString());
+                    doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
+                }
+            }
+        });
+    }
+
     void getBranchNames(final AdminAddUserActivity adminAddUserActivity){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("branch");
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -57,6 +72,18 @@ public class DBManager {
                 }
             }
         });
+    }
+
+    public List<ParseObject> getBranches() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("branch");
+        List<ParseObject> list = null;
+        try {
+            list = query.find();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } finally {
+            return list;
+        }
     }
 
 
@@ -75,15 +102,16 @@ public class DBManager {
         });
     }
 
-    void getUsers(final AdminSearchActivity adminSearchActivity){
+    void getUsers(final AdminUserDefaultActivity adminDefaultActivity){
         ParseQuery<User> query = ParseQuery.getQuery(User.class);
         query.findInBackground(new FindCallback<User>() {
             public void done(List<User> objects, ParseException e) {
                 if (e == null) {
-                    adminSearchActivity.populateListView(objects);
+                    adminDefaultActivity.setUserList(objects);
+                    adminDefaultActivity.populateListView(objects);
                 } else {
                     Log.d("ParseError", e.toString());
-                    doToastMessageInView(adminSearchActivity, "ERROR: Failed to retrieve users.");
+                    doToastMessageInView(adminDefaultActivity, "ERROR: Failed to retrieve users.");
                 }
             }
         });
@@ -91,6 +119,20 @@ public class DBManager {
 
     void doToastMessageInView(Context context, String msg){
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    void getSingleUserById(final AdminAddUserActivity adminAddUserActivity, String userObjId){
+        ParseQuery<User> query = ParseQuery.getQuery(User.class);
+        query.whereEqualTo("objectId",userObjId);
+        query.findInBackground(new FindCallback<User>() {
+            public void done(List<User> objects, ParseException e) {
+                if (e == null) {
+                    adminAddUserActivity.loadSingleUserDetails(objects);
+                } else {
+                    // error
+                }
+            }
+        });
     }
 
 
