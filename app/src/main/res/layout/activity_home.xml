@@ -20,10 +20,10 @@
             app:theme="@style/ThemeOverlay.AppCompat.Dark"
             />
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/activity_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></FrameLayout>
+            android:layout_height="wrap_content"></RelativeLayout>
 
         <!--<include layout="@layout/tool_bar" />-->
 

@@ -57,5 +57,7 @@
     <string name="branch_address">Address</string>
     <string name="add_branch">Add branch</string>
     <string name="title_activity_home_user">HomeUserActivity</string>
+    <string name="incident_description">Beschrijving</string>
+    <string name="incident_location">Locatie</string>
 
 </resources>

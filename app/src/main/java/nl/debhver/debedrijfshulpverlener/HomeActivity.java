@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.parse.ParseUser;
 
@@ -44,7 +45,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void setContentView(int layoutResID) {
 
         fullView = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_home, null);
-        FrameLayout activityContainer = (FrameLayout) fullView.findViewById(R.id.activity_content);
+        RelativeLayout activityContainer = (RelativeLayout) fullView.findViewById(R.id.activity_content);
         getLayoutInflater().inflate(layoutResID, activityContainer, true);
         super.setContentView(fullView);
         drawer = (NavigationView)findViewById(R.id.main_drawer);
