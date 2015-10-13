@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,15 +12,33 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import nl.debhver.debedrijfshulpverlener.enums.IncidentType;
+import nl.debhver.debedrijfshulpverlener.enums.UserRight;
+import nl.debhver.debedrijfshulpverlener.models.Incident;
+import nl.debhver.debedrijfshulpverlener.models.User;
 
 public class HomeUserActivity extends HomeActivity {
 
     private ImageButton incidentButton;
     private Spinner incidentTypes;
+    private EditText incidentLocation;
+    private EditText incidentDescription;
+    private User user = (User) User.getCurrentUser();
+    private Calendar c = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +46,6 @@ public class HomeUserActivity extends HomeActivity {
         setContentView(R.layout.activity_home_user);
 
         incidentButton = (ImageButton)findViewById(R.id.incident_button);
-
 
         incidentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,15 +56,30 @@ public class HomeUserActivity extends HomeActivity {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeUserActivity.this);
                 alertDialog.setView(view);
 
-                incidentTypes = (Spinner)view.findViewById(R.id.incident_type);
-                String[] incidentTypesList = new String[]{IncidentType.FIRE.toString(), IncidentType.MEDICAL.toString()};
+                initSpinner(view);
 
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(HomeUserActivity.this, android.R.layout.simple_spinner_dropdown_item, incidentTypesList);
-                incidentTypes.setAdapter(dataAdapter);
+                incidentLocation = (EditText)view.findViewById(R.id.incident_location);
+                incidentDescription = (EditText)view.findViewById(R.id.incident_description);
 
                 alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        //get selected item from spinner
+                        int id = incidentTypes.getSelectedItemPosition();
+                        IncidentType[] incidentTypes = IncidentType.values();
+
+                        //save incident
+                        Incident incident = new Incident();
+                        incident.setDescription(incidentDescription.getText().toString());
+                        incident.setLocation(incidentLocation.getText().toString());
+                        incident.setUser(user);
+                        incident.setType(incidentTypes[id]);
+                        incident.setTime(c.getTime());
+
+                        DBManager.getInstance().createIncident(incident, HomeUserActivity.this);
 
                     }
                 });
@@ -64,6 +97,21 @@ public class HomeUserActivity extends HomeActivity {
 
 
 
+    }
+
+    @NonNull
+    private String getDate() {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd:MM:yyyy HH:mm:ss");
+        return sdf.format(c.getTime());
+    }
+
+    private void initSpinner(View view) {
+        incidentTypes = (Spinner)view.findViewById(R.id.incident_type);
+        String[] incidentTypesList = new String[]{IncidentType.FIRE.toString(), IncidentType.MEDICAL.toString()};
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(HomeUserActivity.this, android.R.layout.simple_spinner_dropdown_item, incidentTypesList);
+        incidentTypes.setAdapter(dataAdapter);
     }
 
 }

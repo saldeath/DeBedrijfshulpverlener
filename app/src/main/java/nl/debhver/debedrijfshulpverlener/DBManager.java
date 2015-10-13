@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.debhver.debedrijfshulpverlener.models.Branch;
+import nl.debhver.debedrijfshulpverlener.models.Incident;
 import nl.debhver.debedrijfshulpverlener.models.User;
 
 /**
@@ -29,6 +30,21 @@ public class DBManager {
             //createFakeBranches();
         }
         return instance;
+    }
+
+    void createIncident(Incident i, final HomeUserActivity homeUserActivity){
+        i.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    doToastMessageInView(homeUserActivity, "Incident saved to database.");
+                    //homeUserActivity.clearFieldsAfterAddingBranch();
+                } else {
+                    Log.d("ParseError", e.toString());
+                    doToastMessageInView(homeUserActivity, "ERROR: Incident was not saved to database.");
+                }
+            }
+        });
     }
 
     void createUser(User u, final AdminAddUserActivity adminAddUserActivity){
