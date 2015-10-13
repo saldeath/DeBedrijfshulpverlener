@@ -3,7 +3,9 @@ package nl.debhver.debedrijfshulpverlener;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -39,30 +41,30 @@ public class HomeUserActivity extends HomeActivity {
     private EditText incidentDescription;
     private User user = (User) User.getCurrentUser();
     private Calendar c = Calendar.getInstance();
+    private static final int TAKE_FOTO_REQUEST = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_user);
 
-        incidentButton = (ImageButton)findViewById(R.id.incident_button);
+        incidentButton = (ImageButton) findViewById(R.id.incident_button);
 
         incidentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                View view = LayoutInflater.from(HomeUserActivity.this).inflate(R.layout.incident_dialog,null);
+                View view = LayoutInflater.from(HomeUserActivity.this).inflate(R.layout.incident_dialog, null);
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeUserActivity.this);
                 alertDialog.setView(view);
 
                 initSpinner(view);
 
-                incidentLocation = (EditText)view.findViewById(R.id.incident_location);
-                incidentDescription = (EditText)view.findViewById(R.id.incident_description);
+                incidentLocation = (EditText) view.findViewById(R.id.incident_location);
+                incidentDescription = (EditText) view.findViewById(R.id.incident_description);
 
                 alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -77,7 +79,7 @@ public class HomeUserActivity extends HomeActivity {
                         incident.setLocation(incidentLocation.getText().toString());
                         incident.setUser(user);
                         incident.setType(incidentTypes[id]);
-                        incident.setTime(c.getTime());
+                        incident.setTime(getDate());
 
                         DBManager.getInstance().createIncident(incident, HomeUserActivity.this);
 
@@ -89,29 +91,32 @@ public class HomeUserActivity extends HomeActivity {
                 Dialog dialog = alertDialog.create();
                 dialog.show();
 
-
-
             }
         });
-
-
-
 
     }
 
     @NonNull
-    private String getDate() {
+    private Date getDate() {
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd:MM:yyyy HH:mm:ss");
-        return sdf.format(c.getTime());
+        return c.getTime();
     }
 
     private void initSpinner(View view) {
-        incidentTypes = (Spinner)view.findViewById(R.id.incident_type);
+        incidentTypes = (Spinner) view.findViewById(R.id.incident_type);
         String[] incidentTypesList = new String[]{IncidentType.FIRE.toString(), IncidentType.MEDICAL.toString()};
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(HomeUserActivity.this, android.R.layout.simple_spinner_dropdown_item, incidentTypesList);
         incidentTypes.setAdapter(dataAdapter);
+    }
+
+    private void openCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, TAKE_FOTO_REQUEST);
+    }
+
+    public void startCamera(View view){
+        openCamera();
     }
 
 }
