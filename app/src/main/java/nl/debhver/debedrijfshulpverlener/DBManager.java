@@ -7,8 +7,10 @@ import android.widget.Toast;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import com.parse.SendCallback;
 import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
@@ -42,6 +44,23 @@ public class DBManager {
                 } else {
                     Log.d("ParseError", e.toString());
                     doToastMessageInView(homeUserActivity, "ERROR: Incident was not saved to database.");
+                }
+            }
+        });
+        pushIncident(i);
+    }
+
+    void pushIncident(final Incident i){
+        ParsePush parsePush = new ParsePush();
+        parsePush.setMessage(i.getDescription() + " @ " + i.getLocation());
+        parsePush.sendInBackground(new SendCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e == null){
+                    Log.d("ParseSuccess", i.getDescription() + " @ " + i.getLocation());
+                }
+                else{
+                    Log.d("ParseError", e.toString());
                 }
             }
         });
