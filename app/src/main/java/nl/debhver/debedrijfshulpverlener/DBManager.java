@@ -7,8 +7,10 @@ import android.widget.Toast;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import com.parse.SendCallback;
 import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
@@ -45,6 +47,23 @@ public class DBManager {
                 }
             }
         });
+        pushIncident(i);
+    }
+
+    void pushIncident(final Incident i){
+        ParsePush parsePush = new ParsePush();
+        parsePush.setMessage(i.getDescription() + " @ " + i.getLocation());
+        parsePush.sendInBackground(new SendCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e == null){
+                    Log.d("ParseSuccess", i.getDescription() + " @ " + i.getLocation());
+                }
+                else{
+                    Log.d("ParseError", e.toString());
+                }
+            }
+        });
     }
 
     void createUser(User u, final AdminAddUserActivity adminAddUserActivity){
@@ -71,20 +90,6 @@ public class DBManager {
                 } else {
                     Log.d("ParseError", e.toString());
                     doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
-                }
-            }
-        });
-    }
-
-    void getBranchNames(final AdminAddUserActivity adminAddUserActivity){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("branch");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null) {
-                    adminAddUserActivity.populateBranchesDropdown(objects);
-                } else {
-                    Log.d("ParseError", e.toString());
-                    doToastMessageInView(adminAddUserActivity, "ERROR: Nothing was retrieved from database.");
                 }
             }
         });

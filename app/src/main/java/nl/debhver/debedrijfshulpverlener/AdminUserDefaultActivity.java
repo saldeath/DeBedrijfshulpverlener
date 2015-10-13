@@ -123,9 +123,8 @@ public class AdminUserDefaultActivity extends HomeActivity {
 
             }
         });
+        //intent.putExtra(USER_EXTRA,)
     }
-
-
 
     // code by http://stackoverflow.com/users/1705598/icza
     public static boolean containsIgnoreCase(String src, String what) {

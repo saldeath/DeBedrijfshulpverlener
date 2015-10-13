@@ -7,7 +7,7 @@ import com.parse.ParseObject;
  * Created by Tim on 10/5/15.
  */
 @ParseClassName("branch")
-public class Branch extends ParseObject{
+public class Branch extends ParseObject {
 
     public Branch() {
         super();
