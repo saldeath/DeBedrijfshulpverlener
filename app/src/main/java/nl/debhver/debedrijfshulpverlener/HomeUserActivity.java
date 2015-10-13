@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -42,6 +44,7 @@ public class HomeUserActivity extends HomeActivity {
     private User user = (User) User.getCurrentUser();
     private Calendar c = Calendar.getInstance();
     private static final int TAKE_FOTO_REQUEST = 0;
+    private Bitmap equipmentImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,4 +122,20 @@ public class HomeUserActivity extends HomeActivity {
         openCamera();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == TAKE_FOTO_REQUEST && resultCode == RESULT_OK){
+
+            equipmentImage = (Bitmap) data.getExtras().get("data");
+            Bitmap scaledIncident = Bitmap.createScaledBitmap(equipmentImage, 500, 500 * equipmentImage.getHeight() / equipmentImage.getWidth(), false);
+
+
+            Toast.makeText(this, "camera captured", Toast.LENGTH_LONG).show();
+
+
+        }else{
+            Toast.makeText(this, "nothing captured", Toast.LENGTH_LONG).show();
+        }
+    }
 }
