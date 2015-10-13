@@ -296,13 +296,11 @@ public class AdminAddUserActivity extends HomeActivity {
         int count = layout.getChildCount();
         CheckBox checkBox = null;
         ArrayList<UserEROFunction> ERO = new ArrayList<UserEROFunction>();
+        UserEROFunction[] userEROFunctions = UserEROFunction.values();
         for(int i=0; i<count; i++) {
             checkBox = (CheckBox)layout.getChildAt(i);
             if(checkBox != null && checkBox.isChecked()){
-                UserEROFunction[] userEROFunctions = UserEROFunction.values();
                 ERO.add(userEROFunctions[i]);
-                System.out.println(userEROFunctions[i]);
-                //ERO.add(checkBox.getText().toString());
             }
         }
 

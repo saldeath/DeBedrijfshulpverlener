@@ -151,5 +151,43 @@ public class DBManager {
         });
     }
 
+    void getFilteredUserList(final AdminUserDefaultActivity adminDefaultActivity, List<String> userRightList, List<String> userEROFunctionList){
+        List<ParseQuery<User>> queries = new ArrayList<ParseQuery<User>>();
+
+        for(String userRightName : userRightList){
+            ParseQuery<User> query = ParseQuery.getQuery(User.class);
+            query.whereEqualTo("right", userRightName);
+            queries.add(query);
+            System.out.println("looking for right-" + userRightName);
+        }
+        for(String userEROFunction : userEROFunctionList){
+            ParseQuery<User> query = ParseQuery.getQuery(User.class);
+            query.whereEqualTo("ERO_function", userEROFunction);
+            //query.whereContains()
+            queries.add(query);
+            System.out.println("looking for erofunction-" + userEROFunction);
+        }
+
+        //ParseQuery<User> superQuery = (ParseQuery) User.getQuery();
+        ParseQuery<User> superQuery = ParseQuery.getQuery(User.class);
+        superQuery = ParseQuery.or(queries);
+
+        superQuery.findInBackground(new FindCallback<User>() {
+            public void done(List<User> objects, ParseException e) {
+                if (e == null) {
+                    if (objects.size() != 0) {
+                        System.out.println("nietleeg");
+                    } else {
+                        System.out.println("lEEG");
+                    }
+                    adminDefaultActivity.setUserList(objects);
+                    adminDefaultActivity.populateListView(objects);
+                } else {
+                    Log.d("ParseError", e.toString());
+                    doToastMessageInView(adminDefaultActivity, "ERROR: Failed to retrieve users.");
+                }
+            }
+        });
+    }
 
 }
