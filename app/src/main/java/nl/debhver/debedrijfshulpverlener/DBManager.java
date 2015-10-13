@@ -190,4 +190,25 @@ public class DBManager {
         });
     }
 
+    void deleteUserById(final AdminUserDefaultActivity adminUserDefaultActivity, String userObjId){
+        ParseQuery<User> query = ParseQuery.getQuery(User.class);
+        query.whereEqualTo("objectId",userObjId);
+        query.findInBackground(new FindCallback<User>() {
+            public void done(List<User> objects, ParseException e) {
+                if (e == null) {
+                    // iterate over all messages and delete them
+                    for(User user : objects)
+                    {
+                        user.deleteInBackground();
+                        doToastMessageInView(adminUserDefaultActivity, user.getName() + " deleted from database.");
+                    }
+                    adminUserDefaultActivity.retrieveUsers();
+                } else {
+                    Log.d("ParseError", e.toString());
+                    doToastMessageInView(adminUserDefaultActivity, "ERROR: Couldnt delete user.");
+                }
+            }
+        });
+    }
+
 }
