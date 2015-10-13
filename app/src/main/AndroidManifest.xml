@@ -38,8 +38,6 @@
             android:name=".AdminUserDefaultActivity"
             android:label="@string/title_activity_admin_user_default">
         </activity>
-        <activity android:name=".AdminUserDefaultActivity"/>
-        <activity android:name=".AdminAddUserActivity"
         <activity
             android:name=".AdminAddUserActivity"
             android:label="@string/title_activity_admin_user_add"

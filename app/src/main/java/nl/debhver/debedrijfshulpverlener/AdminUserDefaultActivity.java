@@ -2,7 +2,6 @@ package nl.debhver.debedrijfshulpverlener;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,13 +18,16 @@ import nl.debhver.debedrijfshulpverlener.models.User;
  * Created by Koen on 6-10-2015.
  */
 public class AdminUserDefaultActivity extends HomeActivity {
+    public static int FILTER_PICK = 1;
+    public static String FILTER_EXTRA_ERO = "filter_extra_ero";
+    public static String FILTER_EXTRA_RIGHTS = "filter_extra_rights";
     public static String USER_EXTRA = "user_extra";
     private List<User> userList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_default);
+        setContentView(R.layout.activity_admin_user_default);
         addListenerToSearchView();
     }
 
@@ -33,6 +35,19 @@ public class AdminUserDefaultActivity extends HomeActivity {
     protected void onResume(){
         super.onResume();
         retrieveUsers();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Check which request we're responding to
+        if (requestCode == FILTER_PICK) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                Bundle bundleObject = data.getExtras();
+                DBManager.getInstance().getFilteredUserList(this, bundleObject.getStringArrayList(FILTER_EXTRA_RIGHTS), bundleObject.getStringArrayList(FILTER_EXTRA_ERO));
+            }
+        }
     }
 
     public void addListenerToSearchView(){
@@ -62,6 +77,11 @@ public class AdminUserDefaultActivity extends HomeActivity {
             Intent intent = new Intent(AdminUserDefaultActivity.this, AdminAddUserActivity.class);
             AdminUserDefaultActivity.this.startActivity(intent);
             Log.i("Content ", " start AddUserActivity ");
+        }
+        else if(v.getId() == R.id.AdminFilterUserList){
+            Intent intent = new Intent(AdminUserDefaultActivity.this, AdminUserFilterActivity.class);
+            AdminUserDefaultActivity.this.startActivityForResult(intent, FILTER_PICK);
+            Log.i("Content ", " start AdminUserFilterActivity ");
         }
     }
 
