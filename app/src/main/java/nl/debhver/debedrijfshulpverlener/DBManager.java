@@ -76,20 +76,6 @@ public class DBManager {
         });
     }
 
-    void getBranchNames(final AdminAddUserActivity adminAddUserActivity){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("branch");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null) {
-                    adminAddUserActivity.populateBranchesDropdown(objects);
-                } else {
-                    Log.d("ParseError", e.toString());
-                    doToastMessageInView(adminAddUserActivity, "ERROR: Nothing was retrieved from database.");
-                }
-            }
-        });
-    }
-
     public List<ParseObject> getBranches() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("branch");
         List<ParseObject> list = null;

@@ -2,23 +2,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:id="@+id/viewA"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:id="@+id/viewA">
 
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/scrollView"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal" >
 
 
-    </LinearLayout>
+
+        </ScrollView>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/AdminAddUser"

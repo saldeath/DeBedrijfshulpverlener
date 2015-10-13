@@ -13,7 +13,6 @@ public class AdminEquipmentDefaultActivity extends HomeActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCurrentActivityName(getString(R.string.title_activity_admin_equipment_default));
         setContentView(R.layout.activity_admin_equipment_default);
     }
 

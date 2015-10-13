@@ -36,8 +36,7 @@ public class AdminAddUserActivity extends HomeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_user);
-
-        Intent i = getIntent();
+        backButtonOnToolbar();
 
         retrieveBranches();
         populateEROFunctionList();
@@ -221,19 +220,19 @@ public class AdminAddUserActivity extends HomeActivity {
                 AdminAddUserActivity.this);
 
         // set title
-        alertDialogBuilder.setTitle("");
+        alertDialogBuilder.setTitle(R.string.warning);
 
         // set dialog message
         alertDialogBuilder
                 .setMessage(getString(R.string.error_empty_erofunctions))
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id){
                         AdminAddUserActivity.this.createUser();
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
@@ -388,5 +387,29 @@ public class AdminAddUserActivity extends HomeActivity {
             checkBox = (CheckBox)layout.getChildAt(i);
             checkBox.setChecked(false);
         }
+    }
+
+    @Override
+    public void finish() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                AdminAddUserActivity.this);
+        alertDialogBuilder
+                .setTitle(R.string.warning)
+                .setMessage(getString(R.string.warning_exit_without_save))
+                .setCancelable(false)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        AdminAddUserActivity.super.finish();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

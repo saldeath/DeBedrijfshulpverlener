@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="nl.debhver.debedrijfshulpverlener" >
 
+    <uses-feature android:name="android.hardware.camera" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -11,45 +12,55 @@
         <permission android:protectionLevel="signature"
         android:name="nl.debhver.debedrijfshulpverlener.permission.C2D_MESSAGE" />
     <uses-permission android:name="nl.debhver.debedrijfshulpverlener.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".parse.ParseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity" >
+        <activity
+            android:name=".HomeActivity">
+        </activity>
+        <activity
+            android:name=".AdminUserDefaultActivity"
+            android:label="@string/title_activity_admin_user_default">
         </activity>
         <activity android:name=".AdminUserDefaultActivity"/>
         <activity android:name=".AdminAddUserActivity"
+        <activity
+            android:name=".AdminAddUserActivity"
+            android:label="@string/title_activity_admin_user_add"
             android:noHistory="true">
         </activity>
-        <activity android:name=".AdminAddBranchActivity"
+        <activity
+            android:name=".AdminAddBranchActivity"
             android:noHistory="true">
         </activity>
         <activity
             android:name=".HomeUserActivity"
             android:label="@string/title_activity_home_user"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme">
         </activity>
         <activity
             android:name=".AdminEquipmentAddActivity"
-            android:label="@string/title_activity_admin_equipment_add"
-            android:noHistory="true">
+            android:label="@string/title_activity_admin_equipment_add">
         </activity>
         <activity
             android:name=".AdminEquipmentDefaultActivity"
-            android:label="@string/title_activity_admin_equipment_default" >
-
+            android:label="@string/title_activity_admin_equipment_default">
         </activity>
 
         <service android:name="com.parse.PushService" />
