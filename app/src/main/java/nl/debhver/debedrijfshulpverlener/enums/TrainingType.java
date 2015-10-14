@@ -6,12 +6,12 @@ import nl.debhver.debedrijfshulpverlener.parse.ParseApplication;
 /**
  * Created by timvn on 10/8/15.
  */
-public enum incidentType {
-    FIRE(R.string.incident_type_fire), MEDICAL(R.string.incident_type_medical);
+public enum TrainingType {
+    BASIS(R.string.training_type_basis), REPEAT(R.string.training_type_repeat);
 
     private final int resourceId;
 
-    private incidentType(int resourceId) {
+    private TrainingType(int resourceId) {
         this.resourceId = resourceId;
     }
 

@@ -3,6 +3,7 @@ package nl.debhver.debedrijfshulpverlener.models;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import java.util.Date;
+import nl.debhver.debedrijfshulpverlener.enums.EquipmentType;
 
 /**
  * Created by Tim on 10/5/15.
@@ -31,11 +32,11 @@ public class Equipment extends ParseObject{
     public void setLocation(String location) {
         put("location", location);
     }
-    public String getType() {
-        return getString("type");
+    public EquipmentType getType() {
+        return EquipmentType.valueOf(getString("type"));
     }
-    public void setType(String type) {
-        put("type", type);
+    public void setType(EquipmentType type) {
+        put("type", type.name());
     }
     public Date getDateOfPurchase() {
         return getDate("date_of_purchase");

@@ -2,12 +2,14 @@ package nl.debhver.debedrijfshulpverlener;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,80 +21,124 @@ import com.parse.ParseObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.debhver.debedrijfshulpverlener.enums.userEROFunction;
-import nl.debhver.debedrijfshulpverlener.enums.userRight;
+import nl.debhver.debedrijfshulpverlener.enums.UserEROFunction;
+import nl.debhver.debedrijfshulpverlener.enums.UserRight;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
 import nl.debhver.debedrijfshulpverlener.models.User;
 
 /**
  * Created by Koen on 6-10-2015.
  */
-public class AdminAddUserActivity extends AppCompatActivity {
+public class AdminAddUserActivity extends HomeActivity {
     private boolean anyCheckboxChecked = true;
+    private User selectedUser = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_user);
+        backButtonOnToolbar();
 
         retrieveBranches();
         populateEROFunctionList();
         populateUserRightsDropdown();
-    }
 
-    public static String[] userRightStrings() {
-        userRight[] rights = userRight.values();
-        String[] rightsStringArray = new String[rights.length];
+        String userObjId = getIntent().getStringExtra(AdminUserDefaultActivity.USER_EXTRA);
 
-        for (int i = 0; i < rights.length; i++) {
-            rightsStringArray[i] = rights[i].toString();
+        if(userObjId != null){ // user was added in intent
+            findViewById(R.id.inputPassword).setVisibility(View.GONE); // admin cannot change password
+            Button button = (Button)findViewById(R.id.addUserButton);
+            button.setText(R.string.update_user);
+            DBManager.getInstance().getSingleUserById(this, userObjId);
+            //
+        }
+        else{
+            System.out.println("NO EXTRA");
         }
 
-        return rightsStringArray;
-    }
 
-    public static String[] EROFunctionsStrings() {
-        userEROFunction[] erofunctions = userEROFunction.values();
-        String[] functionsStringArray = new String[erofunctions.length];
-
-        for (int i = 0; i < erofunctions.length; i++) {
-            functionsStringArray[i] = erofunctions[i].toString();
-        }
-
-        return functionsStringArray;
     }
 
     public void populateUserRightsDropdown(){
-        String[] items = userRightStrings();
         Spinner dropdown = (Spinner)findViewById(R.id.spinner_adminrights);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        ArrayAdapter<UserRight> adapter = new ArrayAdapter<UserRight>(this, android.R.layout.simple_spinner_dropdown_item, UserRight.values());
         dropdown.setAdapter(adapter);
     }
 
     public void retrieveBranches(){
-        DBManager.getInstance().getBranchNames(this);
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                populateBranchesDropdown(DBManager.getInstance().getBranches());
+            }
+        });
+        t.start();
+    }
+
+    public void loadSingleUserDetails(List<User> users){
+        if(users.size()==1){
+            EditText editText;
+            selectedUser = users.get(0);
+            editText = (EditText)findViewById(R.id.inputName);
+            editText.setText(selectedUser.getName());
+            editText = (EditText)findViewById(R.id.inputTelephonenumber);
+            editText.setText(selectedUser.getTelephoneNumber());
+            editText = (EditText)findViewById(R.id.inputEmail);
+            editText.setText(selectedUser.getEmail());
+            editText = (EditText)findViewById(R.id.inputPassword);
+            editText.setText("dummy"); // not used, but needs to be set in order to pass checkFields()
+
+
+            List<UserEROFunction> userEROFunctions = selectedUser.getEROFunction();
+            if(userEROFunctions != null){
+                LinearLayout layout = (LinearLayout) findViewById(R.id.ero_functions_ll);
+                int count = layout.getChildCount();
+                CheckBox checkBox = null;
+                ArrayList<UserEROFunction> ERO = new ArrayList<UserEROFunction>();
+
+                for(int i=0, j = 0; i<count && j<userEROFunctions.size(); i++) {
+                    checkBox = (CheckBox)layout.getChildAt(i);
+                    if(checkBox.getText().toString() == userEROFunctions.get(j).toString()){
+                        checkBox.setChecked(true);
+                        j++;
+                    }
+                }
+
+            }
+
+            Spinner spinner;
+            spinner = (Spinner)findViewById(R.id.spinner_adminrights);
+            ArrayAdapter<UserRight> adapter1;
+            adapter1= (ArrayAdapter)spinner.getAdapter();
+            spinner.setSelection(adapter1.getPosition(selectedUser.getRight()));
+
+            spinner = (Spinner)findViewById(R.id.spinner_working_at_branch);
+            ArrayAdapter<Branch> adapter2;
+            adapter2= (ArrayAdapter)spinner.getAdapter();
+            spinner.setSelection(adapter2.getPosition(selectedUser.getBranch()));
+        }
     }
 
     public void populateBranchesDropdown(List<ParseObject> branches){
-        List<Branch> items = new ArrayList<Branch>();
+        final List<Branch> items = (List)branches;
+        final Spinner dropdown = (Spinner)findViewById(R.id.spinner_working_at_branch);
+        dropdown.post(new Runnable() {
+            @Override
+            public void run() {
+                ArrayAdapter<Branch> adapter = new ArrayAdapter<Branch>(AdminAddUserActivity.this, android.R.layout.simple_spinner_dropdown_item, items);
 
-        for (ParseObject branch : branches) {
-            items.add((Branch)branch);
-        }
-
-        Spinner dropdown = (Spinner)findViewById(R.id.spinner_working_at_branch);
-        ArrayAdapter<Branch> adapter = new ArrayAdapter<Branch>(this, android.R.layout.simple_spinner_dropdown_item, items);
-
-        dropdown.setAdapter(adapter);
-
+                dropdown.setAdapter(adapter);
+            }
+        });
     }
 
     public void populateEROFunctionList(){
         LinearLayout ero_functions_ll = (LinearLayout)findViewById(R.id.ero_functions_ll);
-        String[] functions = EROFunctionsStrings();
-        for (String function : functions) {
+        for (UserEROFunction function : UserEROFunction.values()) {
+            if(function == UserEROFunction.NONE){
+                continue;
+            }
             CheckBox checkBox = new CheckBox(getApplicationContext());
             checkBox.setTextColor(Color.BLACK);
-            checkBox.setText(function);
+            checkBox.setText(function.toString());
             //checkBox.setButtonDrawable(Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android")); // needed to make the button more visible
             ero_functions_ll.addView(checkBox);
         }
@@ -174,19 +220,19 @@ public class AdminAddUserActivity extends AppCompatActivity {
                 AdminAddUserActivity.this);
 
         // set title
-        alertDialogBuilder.setTitle("");
+        alertDialogBuilder.setTitle(R.string.warning);
 
         // set dialog message
         alertDialogBuilder
                 .setMessage(getString(R.string.error_empty_erofunctions))
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id){
                         AdminAddUserActivity.this.createUser();
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
@@ -204,14 +250,64 @@ public class AdminAddUserActivity extends AppCompatActivity {
             boolean checkFields;
             checkFields = checkFields();
             if(checkFields == true){ // fields were ok, create user
-                createUser();
+                if(selectedUser==null){ // user is new and should be created
+                    createUser();
+                }
+                else{
+                    updateUser();
+                }
+
             }
             else if(anyCheckboxChecked == false){ // none of the checkboxes were checked, is user sure?
                 checkBoxDialog();
             }
         }
+    }
 
 
+    public void updateUser(){
+        EditText tempField;
+
+        tempField = (EditText)findViewById(R.id.inputName);
+        selectedUser.setName(tempField.getText().toString());
+
+        tempField = (EditText)findViewById(R.id.inputTelephonenumber);
+        selectedUser.setTelephoneNumber(tempField.getText().toString());
+
+        tempField = (EditText)findViewById(R.id.inputEmail);
+        selectedUser.setEmail(tempField.getText().toString());
+        selectedUser.setUsername(tempField.getText().toString());
+
+        System.out.println("before spinner");
+        Spinner tempSpinner = (Spinner)findViewById(R.id.spinner_adminrights);
+        int id = tempSpinner.getSelectedItemPosition();
+        UserRight[] userRights = UserRight.values();
+        System.out.println(userRights[id] + " " + userRights[id+1]);
+        selectedUser.setRight(userRights[id]);
+
+        //tempSpinner = (Spinner)findViewById(R.id.spinner_working_at_branch);
+        //userToCreate.setRight(tempSpinner.getSelectedItem().toString());
+
+        Branch branch = (Branch) ( (Spinner) findViewById(R.id.spinner_working_at_branch)).getSelectedItem();
+        selectedUser.setBranch(branch);
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.ero_functions_ll);
+        int count = layout.getChildCount();
+        CheckBox checkBox = null;
+        ArrayList<UserEROFunction> ERO = new ArrayList<UserEROFunction>();
+        UserEROFunction[] userEROFunctions = UserEROFunction.values();
+        for(int i=0; i<count; i++) {
+            checkBox = (CheckBox)layout.getChildAt(i);
+            if(checkBox != null && checkBox.isChecked()){
+                ERO.add(userEROFunctions[i]);
+            }
+        }
+
+        if(ERO.isEmpty()){
+            ERO.add(UserEROFunction.NONE); // replace with enum
+        }
+        selectedUser.setEROFunction(ERO);
+        DBManager.getInstance().updateUser(selectedUser, this);
     }
 
     public void createUser(){
@@ -232,7 +328,10 @@ public class AdminAddUserActivity extends AppCompatActivity {
         userToCreate.setPassword(tempField.getText().toString());
 
         Spinner tempSpinner = (Spinner)findViewById(R.id.spinner_adminrights);
-        userToCreate.setRight(tempSpinner.getSelectedItem().toString());
+        int id = tempSpinner.getSelectedItemPosition();
+        UserRight[] userRights = UserRight.values();
+        System.out.println(userRights[id].toString());
+        userToCreate.setRight(userRights[id]);
 
         //tempSpinner = (Spinner)findViewById(R.id.spinner_working_at_branch);
         //userToCreate.setRight(tempSpinner.getSelectedItem().toString());
@@ -243,18 +342,23 @@ public class AdminAddUserActivity extends AppCompatActivity {
         LinearLayout layout = (LinearLayout) findViewById(R.id.ero_functions_ll);
         int count = layout.getChildCount();
         CheckBox checkBox = null;
-        ArrayList<String> ERO = new ArrayList<String>();
+        ArrayList<UserEROFunction> ERO = new ArrayList<UserEROFunction>();
         for(int i=0; i<count; i++) {
             checkBox = (CheckBox)layout.getChildAt(i);
             if(checkBox != null && checkBox.isChecked()){
-                ERO.add(checkBox.getText().toString());
+                UserEROFunction[] userEROFunctions = UserEROFunction.values();
+                ERO.add(userEROFunctions[i]);
+                //ERO.add(checkBox.getText().toString());
             }
         }
 
         if(ERO.isEmpty()){
-            ERO.add("none"); // replace with enum
+            ERO.add(UserEROFunction.NONE); // replace with enum
         }
         userToCreate.setEROFunction(ERO);
+
+
+
         DBManager.getInstance().createUser(userToCreate, this);
     }
 
@@ -283,5 +387,29 @@ public class AdminAddUserActivity extends AppCompatActivity {
             checkBox = (CheckBox)layout.getChildAt(i);
             checkBox.setChecked(false);
         }
+    }
+
+    @Override
+    public void finish() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                AdminAddUserActivity.this);
+        alertDialogBuilder
+                .setTitle(R.string.warning)
+                .setMessage(getString(R.string.warning_exit_without_save))
+                .setCancelable(false)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        AdminAddUserActivity.super.finish();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

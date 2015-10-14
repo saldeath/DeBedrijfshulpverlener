@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">De Bedrijfshulpverlener</string>
+    <string name="app_name">De BHV\'er</string>
+    <string name="company_name"></string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
@@ -14,19 +13,19 @@
     <string name="hint_branch">Branch</string>
     <string name="hint_password">Password</string>
     <string name="add_user">Add user</string>
+    <string name="update_user">Update user</string>
 
-
-    <string name="action_logout">Logout</string>
+    <string name="action_settings">Opties</string>
+    <string name="action_logout">Uitloggen</string>
     <string name="course">Cursus</string>
     <string name="devices">Apparatuur</string>
     <string name="incidents">Incidenten</string>
-
 
     <string name="user_right_none">Geen</string>
     <string name="user_right_admin">Admin</string>
     <string name="user_right_equipment">Alleen apparaten</string>
     <string name="user_right_user">Alleen gebruikers</string>
-    <string name="user_right_equipment_user">apparaten en gebruikers</string>
+    <string name="user_right_equipment_user">Apparaten en gebruikers</string>
 
     <string name="user_ERO_function_fire">Brand blussen</string>
     <string name="user_ERO_function_first_aid">EHBO</string>
@@ -34,11 +33,11 @@
     <string name="user_ERO_function_none">Geen</string>
 
     <string name="equipment_type_fire">Brand</string>
-    <string name="equipment_type_medical">Mediesch</string>
+    <string name="equipment_type_medical">Medisch</string>
     <string name="equipment_type_personnel_equipment">Personeel\'s uitrusting</string>
 
     <string name="incident_type_fire">Brand</string>
-    <string name="incident_type_medical">Mediesch</string>
+    <string name="incident_type_medical">Medisch</string>
 
     <string name="training_type_basis">Basis</string>
     <string name="training_type_repeat">Herhaling</string>
@@ -50,4 +49,39 @@
     <string name="error_empty_adminrights">Adminrights cannot be empty.</string>
     <string name="error_empty_erofunctions">No ERO functions selected. Are you sure you want to create this user without an ERO function?</string>
     <string name="error_empty_password">Password cannot be empty.</string>
+
+    <string name="yes">Ja</string>
+    <string name="no">Nee</string>
+    <string name="warning">Waarschuwing</string>
+    <string name="warning_logout">Weet u zeker dat u uit wil loggen?</string>
+    <string name="warning_exit_without_save">Weet u zeker dat u terug wil gaan zonder op te slaan?</string>
+
+    <string name="branch_name">Name</string>
+    <string name="branch_city">City</string>
+    <string name="branch_postal_code">Postal code</string>
+    <string name="branch_address">Address</string>
+    <string name="add_branch">Add branch</string>
+    <string name="title_activity_home_user">HomeUserActivity</string>
+    <string name="incident_description">Beschrijving</string>
+    <string name="incident_location">Locatie</string>
+
+    <string name="hint_equipment_name">Naam</string>
+    <string name="hint_equipment_description">Beschrijving</string>
+    <string name="hint_equipment_location">Locatie beschrijving</string>
+    <string name="hint_equipment_type">Soort apparaat</string>
+    <string name="hint_equipment_date_of_purchase">Aanschaffing\'s datum</string>
+    <string name="hint_equipment_expiration_date">Afschaffing\'s datum</string>
+    <string name="hint_equipment_date_of_inspection">Laatste inspectie datum</string>
+    <string name="hint_equipment_image">Afbeelding</string>
+    <string name="hint_equipment_branch">Selecteer vestiging</string>
+
+    <string name="title_activity_admin_equipment_add">Apparaat toevoegen</string>
+    <string name="title_activity_admin_equipment_edit">Apparaat wijzigen</string>
+    <string name="title_activity_admin_equipment_default">Apparaten Beheren</string>
+	<string name="title_activity_admin_user_add">Gebruiker toevoegen</string>
+    <string name="title_activity_admin_user_edit">Gebruiker wijzigen</string>
+    <string name="title_activity_admin_user_default">Gebruikers Beheren</string>
+
+	<string name="filter_apply_button">Apply filter</string>
+
 </resources>

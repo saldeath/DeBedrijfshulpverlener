@@ -10,6 +10,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,22 +19,87 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.parse.ParseUser;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private Toolbar toolbar;
-    private NavigationView drawer;
-    private DrawerLayout drawerLayout;
-    ActionBarDrawerToggle drawerToggle;
+//    private Toolbar toolbar;
+//    private NavigationView drawer;
+//    private DrawerLayout drawerLayout;
+//    ActionBarDrawerToggle drawerToggle;
+
+    private DrawerLayout fullView;
+    private ActionBarDrawerToggle drawerToggle;
+    private String currentActivityName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        initMenu();
+        currentActivityName = this.getClass().toString();
+        //setContentView(R.layout.activity_home);
+        //initMenu();
 
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        NavigationView drawer;
+
+        fullView = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_home, null);
+        RelativeLayout activityContainer = (RelativeLayout) fullView.findViewById(R.id.activity_content);
+        getLayoutInflater().inflate(layoutResID, activityContainer, true);
+        super.setContentView(fullView);
+        drawer = (NavigationView)findViewById(R.id.main_drawer);
+        drawer.setNavigationItemSelectedListener(this);
+
+        addAdminOptions(drawer.getMenu());
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerToggle = new ActionBarDrawerToggle(this,
+                fullView,
+                toolbar,
+                R.string.drawer_open,
+                R.string.drawer_close);
+
+
+        fullView.setDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+
+    }
+
+    private void addAdminOptions(Menu menu) {
+        MenuItem item;
+        menu.add(R.string.title_activity_admin_equipment_default);
+        item = menu.getItem(menu.size()-1);
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                fullView.closeDrawer(GravityCompat.START);
+                if (!currentActivityName.equals(AdminEquipmentDefaultActivity.class + "")) {
+                    Intent i = new Intent(HomeActivity.this, AdminEquipmentDefaultActivity.class);
+                    startActivity(i);
+                    return true;
+                }
+                return false;
+            }
+        });
+        menu.add(R.string.title_activity_admin_user_default);
+        item = menu.getItem(menu.size()-1);
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                fullView.closeDrawer(GravityCompat.START);
+                if(!currentActivityName.equals(AdminUserDefaultActivity.class + "")) {
+                    Intent i = new Intent(HomeActivity.this, AdminUserDefaultActivity.class);
+                    startActivity(i);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -50,8 +116,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
+        if(id == android.R.id.home) {
+            this.finish();
+            return true;
+        }
+
         if (id == R.id.action_settings) {
             return true;
         }
@@ -64,22 +134,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    private void initMenu() {
-        toolbar = (Toolbar)findViewById(R.id.app_bar);
-        setSupportActionBar(toolbar);
-
-        drawer = (NavigationView)findViewById(R.id.main_drawer);
-        drawer.setNavigationItemSelectedListener(this);
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        drawerToggle = new ActionBarDrawerToggle(this,
-                drawerLayout,
-                toolbar,
-                R.string.drawer_open,
-                R.string.drawer_close);
-
-        drawerLayout.setDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-    }
+//    private void initMenu() {
+//        toolbar = (Toolbar)findViewById(R.id.app_bar);
+//        setSupportActionBar(toolbar);
+//
+//        drawer = (NavigationView)findViewById(R.id.main_drawer);
+//        drawer.setNavigationItemSelectedListener(this);
+//        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+//        drawerToggle = new ActionBarDrawerToggle(this,
+//                drawerLayout,
+//                toolbar,
+//                R.string.drawer_open,
+//                R.string.drawer_close);
+//
+//        drawerLayout.setDrawerListener(drawerToggle);
+//        drawerToggle.syncState();
+//    }
 
 
     @Override
@@ -94,7 +164,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         switch (menuItem.getItemId()){
             case R.id.navigation_item_1:
-                drawerLayout.closeDrawer(GravityCompat.START);
+                fullView.closeDrawer(GravityCompat.START);
                 //intent down here
                 return true;
         }
@@ -104,16 +174,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void logoutButtonClicked() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Warning");
-        builder.setMessage("Are you sure?");
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.warning);
+        builder.setMessage(R.string.warning_logout);
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 ParseUser.logOut();
-                HomeActivity.this.finish();
                 dialog.dismiss();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -123,5 +195,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         alert.show();
     }
 
-
+    public void backButtonOnToolbar() {
+        ActionBar t = getSupportActionBar();
+        t.setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+    }
 }

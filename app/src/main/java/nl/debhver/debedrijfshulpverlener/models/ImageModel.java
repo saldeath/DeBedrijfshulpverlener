@@ -1,6 +1,7 @@
 package nl.debhver.debedrijfshulpverlener.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 /**
@@ -8,14 +9,24 @@ import com.parse.ParseObject;
  */
 @ParseClassName("image")
 public class ImageModel extends ParseObject{
-    public ImageModel() {
-        super();
+
+    public ParseFile getParseFile() {
+        return getParseFile("image");
     }
 
-    public byte[] getImage() {
-        return getBytes("image");
+    public void setParseFile(ParseFile parseFile) {
+
+        put("image", parseFile);
     }
-    public void setImage(byte[] image) {
-        put("image", image);
-    }
+
+    //    public ImageModel() {
+//        super();
+//    }
+//
+//    public byte[] getImage() {
+//        return getBytes("image");
+//    }
+//    public void setImage(ParseFile image) {
+//        put("image", image);
+//    }
 }

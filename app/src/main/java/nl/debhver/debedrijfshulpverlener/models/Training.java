@@ -2,6 +2,7 @@ package nl.debhver.debedrijfshulpverlener.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import nl.debhver.debedrijfshulpverlener.enums.TrainingType;
 
 /**
  * Created by Tim on 10/5/15.
@@ -24,11 +25,10 @@ public class Training extends ParseObject{
     public void setDescription(String description) {
         put("description", description);
     }
-    public String getType() {
-        return getString("type");
+    public TrainingType getType() {
+        return TrainingType.valueOf(getString("type"));
     }
-    public void setType(String type) {
-        put("type", type);
+    public void setType(TrainingType type) {
+        put("type", type.name());
     }
-
 }
