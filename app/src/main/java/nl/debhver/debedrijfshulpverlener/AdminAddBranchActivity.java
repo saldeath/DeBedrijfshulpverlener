@@ -2,11 +2,12 @@ package nl.debhver.debedrijfshulpverlener;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
 
-public class AdminAddBranchActivity extends AppCompatActivity {
+public class AdminAddBranchActivity extends HomeActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class AdminAddBranchActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
-    public void addBranch(){
+    public void addBranch(View view){
         if(checkFields()){
             Branch branch = new Branch();
             EditText tempField;

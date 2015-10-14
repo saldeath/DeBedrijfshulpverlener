@@ -60,6 +60,9 @@
             android:label="@string/title_activity_admin_equipment_default">
         </activity>
 
+        <activity android:name=".AdminBranchDefaultActivity" >
+        </activity>
+
         <service android:name="com.parse.PushService" />
         <receiver android:name="com.parse.ParsePushBroadcastReceiver"
             android:exported="false">
