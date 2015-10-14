@@ -1,6 +1,7 @@
 package nl.debhver.debedrijfshulpverlener.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import nl.debhver.debedrijfshulpverlener.enums.IncidentType;
 
