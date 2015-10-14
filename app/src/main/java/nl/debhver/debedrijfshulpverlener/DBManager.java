@@ -6,12 +6,16 @@ import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.parse.SendCallback;
 import com.parse.SignUpCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,18 +56,61 @@ public class DBManager {
 
     void pushIncident(final Incident i){
         ParsePush parsePush = new ParsePush();
-        parsePush.setMessage(i.getDescription() + " @ " + i.getLocation());
+        User user = (User) User.getCurrentUser();
+
+        try {
+            String channel = user.getBranch().fetchIfNeeded().toString();
+            JSONObject data = new JSONObject();
+            try{
+                data.put("alert", i.getDescription() + " @ " + i.getLocation());
+                if(i.getImage() != null){
+                    data.put("imageId", i.getImage().getObjectId());
+                }
+            } catch(JSONException ex) {
+                ex.printStackTrace();
+            }
+
+            parsePush.setData(data);
+            parsePush.setChannel(channel);
+
+        } catch (ParseException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
         parsePush.sendInBackground(new SendCallback() {
             @Override
             public void done(ParseException e) {
-                if(e == null){
+                if (e == null) {
                     Log.d("ParseSuccess", i.getDescription() + " @ " + i.getLocation());
-                }
-                else{
+                } else {
                     Log.d("ParseError", e.toString());
                 }
             }
         });
+
+    }
+
+    public void subscribeUserToBranch(){
+        User user = (User) User.getCurrentUser();
+        if(user != null){
+            try {
+                String branch = user.getBranch().fetchIfNeeded().toString();
+                ParsePush.subscribeInBackground(branch);
+            } catch (ParseException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        }
+
+    }
+
+    public void unsubscribeUserFromBranch(){
+        List<String> subscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
+
+        for(String channel : subscribedChannels){
+            ParsePush.unsubscribeInBackground(channel);
+        }
     }
 
     void createUser(User u, final AdminAddUserActivity adminAddUserActivity){
