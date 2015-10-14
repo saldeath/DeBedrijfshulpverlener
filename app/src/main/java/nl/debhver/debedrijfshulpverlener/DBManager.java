@@ -4,14 +4,20 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+<<<<<<< Updated upstream
 import com.parse.SendCallback;
+=======
+>>>>>>> Stashed changes
 import com.parse.SignUpCallback;
 
 import org.json.JSONException;
@@ -21,7 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.debhver.debedrijfshulpverlener.models.Branch;
+<<<<<<< Updated upstream
 import nl.debhver.debedrijfshulpverlener.models.Incident;
+=======
+import nl.debhver.debedrijfshulpverlener.models.Training;
+>>>>>>> Stashed changes
 import nl.debhver.debedrijfshulpverlener.models.User;
 
 /**
@@ -30,14 +40,16 @@ import nl.debhver.debedrijfshulpverlener.models.User;
 public class DBManager {
     private static DBManager instance = null;
 
-    public static DBManager getInstance(){
-        if(instance == null){
+    public static DBManager getInstance() {
+        if (instance == null) {
             instance = new DBManager();
             //createFakeBranches();
+            //createFakeTraining();
         }
         return instance;
     }
 
+<<<<<<< Updated upstream
     void createIncident(Incident i, final HomeUserActivity homeUserActivity){
         i.saveInBackground(new SaveCallback() {
             @Override
@@ -104,6 +116,13 @@ public class DBManager {
         }
 
     }
+=======
+    static void createFakeBranchesAndAdminRights() {
+        Branch b = new Branch();
+        Branch c = new Branch();
+        b.setName("coolName");
+        c.setName("secondBranchName");
+>>>>>>> Stashed changes
 
     public void unsubscribeUserFromBranch(){
         List<String> subscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
@@ -113,7 +132,16 @@ public class DBManager {
         }
     }
 
-    void createUser(User u, final AdminAddUserActivity adminAddUserActivity){
+    void createFakeTraining() {
+        Training tss = new Training();
+        tss.setName("Jaarlijkese Ehbo");
+        tss.setDescription("Ehbo leuk man");
+        tss.setType("EHBO ");
+        tss.saveInBackground();
+
+    }
+
+    void createUser(User u, final AdminAddUserActivity adminAddUserActivity) {
         u.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
@@ -122,12 +150,17 @@ public class DBManager {
                     adminAddUserActivity.clearFieldsAfterAddingUser();
                 } else {
                     Log.d("ParseError", e.toString());
+<<<<<<< Updated upstream
                     doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
+=======
+                    adminAddUserActivity.popupShortToastMessage("ERROR: User was not saved to database.");
+>>>>>>> Stashed changes
                 }
             }
         });
     }
 
+<<<<<<< Updated upstream
     void updateUser(User u, final AdminAddUserActivity adminAddUserActivity){
         u.saveInBackground(new SaveCallback() {
             @Override
@@ -143,6 +176,9 @@ public class DBManager {
     }
 
     public List<ParseObject> getBranches() {
+=======
+    void getBranchNames(final AdminAddUserActivity adminAddUserActivity) {
+>>>>>>> Stashed changes
         ParseQuery<ParseObject> query = ParseQuery.getQuery("branch");
         List<ParseObject> list = null;
         try {
@@ -164,12 +200,17 @@ public class DBManager {
                     adminAddBranchActivity.clearFieldsAfterAddingBranch();
                 } else {
                     Log.d("ParseError", e.toString());
+<<<<<<< Updated upstream
                     doToastMessageInView(adminAddBranchActivity, "ERROR: Branch was not saved to database.");
+=======
+                    adminAddUserActivity.popupShortToastMessage("ERROR: Nothing was retrieved from database.");
+>>>>>>> Stashed changes
                 }
             }
         });
     }
 
+<<<<<<< Updated upstream
     void getUsers(final AdminUserDefaultActivity adminDefaultActivity){
         ParseQuery<User> query = ParseQuery.getQuery(User.class);
         query.findInBackground(new FindCallback<User>() {
@@ -180,13 +221,87 @@ public class DBManager {
                 } else {
                     Log.d("ParseError", e.toString());
                     doToastMessageInView(adminDefaultActivity, "ERROR: Failed to retrieve users.");
+=======
+    //Training
+
+    void createTraining(Training training, final TrainingAddActivity trainingAddActivity) {
+        training.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    trainingAddActivity.popupShortToastMessage("Saved Succesfully");
+                    trainingAddActivity.finish();
+                } else {
+                    trainingAddActivity.popupShortToastMessage("Unable to save");
+>>>>>>> Stashed changes
+                }
+            }
+        });
+    }
+<<<<<<< Updated upstream
+
+    void doToastMessageInView(Context context, String msg){
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+=======
+
+    void updateTraining(Training training, final TrainingAddActivity trainingAddActivity)
+    {
+        training.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    trainingAddActivity.popupShortToastMessage("Updated Succesfully");
+                    trainingAddActivity.finish();
+                } else {
+                    trainingAddActivity.popupShortToastMessage("Unable to save");
                 }
             }
         });
     }
 
-    void doToastMessageInView(Context context, String msg){
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    void deleteTraining(Training oldTraining, final TrainingAddActivity trainingAddActivity) {
+        oldTraining.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    trainingAddActivity.popupShortToastMessage("Deleted Succesfully");
+                    trainingAddActivity.finish();
+
+                } else {
+                    trainingAddActivity.popupShortToastMessage("Unable to Delete");
+                }
+            }
+        });
+    }
+
+
+    void getAllTraining(final TrainingActivity trainingActivity) {
+        ParseQuery<Training> query = ParseQuery.getQuery("training");
+        query.findInBackground(new FindCallback<Training>() {
+            public void done(List<Training> objects, ParseException e) {
+                if (e == null) {
+                    trainingActivity.populateTrainingList(objects);
+                } else {
+                    Log.d("ParseError", e.toString());
+                    trainingActivity.popupShortToastMessage("ERROR: Nothing was retrieved from database.");
+                }
+            }
+        });
+    }
+
+    void getTrainingbyID(final TrainingAddActivity trainingAddActivity, String trainingObjectId) {
+        ParseQuery<Training> query = ParseQuery.getQuery("training");
+        query.getInBackground(trainingObjectId, new GetCallback<Training>() {
+            @Override
+            public void done(Training object, com.parse.ParseException e) {
+                if (e == null) {
+                    trainingAddActivity.loadSingleTraining(object);
+                } else {
+                    // something went wrong
+                }
+            }
+        });
+>>>>>>> Stashed changes
     }
 
     void getSingleUserById(final AdminAddUserActivity adminAddUserActivity, String userObjId){
