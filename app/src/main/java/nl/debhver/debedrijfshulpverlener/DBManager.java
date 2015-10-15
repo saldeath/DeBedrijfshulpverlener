@@ -4,33 +4,34 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+<<<<<<< HEAD
 
 import com.parse.SendCallback;
 
+=======
+import com.parse.SendCallback;
+>>>>>>> origin/master
 import com.parse.SignUpCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import nl.debhver.debedrijfshulpverlener.models.Branch;
+<<<<<<< HEAD
 
 import nl.debhver.debedrijfshulpverlener.models.Incident;
 
 import nl.debhver.debedrijfshulpverlener.models.Training;
 
+=======
+import nl.debhver.debedrijfshulpverlener.models.Incident;
+>>>>>>> origin/master
 import nl.debhver.debedrijfshulpverlener.models.User;
 
 /**
@@ -39,16 +40,18 @@ import nl.debhver.debedrijfshulpverlener.models.User;
 public class DBManager {
     private static DBManager instance = null;
 
-    public static DBManager getInstance() {
-        if (instance == null) {
+    public static DBManager getInstance(){
+        if(instance == null){
             instance = new DBManager();
             //createFakeBranches();
-            //createFakeTraining();
         }
         return instance;
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
     void createIncident(Incident i, final HomeUserActivity homeUserActivity){
         i.saveInBackground(new SaveCallback() {
             @Override
@@ -67,41 +70,21 @@ public class DBManager {
 
     void pushIncident(final Incident i){
         ParsePush parsePush = new ParsePush();
-        User user = (User) User.getCurrentUser();
-
-        try {
-            String channel = user.getBranch().fetchIfNeeded().toString();
-            JSONObject data = new JSONObject();
-            try{
-                data.put("alert", i.getDescription() + " @ " + i.getLocation());
-                if(i.getImage() != null){
-                    data.put("imageId", i.getImage().getObjectId());
-                }
-            } catch(JSONException ex) {
-                ex.printStackTrace();
-            }
-
-            parsePush.setData(data);
-            parsePush.setChannel(channel);
-
-        } catch (ParseException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-
+        parsePush.setMessage(i.getDescription() + " @ " + i.getLocation());
         parsePush.sendInBackground(new SendCallback() {
             @Override
             public void done(ParseException e) {
-                if (e == null) {
+                if(e == null){
                     Log.d("ParseSuccess", i.getDescription() + " @ " + i.getLocation());
-                } else {
+                }
+                else{
                     Log.d("ParseError", e.toString());
                 }
             }
         });
-
     }
 
+<<<<<<< HEAD
     public void subscribeUserToBranch(){
         User user = (User) User.getCurrentUser();
         if(user != null){
@@ -141,6 +124,9 @@ public class DBManager {
     }
 
     void createUser(User u, final AdminAddUserActivity adminAddUserActivity) {
+=======
+    void createUser(User u, final AdminAddUserActivity adminAddUserActivity){
+>>>>>>> origin/master
         u.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
@@ -149,17 +135,24 @@ public class DBManager {
                     adminAddUserActivity.clearFieldsAfterAddingUser();
                 } else {
                     Log.d("ParseError", e.toString());
+<<<<<<< HEAD
 
                     doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
 
                     adminAddUserActivity.popupShortToastMessage("ERROR: User was not saved to database.");
 
+=======
+                    doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
+>>>>>>> origin/master
                 }
             }
         });
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
     void updateUser(User u, final AdminAddUserActivity adminAddUserActivity){
         u.saveInBackground(new SaveCallback() {
             @Override
@@ -174,6 +167,7 @@ public class DBManager {
         });
     }
 
+<<<<<<< HEAD
     void getBranches(final AdminBranchDefaultActivity adminBranchDefaultActivity){
         ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
         query.findInBackground(new FindCallback<Branch>() {
@@ -191,6 +185,9 @@ public class DBManager {
 
     void getBranchNames(final AdminAddUserActivity adminAddUserActivity) {
 
+=======
+    public List<ParseObject> getBranches() {
+>>>>>>> origin/master
         ParseQuery<ParseObject> query = ParseQuery.getQuery("branch");
         List<ParseObject> list = null;
         try {
@@ -212,16 +209,23 @@ public class DBManager {
                     adminAddBranchActivity.clearFieldsAfterAddingBranch();
                 } else {
                     Log.d("ParseError", e.toString());
+<<<<<<< HEAD
 
                     doToastMessageInView(adminAddBranchActivity, "ERROR: Branch was not saved to database.");
 
 
+=======
+                    doToastMessageInView(adminAddBranchActivity, "ERROR: Branch was not saved to database.");
+>>>>>>> origin/master
                 }
             }
         });
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
     void getUsers(final AdminUserDefaultActivity adminDefaultActivity){
         ParseQuery<User> query = ParseQuery.getQuery(User.class);
         query.findInBackground(new FindCallback<User>() {
@@ -232,6 +236,7 @@ public class DBManager {
                 } else {
                     Log.d("ParseError", e.toString());
                     doToastMessageInView(adminDefaultActivity, "ERROR: Failed to retrieve users.");
+<<<<<<< HEAD
                 }
             }
 
@@ -248,10 +253,13 @@ public class DBManager {
                 } else {
                     trainingAddActivity.popupShortToastMessage("Unable to save");
 
+=======
+>>>>>>> origin/master
                 }
             }
         });
     }
+<<<<<<< HEAD
 
 
     void doToastMessageInView(Context context, String msg){
@@ -315,6 +323,11 @@ public class DBManager {
                 }
             }
         });
+=======
+
+    void doToastMessageInView(Context context, String msg){
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+>>>>>>> origin/master
     }
 
     void getSingleUserById(final AdminAddUserActivity adminAddUserActivity, String userObjId){
