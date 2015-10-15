@@ -62,7 +62,6 @@ public class DBManager {
         Log.d("pushIncident", "starting push incident");
         ParsePush parsePush = new ParsePush();
         User user = (User) User.getCurrentUser();
-
         try {
             Log.d("pushIncident", "try1");
             String channel = user.getBranch().fetchIfNeeded().toString();
@@ -113,10 +112,16 @@ public class DBManager {
     }
 
     public void unsubscribeUserFromBranch() {
-        List<String> subscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
-
-        for(String channel : subscribedChannels){
-            ParsePush.unsubscribeInBackground(channel);
+        ParseInstallation parseInstallation = ParseInstallation.getCurrentInstallation();
+        if(parseInstallation != null){
+            List<String> subscribedChannels = parseInstallation.getList("channels");
+            if(subscribedChannels!=null){
+                if(!subscribedChannels.isEmpty()){
+                    for(String channel : subscribedChannels){
+                        ParsePush.unsubscribeInBackground(channel);
+                    }
+                }
+            }
         }
     }
 
