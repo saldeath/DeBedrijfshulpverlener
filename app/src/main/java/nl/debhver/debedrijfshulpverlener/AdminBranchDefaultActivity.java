@@ -71,7 +71,7 @@ public class AdminBranchDefaultActivity extends HomeActivity {
     }
 
     public void retrieveBranches(){
-        DBManager.getInstance().getBranches(this);
+        DBManager.getInstance().getBranchesOld(this);
     }
 
     public void setBranchList(List<Branch> branchListFromDatabase){ // new listreset the ListView

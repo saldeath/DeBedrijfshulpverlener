@@ -279,4 +279,18 @@ public class DBManager {
         });
     }
 
+    void getBranchesOld(final AdminBranchDefaultActivity adminBranchDefaultActivity){
+        ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
+        query.findInBackground(new FindCallback<Branch>() {
+            public void done(List<Branch> objects, ParseException e) {
+                if (e == null) {
+                    adminBranchDefaultActivity.setBranchList(objects);
+                    adminBranchDefaultActivity.prepareListData(objects);
+                } else {
+                    Log.d("ParseError", e.toString());
+                    doToastMessageInView(adminBranchDefaultActivity, "ERROR: Failed to retrieve users.");
+                }
+            }
+        });
+    }
 }
