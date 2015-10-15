@@ -20,8 +20,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.parse.ParseUser;
+
+import nl.debhver.debedrijfshulpverlener.models.User;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -33,6 +36,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout fullView;
     private ActionBarDrawerToggle drawerToggle;
     private String currentActivityName = "";
+    private TextView currentUser;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +45,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         currentActivityName = this.getClass().toString();
         //setContentView(R.layout.activity_home);
         //initMenu();
-
+        //setValuesHeader();
     }
+
+//    private void setValuesHeader() {
+//        user = (User) User.getCurrentUser();
+//        currentUser = (TextView)findViewById(R.id.app_header_name);
+//        currentUser.setText(user.getName().toString());
+//
+//    }
 
     @Override
     public void setContentView(int layoutResID) {

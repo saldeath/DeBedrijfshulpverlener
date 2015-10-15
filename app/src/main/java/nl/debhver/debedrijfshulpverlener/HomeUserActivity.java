@@ -49,9 +49,9 @@ public class HomeUserActivity extends HomeActivity {
     private User user = (User) User.getCurrentUser();
     private Calendar c = Calendar.getInstance();
     private static final int TAKE_FOTO_REQUEST = 0;
-    private Bitmap equipmentImage;
-    private byte[] scaledImageByte;
-    private ImageModel model;
+    //private Bitmap equipmentImage;
+    //pivate byte[] scaledImageByte;
+    private ImageModel model = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,14 +91,17 @@ public class HomeUserActivity extends HomeActivity {
                         incident.setType(incidentTypes[id]);
                         incident.setTime(getDate());
                         //incident.setImage(scaledImageByte);
-                        incident.setImage(model);
+                        if(model != null){
+                            incident.setImage(model);
+                            model=null;
+                        }
 
                         DBManager.getInstance().createIncident(incident, HomeUserActivity.this);
 
                     }
                 });
 
-                alertDialog.setNegativeButton("Cancel", null);
+                alertDialog.setNegativeButton("Annuleren", null);
                 alertDialog.setTitle("Incident Melden");
                 Dialog dialog = alertDialog.create();
                 dialog.show();
@@ -151,23 +154,12 @@ public class HomeUserActivity extends HomeActivity {
             byte[] scaledData = bos.toByteArray();
             Incident incident = new Incident();
 
-
-
             // Save the scaled image to Parse
             ParseFile photoFile = new ParseFile("incident.jpg", scaledData);
             model = new ImageModel();
             model.setParseFile(photoFile);
             incident.setImage(model);
 
-
-
-
-
-            Toast.makeText(this, "camera captured", Toast.LENGTH_LONG).show();
-
-
-        }else{
-            Toast.makeText(this, "nothing captured", Toast.LENGTH_LONG).show();
         }
     }
 }
