@@ -6,40 +6,22 @@ import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
-<<<<<<< HEAD
-<<<<<<< HEAD
-
 import com.parse.SendCallback;
-
-=======
-import com.parse.SendCallback;
->>>>>>> origin/master
-=======
-import com.parse.SendCallback;
->>>>>>> parent of 4f9d065... Trainingadd
 import com.parse.SignUpCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import nl.debhver.debedrijfshulpverlener.models.Branch;
-<<<<<<< HEAD
-<<<<<<< HEAD
-
 import nl.debhver.debedrijfshulpverlener.models.Incident;
-
-import nl.debhver.debedrijfshulpverlener.models.Training;
-
-=======
-import nl.debhver.debedrijfshulpverlener.models.Incident;
->>>>>>> origin/master
-=======
-import nl.debhver.debedrijfshulpverlener.models.Incident;
->>>>>>> parent of 4f9d065... Trainingadd
 import nl.debhver.debedrijfshulpverlener.models.User;
 
 /**
@@ -56,13 +38,6 @@ public class DBManager {
         return instance;
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
-=======
->>>>>>> parent of 4f9d065... Trainingadd
     void createIncident(Incident i, final HomeUserActivity homeUserActivity){
         i.saveInBackground(new SaveCallback() {
             @Override
@@ -81,21 +56,41 @@ public class DBManager {
 
     void pushIncident(final Incident i){
         ParsePush parsePush = new ParsePush();
-        parsePush.setMessage(i.getDescription() + " @ " + i.getLocation());
+        User user = (User) User.getCurrentUser();
+
+        try {
+            String channel = user.getBranch().fetchIfNeeded().toString();
+            JSONObject data = new JSONObject();
+            try{
+                data.put("alert", i.getDescription() + " @ " + i.getLocation());
+                if(i.getImage() != null){
+                    data.put("imageId", i.getImage().getObjectId());
+                }
+            } catch(JSONException ex) {
+                ex.printStackTrace();
+            }
+
+            parsePush.setData(data);
+            parsePush.setChannel(channel);
+
+        } catch (ParseException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
         parsePush.sendInBackground(new SendCallback() {
             @Override
             public void done(ParseException e) {
-                if(e == null){
+                if (e == null) {
                     Log.d("ParseSuccess", i.getDescription() + " @ " + i.getLocation());
-                }
-                else{
+                } else {
                     Log.d("ParseError", e.toString());
                 }
             }
         });
+
     }
 
-<<<<<<< HEAD
     public void subscribeUserToBranch(){
         User user = (User) User.getCurrentUser();
         if(user != null){
@@ -109,18 +104,8 @@ public class DBManager {
         }
 
     }
-<<<<<<< HEAD
 
-    static void createFakeBranchesAndAdminRights() {
-        Branch b = new Branch();
-        Branch c = new Branch();
-        b.setName("coolName");
-        c.setName("secondBranchName");
-    }
-=======
->>>>>>> parent of 4f9d065... Trainingadd
-
-    public void unsubscribeUserFromBranch(){
+    public void unsubscribeUserFromBranch() {
         List<String> subscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
 
         for(String channel : subscribedChannels){
@@ -128,23 +113,7 @@ public class DBManager {
         }
     }
 
-<<<<<<< HEAD
-    void createFakeTraining() {
-        Training tss = new Training();
-        tss.setName("Jaarlijkese Ehbo");
-        tss.setDescription("Ehbo leuk man");
-        tss.setType("EHBO ");
-        tss.saveInBackground();
-
-    }
-
     void createUser(User u, final AdminAddUserActivity adminAddUserActivity) {
-=======
-    void createUser(User u, final AdminAddUserActivity adminAddUserActivity){
->>>>>>> origin/master
-=======
-    void createUser(User u, final AdminAddUserActivity adminAddUserActivity){
->>>>>>> parent of 4f9d065... Trainingadd
         u.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
@@ -153,31 +122,12 @@ public class DBManager {
                     adminAddUserActivity.clearFieldsAfterAddingUser();
                 } else {
                     Log.d("ParseError", e.toString());
-<<<<<<< HEAD
-<<<<<<< HEAD
-
                     doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
-
-                    adminAddUserActivity.popupShortToastMessage("ERROR: User was not saved to database.");
-
-=======
-                    doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
->>>>>>> origin/master
-=======
-                    doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
->>>>>>> parent of 4f9d065... Trainingadd
                 }
             }
         });
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
-=======
->>>>>>> parent of 4f9d065... Trainingadd
     void updateUser(User u, final AdminAddUserActivity adminAddUserActivity){
         u.saveInBackground(new SaveCallback() {
             @Override
@@ -192,31 +142,7 @@ public class DBManager {
         });
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    void getBranches(final AdminBranchDefaultActivity adminBranchDefaultActivity){
-        ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
-        query.findInBackground(new FindCallback<Branch>() {
-            public void done(List<Branch> objects, ParseException e) {
-                if (e == null) {
-                    adminBranchDefaultActivity.setBranchList(objects);
-                    adminBranchDefaultActivity.prepareListData(objects);
-                } else {
-                    Log.d("ParseError", e.toString());
-                    doToastMessageInView(adminBranchDefaultActivity, "ERROR: Failed to retrieve users.");
-                }
-            }
-        });
-    }
-
-    void getBranchNames(final AdminAddUserActivity adminAddUserActivity) {
-
-=======
     public List<ParseObject> getBranches() {
->>>>>>> origin/master
-=======
-    public List<ParseObject> getBranches() {
->>>>>>> parent of 4f9d065... Trainingadd
         ParseQuery<ParseObject> query = ParseQuery.getQuery("branch");
         List<ParseObject> list = null;
         try {
@@ -238,30 +164,12 @@ public class DBManager {
                     adminAddBranchActivity.clearFieldsAfterAddingBranch();
                 } else {
                     Log.d("ParseError", e.toString());
-<<<<<<< HEAD
-<<<<<<< HEAD
-
                     doToastMessageInView(adminAddBranchActivity, "ERROR: Branch was not saved to database.");
-
-
-=======
-                    doToastMessageInView(adminAddBranchActivity, "ERROR: Branch was not saved to database.");
->>>>>>> origin/master
-=======
-                    doToastMessageInView(adminAddBranchActivity, "ERROR: Branch was not saved to database.");
->>>>>>> parent of 4f9d065... Trainingadd
                 }
             }
         });
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
-=======
->>>>>>> parent of 4f9d065... Trainingadd
     void getUsers(final AdminUserDefaultActivity adminDefaultActivity){
         ParseQuery<User> query = ParseQuery.getQuery(User.class);
         query.findInBackground(new FindCallback<User>() {
@@ -272,107 +180,13 @@ public class DBManager {
                 } else {
                     Log.d("ParseError", e.toString());
                     doToastMessageInView(adminDefaultActivity, "ERROR: Failed to retrieve users.");
-<<<<<<< HEAD
-<<<<<<< HEAD
-                }
-            }
-
-        });
-    }
-
-    void createTraining(Training training, final TrainingAddActivity trainingAddActivity) {
-        training.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    trainingAddActivity.popupShortToastMessage("Saved Succesfully");
-                    trainingAddActivity.finish();
-                } else {
-                    trainingAddActivity.popupShortToastMessage("Unable to save");
-
-=======
->>>>>>> origin/master
-=======
->>>>>>> parent of 4f9d065... Trainingadd
                 }
             }
         });
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-
 
     void doToastMessageInView(Context context, String msg){
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-
-
-    void updateTraining(Training training, final TrainingAddActivity trainingAddActivity)
-    {
-        training.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    trainingAddActivity.popupShortToastMessage("Updated Succesfully");
-                    trainingAddActivity.finish();
-                } else {
-                    trainingAddActivity.popupShortToastMessage("Unable to save");
-                }
-            }
-        });
-    }
-
-    void deleteTraining(Training oldTraining, final TrainingAddActivity trainingAddActivity) {
-        oldTraining.deleteInBackground(new DeleteCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    trainingAddActivity.popupShortToastMessage("Deleted Succesfully");
-                    trainingAddActivity.finish();
-
-                } else {
-                    trainingAddActivity.popupShortToastMessage("Unable to Delete");
-                }
-            }
-        });
-    }
-
-
-    void getAllTraining(final TrainingActivity trainingActivity) {
-        ParseQuery<Training> query = ParseQuery.getQuery("training");
-        query.findInBackground(new FindCallback<Training>() {
-            public void done(List<Training> objects, ParseException e) {
-                if (e == null) {
-                    trainingActivity.populateTrainingList(objects);
-                } else {
-                    Log.d("ParseError", e.toString());
-                    trainingActivity.popupShortToastMessage("ERROR: Nothing was retrieved from database.");
-                }
-            }
-        });
-    }
-
-    void getTrainingbyID(final TrainingAddActivity trainingAddActivity, String trainingObjectId) {
-        ParseQuery<Training> query = ParseQuery.getQuery("training");
-        query.getInBackground(trainingObjectId, new GetCallback<Training>() {
-            @Override
-            public void done(Training object, com.parse.ParseException e) {
-                if (e == null) {
-                    trainingAddActivity.loadSingleTraining(object);
-                } else {
-                    // something went wrong
-                }
-            }
-        });
-=======
-
-    void doToastMessageInView(Context context, String msg){
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
->>>>>>> origin/master
-=======
-
-    void doToastMessageInView(Context context, String msg){
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
->>>>>>> parent of 4f9d065... Trainingadd
     }
 
     void getSingleUserById(final AdminAddUserActivity adminAddUserActivity, String userObjId){
@@ -448,6 +262,8 @@ public class DBManager {
             }
         });
     }
+
+
 
     void getSingleBranchById(final AdminAddBranchActivity adminAddBranchActivity, String branchObjId){
         ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
