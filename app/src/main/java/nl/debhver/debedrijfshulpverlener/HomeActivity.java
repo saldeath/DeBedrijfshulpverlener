@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import nl.debhver.debedrijfshulpverlener.models.User;
@@ -36,7 +37,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout fullView;
     private ActionBarDrawerToggle drawerToggle;
     private String currentActivityName = "";
-    private TextView currentUser;
+    private TextView currentUser, currentBranch;
     private User user;
 
     @Override
@@ -45,15 +46,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         currentActivityName = this.getClass().toString();
         //setContentView(R.layout.activity_home);
         //initMenu();
-        //setValuesHeader();
+
     }
 
-//    private void setValuesHeader() {
-//        user = (User) User.getCurrentUser();
-//        currentUser = (TextView)findViewById(R.id.app_header_name);
-//        currentUser.setText(user.getName().toString());
-//
-//    }
+    private void setValuesHeader() throws ParseException {
+        user = (User) User.getCurrentUser();
+        currentUser = (TextView)findViewById(R.id.app_header_name);
+        currentBranch = (TextView)findViewById(R.id.app_header_branch);
+
+        currentUser.setText(user.getName());
+        currentBranch.setText(user.getBranch().fetchIfNeeded().getString("name"));
+
+    }
 
     @Override
     public void setContentView(int layoutResID) {
@@ -80,6 +84,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         fullView.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
+        try {
+            setValuesHeader();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addAdminOptions(Menu menu) {

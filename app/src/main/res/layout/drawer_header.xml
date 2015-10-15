@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="256dp"
     xmlns:style="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/header"
     android:padding="16dp">
 
     <TextView
@@ -12,13 +12,15 @@
         android:text="Name here"
         android:id="@+id/app_header_name"
         android:layout_gravity="bottom"
-        android:textSize="50sp" />
+        android:textSize="50sp"
+        android:textColor="@android:color/white"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Branch"
-        android:id="@+id/textView5"
+        android:id="@+id/app_header_branch"
         android:layout_gravity="right|top"
-        android:textSize="30sp"/>
+        android:textSize="30sp"
+        android:textColor="@android:color/white"/>
 </FrameLayout>
