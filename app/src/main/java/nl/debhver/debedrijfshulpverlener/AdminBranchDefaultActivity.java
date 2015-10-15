@@ -114,7 +114,7 @@ public class AdminBranchDefaultActivity extends HomeActivity {
 //
 //    }
 
-    public void prepareListData(List<Branch> branchListPara) {
+    public void prepareListData(final List<Branch> branchListPara) {
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
 
@@ -126,7 +126,7 @@ public class AdminBranchDefaultActivity extends HomeActivity {
         options.add("Verwijderen");
         // Adding header/child data
         int i = 0;
-        for(Branch b: branchListPara){
+        for (Branch b : branchListPara) {
             listDataHeader.add(i, b.toString());
             listDataChild.put(listDataHeader.get(i), options); // Header, Child data
             i++;
@@ -136,10 +136,21 @@ public class AdminBranchDefaultActivity extends HomeActivity {
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
-
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                if(childPosition == 0){
+                    Intent intent = new Intent(AdminBranchDefaultActivity.this, AdminAddBranchActivity.class);
+                    intent.putExtra(BRANCH_EXTRA, branchListPara.get(groupPosition).getObjectId());
+                    AdminBranchDefaultActivity.this.startActivity(intent);
+                }
+                return true;
+            }
+        });
     }
 
-    // code by http://stackoverflow.com/users/1705598/icza
+                // code by http://stackoverflow.com/users/1705598/icza
+
     public static boolean containsIgnoreCase(String src, String what) {
         final int length = what.length();
         if (length == 0)

@@ -3,16 +3,35 @@ package nl.debhver.debedrijfshulpverlener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.List;
+
+import nl.debhver.debedrijfshulpverlener.enums.UserRight;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
+import nl.debhver.debedrijfshulpverlener.models.User;
 
 public class AdminAddBranchActivity extends HomeActivity {
+    private Branch selectedBranch = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_branch);
+
+        String branchObjId = getIntent().getStringExtra(AdminBranchDefaultActivity.BRANCH_EXTRA);
+        if(branchObjId != null){ // user was added in intent
+            findViewById(R.id.inputPassword).setVisibility(View.GONE); // admin cannot change password
+            Button button = (Button)findViewById(R.id.addUserButton);
+            button.setText(R.string.update_user);
+            DBManager.getInstance().getSingleBranchById(this, branchObjId);
+            //
+        }
+        else{
+            System.out.println("NO EXTRA");
+        }
     }
 
     public boolean checkFields(){
@@ -83,4 +102,18 @@ public class AdminAddBranchActivity extends HomeActivity {
         tempField = (EditText) findViewById(R.id.inputAddress);
         tempField.setText("");
     }
+
+    public void loadSingleBranchDetails(List<Branch> branches) {
+        if(branches.size()==1){
+            EditText editText;
+            selectedBranch = branches.get(0);
+            editText = (EditText)findViewById(R.id.inputName);
+            editText.setText(selectedBranch.getName());
+            editText = (EditText)findViewById(R.id.inputCity);
+            editText.setText(selectedBranch.getCity());
+            editText = (EditText)findViewById(R.id.inputPostalCode);
+            editText.setText(selectedBranch.getZipCode());
+            editText = (EditText)findViewById(R.id.inputAddress);
+            editText.setText(selectedBranch.getAddress());
+        }}
 }
