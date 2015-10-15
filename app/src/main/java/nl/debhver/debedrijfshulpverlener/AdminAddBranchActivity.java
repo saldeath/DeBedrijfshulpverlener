@@ -23,9 +23,8 @@ public class AdminAddBranchActivity extends HomeActivity {
 
         String branchObjId = getIntent().getStringExtra(AdminBranchDefaultActivity.BRANCH_EXTRA);
         if(branchObjId != null){ // user was added in intent
-            findViewById(R.id.inputPassword).setVisibility(View.GONE); // admin cannot change password
-            Button button = (Button)findViewById(R.id.addUserButton);
-            button.setText(R.string.update_user);
+            Button button = (Button)findViewById(R.id.buttonAddBranch);
+            button.setText(R.string.update_branch);
             DBManager.getInstance().getSingleBranchById(this, branchObjId);
             //
         }
@@ -72,22 +71,28 @@ public class AdminAddBranchActivity extends HomeActivity {
 
     public void addBranch(View view){
         if(checkFields()){
-            Branch branch = new Branch();
+
+            if(selectedBranch == null) {
+                selectedBranch = new Branch();
+            }
+
             EditText tempField;
 
             tempField = (EditText)findViewById(R.id.inputName);
-            branch.setName(tempField.getText().toString());
+            selectedBranch.setName(tempField.getText().toString());
 
             tempField = (EditText)findViewById(R.id.inputCity);
-            branch.setCity(tempField.getText().toString());
+            selectedBranch.setCity(tempField.getText().toString());
 
             tempField = (EditText)findViewById(R.id.inputPostalCode);
-            branch.setZipCode(tempField.getText().toString());
+            selectedBranch.setZipCode(tempField.getText().toString());
 
             tempField = (EditText)findViewById(R.id.inputAddress);
-            branch.setAddress(tempField.getText().toString());
+            selectedBranch.setAddress(tempField.getText().toString());
 
-            DBManager.getInstance().createBranch(branch, this);
+            DBManager.getInstance().createBranch(selectedBranch, this);
+
+            finish();
         }
     }
 
@@ -104,6 +109,8 @@ public class AdminAddBranchActivity extends HomeActivity {
     }
 
     public void loadSingleBranchDetails(List<Branch> branches) {
+
+
         if(branches.size()==1){
             EditText editText;
             selectedBranch = branches.get(0);

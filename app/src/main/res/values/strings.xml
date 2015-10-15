@@ -83,5 +83,7 @@
     <string name="title_activity_admin_user_default">Gebruikers Beheren</string>
 
 	<string name="filter_apply_button">Apply filter</string>
+    <string name="title_activity_admin_branch_default">Afdelingen beheren</string>
+    <string name="update_branch">Update branch</string>
 
 </resources>

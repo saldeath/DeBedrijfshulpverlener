@@ -263,22 +263,6 @@ public class DBManager {
         });
     }
 
-
-
-    void getSingleBranchById(final AdminAddBranchActivity adminAddBranchActivity, String branchObjId){
-        ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
-        query.whereEqualTo("objectId",branchObjId);
-        query.findInBackground(new FindCallback<Branch>() {
-            public void done(List<Branch> objects, ParseException e) {
-                if (e == null) {
-                    adminAddBranchActivity.loadSingleBranchDetails(objects);
-                } else {
-                    // error
-                }
-            }
-        });
-    }
-
     void getBranchesOld(final AdminBranchDefaultActivity adminBranchDefaultActivity){
         ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
         query.findInBackground(new FindCallback<Branch>() {
@@ -289,6 +273,20 @@ public class DBManager {
                 } else {
                     Log.d("ParseError", e.toString());
                     doToastMessageInView(adminBranchDefaultActivity, "ERROR: Failed to retrieve users.");
+                }
+            }
+        });
+    }
+
+    void getSingleBranchById(final AdminAddBranchActivity adminAddBranchActivity, String branchObjId){
+        ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
+        query.whereEqualTo("objectId",branchObjId);
+        query.findInBackground(new FindCallback<Branch>() {
+            public void done(List<Branch> objects, ParseException e) {
+                if (e == null) {
+                    adminAddBranchActivity.loadSingleBranchDetails(objects);
+                } else {
+                    // error
                 }
             }
         });

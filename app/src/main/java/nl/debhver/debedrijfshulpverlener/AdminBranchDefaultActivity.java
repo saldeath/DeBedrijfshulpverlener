@@ -14,6 +14,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
+
+import com.parse.DeleteCallback;
+import com.parse.ParseException;
+import com.parse.SaveCallback;
 
 import nl.debhver.debedrijfshulpverlener.models.Branch;
 
@@ -93,26 +98,9 @@ public class AdminBranchDefaultActivity extends HomeActivity {
 
         }
         tempBranchList.removeAll(toRemove);
-        //populateListView(tempBranchList);
+        prepareListData(tempBranchList);
 
     }
-
-//    public void populateListView(List<Branch> branchListPara) {
-//        final ListView branchListView = (ListView) findViewById(R.id.branchListView);
-//        ArrayAdapter<Branch> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, branchListPara);
-//        branchListView.setAdapter(adapter);
-//        branchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View view,
-//                                    int position, long id) {
-//                Branch branch = (Branch) branchListView.getItemAtPosition(position);
-//                Intent intent = new Intent(AdminBranchDefaultActivity.this, AdminAddBranchActivity.class);
-//                intent.putExtra(BRANCH_EXTRA, branch.getObjectId());
-//                AdminBranchDefaultActivity.this.startActivity(intent);
-//
-//            }
-//        });
-//
-//    }
 
     public void prepareListData(final List<Branch> branchListPara) {
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -144,11 +132,23 @@ public class AdminBranchDefaultActivity extends HomeActivity {
                     intent.putExtra(BRANCH_EXTRA, branchListPara.get(groupPosition).getObjectId());
                     AdminBranchDefaultActivity.this.startActivity(intent);
                 }
+                if(childPosition == 1){
+                    branchListPara.get(groupPosition).deleteInBackground(new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e == null){
+                                Toast.makeText(getApplicationContext(), "Branch was deleted", Toast.LENGTH_SHORT).show();
+                                retrieveBranches();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Branch was not deleted", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
                 return true;
             }
         });
     }
-
                 // code by http://stackoverflow.com/users/1705598/icza
 
     public static boolean containsIgnoreCase(String src, String what) {
