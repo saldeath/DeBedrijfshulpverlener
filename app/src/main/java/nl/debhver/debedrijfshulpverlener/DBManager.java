@@ -11,18 +11,23 @@ import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import com.parse.SendCallback;
 
 =======
 import com.parse.SendCallback;
 >>>>>>> origin/master
+=======
+import com.parse.SendCallback;
+>>>>>>> parent of 4f9d065... Trainingadd
 import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import nl.debhver.debedrijfshulpverlener.models.Branch;
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 import nl.debhver.debedrijfshulpverlener.models.Incident;
@@ -32,6 +37,9 @@ import nl.debhver.debedrijfshulpverlener.models.Training;
 =======
 import nl.debhver.debedrijfshulpverlener.models.Incident;
 >>>>>>> origin/master
+=======
+import nl.debhver.debedrijfshulpverlener.models.Incident;
+>>>>>>> parent of 4f9d065... Trainingadd
 import nl.debhver.debedrijfshulpverlener.models.User;
 
 /**
@@ -49,9 +57,12 @@ public class DBManager {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 4f9d065... Trainingadd
     void createIncident(Incident i, final HomeUserActivity homeUserActivity){
         i.saveInBackground(new SaveCallback() {
             @Override
@@ -98,6 +109,7 @@ public class DBManager {
         }
 
     }
+<<<<<<< HEAD
 
     static void createFakeBranchesAndAdminRights() {
         Branch b = new Branch();
@@ -105,6 +117,8 @@ public class DBManager {
         b.setName("coolName");
         c.setName("secondBranchName");
     }
+=======
+>>>>>>> parent of 4f9d065... Trainingadd
 
     public void unsubscribeUserFromBranch(){
         List<String> subscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
@@ -114,6 +128,7 @@ public class DBManager {
         }
     }
 
+<<<<<<< HEAD
     void createFakeTraining() {
         Training tss = new Training();
         tss.setName("Jaarlijkese Ehbo");
@@ -127,6 +142,9 @@ public class DBManager {
 =======
     void createUser(User u, final AdminAddUserActivity adminAddUserActivity){
 >>>>>>> origin/master
+=======
+    void createUser(User u, final AdminAddUserActivity adminAddUserActivity){
+>>>>>>> parent of 4f9d065... Trainingadd
         u.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
@@ -136,6 +154,7 @@ public class DBManager {
                 } else {
                     Log.d("ParseError", e.toString());
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                     doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
 
@@ -144,15 +163,21 @@ public class DBManager {
 =======
                     doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
 >>>>>>> origin/master
+=======
+                    doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
+>>>>>>> parent of 4f9d065... Trainingadd
                 }
             }
         });
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 4f9d065... Trainingadd
     void updateUser(User u, final AdminAddUserActivity adminAddUserActivity){
         u.saveInBackground(new SaveCallback() {
             @Override
@@ -167,6 +192,7 @@ public class DBManager {
         });
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     void getBranches(final AdminBranchDefaultActivity adminBranchDefaultActivity){
         ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
@@ -188,6 +214,9 @@ public class DBManager {
 =======
     public List<ParseObject> getBranches() {
 >>>>>>> origin/master
+=======
+    public List<ParseObject> getBranches() {
+>>>>>>> parent of 4f9d065... Trainingadd
         ParseQuery<ParseObject> query = ParseQuery.getQuery("branch");
         List<ParseObject> list = null;
         try {
@@ -210,6 +239,7 @@ public class DBManager {
                 } else {
                     Log.d("ParseError", e.toString());
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                     doToastMessageInView(adminAddBranchActivity, "ERROR: Branch was not saved to database.");
 
@@ -217,15 +247,21 @@ public class DBManager {
 =======
                     doToastMessageInView(adminAddBranchActivity, "ERROR: Branch was not saved to database.");
 >>>>>>> origin/master
+=======
+                    doToastMessageInView(adminAddBranchActivity, "ERROR: Branch was not saved to database.");
+>>>>>>> parent of 4f9d065... Trainingadd
                 }
             }
         });
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 4f9d065... Trainingadd
     void getUsers(final AdminUserDefaultActivity adminDefaultActivity){
         ParseQuery<User> query = ParseQuery.getQuery(User.class);
         query.findInBackground(new FindCallback<User>() {
@@ -236,6 +272,7 @@ public class DBManager {
                 } else {
                     Log.d("ParseError", e.toString());
                     doToastMessageInView(adminDefaultActivity, "ERROR: Failed to retrieve users.");
+<<<<<<< HEAD
 <<<<<<< HEAD
                 }
             }
@@ -255,10 +292,13 @@ public class DBManager {
 
 =======
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 4f9d065... Trainingadd
                 }
             }
         });
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 
@@ -328,6 +368,11 @@ public class DBManager {
     void doToastMessageInView(Context context, String msg){
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
 >>>>>>> origin/master
+=======
+
+    void doToastMessageInView(Context context, String msg){
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+>>>>>>> parent of 4f9d065... Trainingadd
     }
 
     void getSingleUserById(final AdminAddUserActivity adminAddUserActivity, String userObjId){
