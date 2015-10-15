@@ -15,9 +15,11 @@ public class ImageModel extends ParseObject{
     }
 
     public void setParseFile(ParseFile parseFile) {
-
+int x= 10;
         put("image", parseFile);
     }
+
+
 
     //    public ImageModel() {
 //        super();
