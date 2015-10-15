@@ -1,8 +1,8 @@
 package nl.debhver.debedrijfshulpverlener;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,32 +10,34 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SignUpCallback;
 
 import nl.debhver.debedrijfshulpverlener.models.User;
 
 public class MainActivity extends AppCompatActivity {
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        checkLoggedin();
-
     }
 
-    private void checkLoggedin() {
-        if(ParseUser.getCurrentUser() != null)
+    @Override
+    protected void onResume(){
+        super.onResume();
+        checkLoggedIn();
+    }
+
+    private void checkLoggedIn() {
+        User user = (User) User.getCurrentUser();
+        if(user != null)
         {
+            DBManager.getInstance().subscribeUserToBranch();
             Intent i = new Intent(MainActivity.this, HomeUserActivity.class);
             startActivity(i);
+        }
+        else{
+            DBManager.getInstance().unsubscribeUserFromBranch();
         }
     }
 
@@ -70,8 +72,7 @@ public class MainActivity extends AppCompatActivity {
         ParseUser.logInInBackground(email.getText().toString(), password.getText().toString(), new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
-                    Intent i = new Intent(MainActivity.this, HomeUserActivity.class);
-                    startActivity(i);
+                    checkLoggedIn();
                 } else {
                     Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_LONG).show();
                 }

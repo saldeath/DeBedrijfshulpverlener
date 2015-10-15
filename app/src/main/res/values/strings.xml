@@ -83,7 +83,9 @@
     <string name="title_activity_admin_user_default">Gebruikers Beheren</string>
     <string name="title_activity_admin_training_default">Cursussen Beheren</string>
     <string name="title_activity_admin_training_edit">Cursussen Wijzigen</string>
-
+    <string name="title_activity_admin_user_filter">Gebruikers filters</string>
 	<string name="filter_apply_button">Apply filter</string>
+    <string name="description">Description</string>
+    <string name="location">Location</string>
 
 </resources>

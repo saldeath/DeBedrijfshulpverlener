@@ -41,12 +41,13 @@ public class DBManager {
         return instance;
     }
 
-    void createIncident(Incident i, final HomeUserActivity homeUserActivity){
+    void createIncident(final Incident i, final HomeUserActivity homeUserActivity){
         i.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
                     doToastMessageInView(homeUserActivity, "Incident saved to database.");
+
                     //homeUserActivity.clearFieldsAfterAddingBranch();
                 } else {
                     Log.d("ParseError", e.toString());
@@ -58,37 +59,43 @@ public class DBManager {
     }
 
     void pushIncident(final Incident i){
+        Log.d("pushIncident", "starting push incident");
         ParsePush parsePush = new ParsePush();
         User user = (User) User.getCurrentUser();
 
         try {
+            Log.d("pushIncident", "try1");
             String channel = user.getBranch().fetchIfNeeded().toString();
             JSONObject data = new JSONObject();
             try{
-                data.put("alert", i.getDescription() + " @ " + i.getLocation());
+                Log.d("pushIncident", "try2");
+                data.put("title", "Alarm");
+                data.put("description", i.getDescription());
+                data.put("location", i.getLocation());
                 data.put("incidentId", i.getObjectId());
+                parsePush.setData(data);
+                parsePush.setChannel(channel);
+                parsePush.sendInBackground(new SendCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            Log.d("ParseSuccess", i.getDescription() + " @ " + i.getLocation());
+                        } else {
+                            Log.d("ParseError", e.toString());
+                        }
+                    }
+                });
             } catch(JSONException ex) {
                 ex.printStackTrace();
             }
 
-            parsePush.setData(data);
-            parsePush.setChannel(channel);
 
         } catch (ParseException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
 
-        parsePush.sendInBackground(new SendCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d("ParseSuccess", i.getDescription() + " @ " + i.getLocation());
-                } else {
-                    Log.d("ParseError", e.toString());
-                }
-            }
-        });
+
 
     }
 

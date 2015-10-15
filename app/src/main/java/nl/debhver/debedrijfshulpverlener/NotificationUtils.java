@@ -12,17 +12,9 @@ import android.media.RingtoneManager;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import java.util.List;
 
-import info.androidhive.parsenotifications.R;
-import info.androidhive.parsenotifications.activity.MainActivity;
-import info.androidhive.parsenotifications.app.AppConfig;
-
-/**
- * Created by Ravi on 01/06/15.
- */
 public class NotificationUtils {
     public static final int NOTIFICATION_ID = 100;
 
@@ -47,7 +39,7 @@ public class NotificationUtils {
             // notification icon
             int icon = R.mipmap.ic_launcher;
 
-            int mNotificationId = NOTIFICATION_IDTIFICATION_ID;
+            int mNotificationId = NOTIFICATION_ID;
 
             PendingIntent resultPendingIntent =
                     PendingIntent.getActivity(
