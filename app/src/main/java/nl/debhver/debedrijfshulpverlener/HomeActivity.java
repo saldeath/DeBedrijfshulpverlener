@@ -100,6 +100,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
+        menu.add(R.string.title_activity_admin_training_default);
+        item = menu.getItem(menu.size()-1);
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                fullView.closeDrawer(GravityCompat.START);
+                if(!currentActivityName.equals(AdminUserDefaultActivity.class + "")) {
+                    Intent i = new Intent(HomeActivity.this, TrainingActivity.class);
+                    startActivity(i);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 

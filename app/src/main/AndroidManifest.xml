@@ -60,6 +60,14 @@
             android:name=".AdminEquipmentDefaultActivity"
             android:label="@string/title_activity_admin_equipment_default">
         </activity>
+        <activity
+            android:name=".TrainingActivity"
+            android:label="@string/title_activity_admin_training_default">
+        </activity>
+        <activity
+            android:name=".TrainingAddActivity"
+            android:label="@string/title_activity_admin_training_edit">
+        </activity>
 
         <activity android:name=".AdminBranchDefaultActivity" >
         </activity>

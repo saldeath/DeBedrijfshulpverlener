@@ -4,7 +4,9 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
@@ -22,6 +24,7 @@ import java.util.List;
 
 import nl.debhver.debedrijfshulpverlener.models.Branch;
 import nl.debhver.debedrijfshulpverlener.models.Incident;
+import nl.debhver.debedrijfshulpverlener.models.Training;
 import nl.debhver.debedrijfshulpverlener.models.User;
 
 /**
@@ -249,8 +252,7 @@ public class DBManager {
             public void done(List<User> objects, ParseException e) {
                 if (e == null) {
                     // iterate over all messages and delete them
-                    for(User user : objects)
-                    {
+                    for (User user : objects) {
                         user.deleteInBackground();
                         doToastMessageInView(adminUserDefaultActivity, user.getName() + " deleted from database.");
                     }
@@ -293,4 +295,81 @@ public class DBManager {
             }
         });
     }
+
+    void createTraining(Training training, final TrainingAddActivity trainingAddActivity) {
+        training.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    trainingAddActivity.popupShortToastMessage("Saved Succesfully");
+                    trainingAddActivity.finish();
+                } else {
+                    trainingAddActivity.popupShortToastMessage("Unable to save");
+
+                }
+            }
+        });
+    }
+
+
+
+    void updateTraining(Training training, final TrainingAddActivity trainingAddActivity)
+    {
+        training.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    trainingAddActivity.popupShortToastMessage("Updated Succesfully");
+                    trainingAddActivity.finish();
+                } else {
+                    trainingAddActivity.popupShortToastMessage("Unable to save");
+                }
+            }
+        });
+    }
+
+    void deleteTraining(Training oldTraining, final TrainingAddActivity trainingAddActivity) {
+        oldTraining.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    trainingAddActivity.popupShortToastMessage("Deleted Succesfully");
+                    trainingAddActivity.finish();
+
+                } else {
+                    trainingAddActivity.popupShortToastMessage("Unable to Delete");
+                }
+            }
+        });
+    }
+
+
+    void getAllTraining(final TrainingActivity trainingActivity) {
+        ParseQuery<Training> query = ParseQuery.getQuery("training");
+        query.findInBackground(new FindCallback<Training>() {
+            public void done(List<Training> objects, ParseException e) {
+                if (e == null) {
+                    trainingActivity.populateTrainingList(objects);
+                } else {
+                    Log.d("ParseError", e.toString());
+                    trainingActivity.popupShortToastMessage("ERROR: Nothing was retrieved from database.");
+                }
+            }
+        });
+    }
+
+    void getTrainingbyID(final TrainingAddActivity trainingAddActivity, String trainingObjectId) {
+        ParseQuery<Training> query = ParseQuery.getQuery("training");
+        query.getInBackground(trainingObjectId, new GetCallback<Training>() {
+            @Override
+            public void done(Training object, com.parse.ParseException e) {
+                if (e == null) {
+                    trainingAddActivity.loadSingleTraining(object);
+                } else {
+                    // something went wrong
+                }
+            }
+        });
+    }
+
 }
