@@ -66,9 +66,7 @@ public class DBManager {
             JSONObject data = new JSONObject();
             try{
                 data.put("alert", i.getDescription() + " @ " + i.getLocation());
-                if(i.getImage() != null){
-                    data.put("imageId", i.getImage().getObjectId());
-                }
+                data.put("incidentId", i.getObjectId());
             } catch(JSONException ex) {
                 ex.printStackTrace();
             }
@@ -105,7 +103,6 @@ public class DBManager {
                 e1.printStackTrace();
             }
         }
-
     }
 
     public void unsubscribeUserFromBranch() {
