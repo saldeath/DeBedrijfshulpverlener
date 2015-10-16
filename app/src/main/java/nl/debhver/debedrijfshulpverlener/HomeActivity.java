@@ -243,70 +243,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         alert.show();
     }
 
-/*    protected boolean saveInBackground(final ParseObject object) {
-        try {
-            return new AsyncTask<Void, Void, Boolean>()
-            {
-                @Override
-                protected Boolean doInBackground(Void... p)
-                {
-                    return EquipmentDBManager.getInstance().save(object);
-                }
-
-                @Override
-                protected void onPostExecute(Boolean result)
-                {
-                    if(result)
-                        popupShortToastMessage(getString(R.string.save_succes));
-                    else
-                        popupShortToastMessage(getString(R.string.save_error));
-                }
-            }.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-    protected boolean deleteInBackground(final ParseObject object) {
-        try {
-            return new AsyncTask<Void, Void, Boolean>()
-            {
-                @Override
-                protected Boolean doInBackground(Void... p)
-                {
-                    return EquipmentDBManager.getInstance().delete(object);
-                }
-
-                @Override
-                protected void onPostExecute(Boolean result)
-                {
-                    if(result)
-                        popupShortToastMessage(getString(R.string.delete_succes));
-                    else
-                        popupShortToastMessage(getString(R.string.delete_error));
-                }
-            }.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }*/
-
     protected void popupShortToastMessage(String msg){
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
-    protected void setBackButtonOnToolbar(Boolean value) {
-        if (value) {
-            ActionBar t = getSupportActionBar();
-            t.setDisplayHomeAsUpEnabled(true);
-            finishWarning = true;
-            setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        }
+    protected void setBackButtonOnToolbar(Boolean finishWarning) {
+        ActionBar t = getSupportActionBar();
+        t.setDisplayHomeAsUpEnabled(true);
+        this.finishWarning = finishWarning;
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
     }
 
     protected void setSaved(Boolean saved) {
@@ -336,7 +281,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+        } else {
+            HomeActivity.super.finish();
         }
-        HomeActivity.super.finish();
     }
 }

@@ -51,11 +51,6 @@ public class TrainingActivity extends HomeActivity{
         DBManager.getInstance().getAllTraining(this);
     }
 
-    void popupShortToastMessage(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-
     public void populateTrainingList(final List<Training> trainings) {
         final ListView trainingListView = (ListView)findViewById(R.id.traininglistView);
         final TrainingAdapter trainingAdapter = new TrainingAdapter(TrainingActivity.this, trainings);

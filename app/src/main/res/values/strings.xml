@@ -56,6 +56,7 @@
     <string name="yes">Ja</string>
     <string name="no">Nee</string>
     <string name="delete">Verwijderen</string>
+    <string name="edit">Wijzigen</string>
     <string name="gallery">Galerij</string>
     <string name="camera">Camera</string>
     <string name="image">Afbeelding</string>
@@ -100,5 +101,10 @@
     <string name="save_error">Error: er is niets opgeslagen</string>
     <string name="delete_succes">Succesvol verweiderd</string>
     <string name="delete_error">Error: er is niets verweiderd</string>
+
+    <string name="equipment_save_succes">Apparaat succesvol opgeslagen</string>
+    <string name="equipment_save_error">Error: apparaat niet opgeslagen</string>
+    <string name="equipment_delete_succes">Apparaat succesvol verweiderd</string>
+    <string name="equipment_delete_error">Error: apparaat niet verweiderd</string>
 
 </resources>
