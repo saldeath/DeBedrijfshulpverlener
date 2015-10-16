@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
@@ -16,10 +17,15 @@ import com.parse.ParseUser;
 import nl.debhver.debedrijfshulpverlener.models.User;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ProgressBar loginProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        loginProgressBar = (ProgressBar)findViewById(R.id.login_progressbar);
     }
 
     @Override
@@ -64,13 +70,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signinButtonClicked(View view) {
-
+        loginProgressBar.setVisibility(View.VISIBLE);
         EditText email = (EditText)findViewById(R.id.inputEmail);
         EditText password = (EditText)findViewById(R.id.inputPassword);
         //System.out.println("Email: " + email.getText().toString());
         //System.out.println("Password: " + password.getText().toString());
         ParseUser.logInInBackground(email.getText().toString(), password.getText().toString(), new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
+                loginProgressBar.setVisibility(View.INVISIBLE);
                 if (user != null) {
                     checkLoggedIn();
                 } else {
