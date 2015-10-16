@@ -213,7 +213,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/hint_equipment_image"
+                android:text="@string/image"
                 android:id="@+id/textView4" />
 
             <Space
@@ -224,15 +224,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/equipmentImage"
-                android:minWidth="200dp"
-                android:minHeight="200dp"
-                android:maxHeight="200dp"
-                android:maxWidth="200dp"
                 android:layout_gravity="center_horizontal"
                 android:nestedScrollingEnabled="true"
-                android:background="@color/button_material_light"
-                android:scaleType="centerCrop"
-                android:onClick="imageViewClicked" />
+                android:background="@drawable/ic_camera"
+                android:backgroundTint="@color/button_material_light"
+                android:scaleType="centerCrop"/>
 
             <Space
                 android:layout_width="match_parent"

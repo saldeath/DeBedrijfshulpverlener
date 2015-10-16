@@ -20,8 +20,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import nl.debhver.debedrijfshulpverlener.enums.Table;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
 import nl.debhver.debedrijfshulpverlener.models.Incident;
 import nl.debhver.debedrijfshulpverlener.models.Training;
@@ -41,7 +44,37 @@ public class DBManager {
         return instance;
     }
 
-    void createIncident(final Incident i, final HomeUserActivity homeUserActivity){
+	public void save(ParseObject object, SaveCallback callback){
+        object.saveInBackground(callback);
+    }
+
+    public void delete(ParseObject object, DeleteCallback callback){
+        object.deleteInBackground(callback);
+    }
+
+    public void geListParseObjects(Table table, final FindCallback callback) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(table.toString());
+        query.findInBackground(callback);
+    }
+
+    public void getParseObjectById(Table table, String objectId, final FindCallback callback) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(table.toString());
+        query.whereEqualTo("objectId",objectId);
+        query.findInBackground(callback);
+    }
+
+    public void geListParseObjects(Table table, Map<String, List<String>> argsEquelTo, final FindCallback callback) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(table.toString());
+        for (Map.Entry<String, List<String>> entry : argsEquelTo.entrySet()) {
+            for(String arg : entry.getValue()) {
+                query.whereEqualTo(entry.getKey(),arg);
+            }
+        }
+        query.findInBackground(callback);
+    }
+
+    void createIncident(Incident i, final HomeUserActivity homeUserActivity){
+
         i.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -165,7 +198,6 @@ public class DBManager {
             return list;
         }
     }
-
 
     void createBranch(Branch b, final AdminAddBranchActivity adminAddBranchActivity){
         b.saveInBackground(new SaveCallback() {

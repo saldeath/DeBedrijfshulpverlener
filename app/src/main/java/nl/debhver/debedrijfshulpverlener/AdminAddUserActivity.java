@@ -36,7 +36,7 @@ public class AdminAddUserActivity extends HomeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_user);
-        backButtonOnToolbar();
+        setBackButtonOnToolbar(true);
 
         retrieveBranches();
         populateEROFunctionList();
@@ -144,10 +144,10 @@ public class AdminAddUserActivity extends HomeActivity {
         }
     }
 
-
+/*
     void popupShortToastMessage(String msg){
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-    }
+    }*/
 
     public boolean checkFields(){
         EditText tempField;
@@ -387,29 +387,5 @@ public class AdminAddUserActivity extends HomeActivity {
             checkBox = (CheckBox)layout.getChildAt(i);
             checkBox.setChecked(false);
         }
-    }
-
-    @Override
-    public void finish() {
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                AdminAddUserActivity.this);
-        alertDialogBuilder
-                .setTitle(R.string.warning)
-                .setMessage(getString(R.string.warning_exit_without_save))
-                .setCancelable(false)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        AdminAddUserActivity.super.finish();
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
     }
 }
