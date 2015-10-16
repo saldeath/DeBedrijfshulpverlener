@@ -54,7 +54,8 @@
         </activity>
         <activity
             android:name=".AdminEquipmentAddActivity"
-            android:label="@string/title_activity_admin_equipment_add">
+            android:label="@string/title_activity_admin_equipment_add"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".AdminEquipmentDefaultActivity"

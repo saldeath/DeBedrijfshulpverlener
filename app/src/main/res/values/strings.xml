@@ -43,15 +43,22 @@
     <string name="training_type_repeat">Herhaling</string>
 
     <string name="error_empty_name">Name cannot be empty.</string>
+    <string name="error_empty_location">Location cannot be empty.</string>
     <string name="error_empty_email">Email cannot be empty.</string>
     <string name="error_empty_telephone">Telephone cannot be empty.</string>
     <string name="error_empty_branch">Branch cannot be empty.</string>
+    <string name="error_empty_date_of_purchase">Date of purchase cannot be empty.</string>
+    <string name="error_empty_expiration_date">Expiration date cannot be empty.</string>
     <string name="error_empty_adminrights">Adminrights cannot be empty.</string>
     <string name="error_empty_erofunctions">No ERO functions selected. Are you sure you want to create this user without an ERO function?</string>
     <string name="error_empty_password">Password cannot be empty.</string>
 
     <string name="yes">Ja</string>
     <string name="no">Nee</string>
+    <string name="delete">Verwijderen</string>
+    <string name="gallery">Galerij</string>
+    <string name="camera">Camera</string>
+    <string name="image">Afbeelding</string>
     <string name="warning">Waarschuwing</string>
     <string name="warning_logout">Weet u zeker dat u uit wil loggen?</string>
     <string name="warning_exit_without_save">Weet u zeker dat u terug wil gaan zonder op te slaan?</string>
@@ -69,10 +76,10 @@
     <string name="hint_equipment_description">Beschrijving</string>
     <string name="hint_equipment_location">Locatie beschrijving</string>
     <string name="hint_equipment_type">Soort apparaat</string>
-    <string name="hint_equipment_date_of_purchase">Aanschaffing\'s datum</string>
-    <string name="hint_equipment_expiration_date">Afschaffing\'s datum</string>
+    <string name="hint_equipment_date_of_purchase">Aanschaffings datum</string>
+    <string name="hint_equipment_expiration_date">Expiratiedatum</string>
     <string name="hint_equipment_date_of_inspection">Laatste inspectie datum</string>
-    <string name="hint_equipment_image">Afbeelding</string>
+    <string name="hint_equipment_image">Apparaat afbeelding</string>
     <string name="hint_equipment_branch">Selecteer vestiging</string>
 
     <string name="title_activity_admin_equipment_add">Apparaat toevoegen</string>
@@ -85,7 +92,13 @@
     <string name="title_activity_admin_training_edit">Cursussen Wijzigen</string>
     <string name="title_activity_admin_user_filter">Gebruikers filters</string>
 	<string name="filter_apply_button">Apply filter</string>
+
     <string name="description">Description</string>
     <string name="location">Location</string>
+
+    <string name="save_succes">Succesvol opgeslagen</string>
+    <string name="save_error">Error: er is niets opgeslagen</string>
+    <string name="delete_succes">Succesvol verweiderd</string>
+    <string name="delete_error">Error: er is niets verweiderd</string>
 
 </resources>
