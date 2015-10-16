@@ -45,7 +45,6 @@ public class AdminEquipmentDefaultActivity extends HomeActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        expListView.setAdapter(new ExpandableListAdapter(this, listDataHeader, listDataChild));
         retrieveEquipment();
     }
 
