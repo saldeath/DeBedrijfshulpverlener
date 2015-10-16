@@ -1,13 +1,10 @@
 package nl.debhver.debedrijfshulpverlener;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -17,12 +14,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+
 import android.widget.TextView;
 
 import com.parse.ParseException;
+
+import android.widget.Toast;
+
 import com.parse.ParseUser;
 
 import nl.debhver.debedrijfshulpverlener.models.User;
@@ -37,8 +36,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout fullView;
     private ActionBarDrawerToggle drawerToggle;
     private String currentActivityName = "";
+
     private TextView currentUser, currentBranch;
     private User user;
+
+    private boolean finishWarning = false;
+    private static Intent homeUserActivity;
+    private static Intent adminUserDefaultActivity;
+    private static Intent adminEquipmentDefaultActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,8 +120,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public boolean onMenuItemClick(MenuItem item) {
                 fullView.closeDrawer(GravityCompat.START);
                 if(!currentActivityName.equals(AdminUserDefaultActivity.class + "")) {
-                    Intent i = new Intent(HomeActivity.this, AdminUserDefaultActivity.class);
-                    startActivity(i);
+                    if(adminUserDefaultActivity == null) {
+                        adminUserDefaultActivity = new Intent(HomeActivity.this, AdminUserDefaultActivity.class);
+                    } else {
+                        adminUserDefaultActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        adminUserDefaultActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        adminUserDefaultActivity.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    }
+                    startActivity(adminUserDefaultActivity);
                     return true;
                 }
                 return false;
@@ -214,7 +226,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch (menuItem.getItemId()){
             case R.id.navigation_item_1:
                 fullView.closeDrawer(GravityCompat.START);
-                //intent down here
+                intent = new Intent(getApplicationContext(), HomeUserActivity.class);
+                startActivity(intent);
                 return true;
         }
 
@@ -244,9 +257,100 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         alert.show();
     }
 
-    public void backButtonOnToolbar() {
-        ActionBar t = getSupportActionBar();
-        t.setDisplayHomeAsUpEnabled(true);
-        setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+/*    protected boolean saveInBackground(final ParseObject object) {
+        try {
+            return new AsyncTask<Void, Void, Boolean>()
+            {
+                @Override
+                protected Boolean doInBackground(Void... p)
+                {
+                    return EquipmentDBManager.getInstance().save(object);
+                }
+
+                @Override
+                protected void onPostExecute(Boolean result)
+                {
+                    if(result)
+                        popupShortToastMessage(getString(R.string.save_succes));
+                    else
+                        popupShortToastMessage(getString(R.string.save_error));
+                }
+            }.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    protected boolean deleteInBackground(final ParseObject object) {
+        try {
+            return new AsyncTask<Void, Void, Boolean>()
+            {
+                @Override
+                protected Boolean doInBackground(Void... p)
+                {
+                    return EquipmentDBManager.getInstance().delete(object);
+                }
+
+                @Override
+                protected void onPostExecute(Boolean result)
+                {
+                    if(result)
+                        popupShortToastMessage(getString(R.string.delete_succes));
+                    else
+                        popupShortToastMessage(getString(R.string.delete_error));
+                }
+            }.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }*/
+
+    protected void popupShortToastMessage(String msg){
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    protected void setBackButtonOnToolbar(Boolean value) {
+        if (value) {
+            ActionBar t = getSupportActionBar();
+            t.setDisplayHomeAsUpEnabled(true);
+            finishWarning = true;
+            setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        }
+    }
+
+    protected void setSaved(Boolean saved) {
+        finishWarning = !saved;
+    }
+
+    @Override
+    public void finish() {
+        if(finishWarning) {
+            final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    HomeActivity.this);
+            alertDialogBuilder
+                    .setTitle(R.string.warning)
+                    .setMessage(getString(R.string.warning_exit_without_save))
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            HomeActivity.super.finish();
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
+        HomeActivity.super.finish();
     }
 }

@@ -68,4 +68,9 @@ public class Equipment extends ParseObject{
     public Branch getBranch()  {
         return (Branch) getParseObject("branch");
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

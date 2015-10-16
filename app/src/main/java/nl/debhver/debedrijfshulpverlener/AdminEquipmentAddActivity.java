@@ -1,17 +1,16 @@
 package nl.debhver.debedrijfshulpverlener;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.RectF;
-import android.graphics.Matrix;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -19,8 +18,12 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Button;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,11 +35,13 @@ import java.util.List;
 import java.util.Locale;
 
 import nl.debhver.debedrijfshulpverlener.enums.EquipmentType;
+import nl.debhver.debedrijfshulpverlener.enums.Table;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
 import nl.debhver.debedrijfshulpverlener.models.Equipment;
+import nl.debhver.debedrijfshulpverlener.models.ImageModel;
 
 public class AdminEquipmentAddActivity extends HomeActivity {
-    private static final int CALLERY_REQUEST_CODE = 1;
+    private static final int GALLERY_REQUEST_CODE = 1;
     private static final int CAMERA_REQUEST_CODE = 2;
     private Calendar dateOfPurchase, expirationDate, dateOfInspection;
     private TextView inputName, inputDescription, inputLocation, inputDateOfPurchase, inputExpirationDate ,inputDateOfInspection;
@@ -49,33 +54,27 @@ public class AdminEquipmentAddActivity extends HomeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_equipment_add);
-        backButtonOnToolbar();
+        setBackButtonOnToolbar(true);
         initializeInput();
 
-        populateEquipmentTypeSpinner();
         retrieveBranches();
+        populateEquipmentTypeSpinner();
     }
 
     //source: http://www.vogella.com/tutorials/AndroidCamera/article.html
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == Activity.RESULT_OK) {
-            InputStream stream = null;
-            if (requestCode == CALLERY_REQUEST_CODE) {
+            // recyle unused bitmaps
+            if (equipmentImage != null) {
+                equipmentImage.recycle();
+            }
+
+            if (requestCode == GALLERY_REQUEST_CODE) {
+                InputStream stream = null;
                 try {
-                    // recyle unused bitmaps
-                    if (equipmentImage != null) {
-                        equipmentImage.recycle();
-                    }
                     stream = getContentResolver().openInputStream(data.getData());
-                    equipmentImage = BitmapFactory.decodeStream(stream);
-                    //Bitmap scaledEquipmentImage = Bitmap.createScaledBitmap(equipmentImage, inputPicture.getWidth(), inputPicture.getHeight(), false);
-
-                    Matrix m = new Matrix();
-                    m.setRectToRect(new RectF(0, 0, equipmentImage.getWidth(), equipmentImage.getHeight()), new RectF(0, 0, inputPicture.getWidth(), inputPicture.getHeight()), Matrix.ScaleToFit.CENTER);
-                    Bitmap scaledEquipmentImage = Bitmap.createBitmap(equipmentImage,0,0,inputPicture.getWidth(), inputPicture.getHeight(), m, false);
-
-                    inputPicture.setImageBitmap(scaledEquipmentImage);
+                    equipmentImage = scaleBitmap(BitmapFactory.decodeStream(stream));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } finally {
@@ -89,12 +88,30 @@ public class AdminEquipmentAddActivity extends HomeActivity {
                 }
             }
             else if(requestCode == CAMERA_REQUEST_CODE) {
-
+                equipmentImage = scaleBitmap((Bitmap) data.getExtras().get("data"));
             }
+            inputPicture.setImageBitmap(equipmentImage);
         }
     }
 
-    private void populateBranches(List<ParseObject> branches){
+    private Bitmap scaleBitmap(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        float scaleWidth = 0;
+        float scaleHeight = 0;
+
+        if(width > height) {
+            scaleWidth = 500 * width / height;
+            scaleHeight = 500;
+        }
+        else {
+            scaleWidth = 500;
+            scaleHeight = 500 * height / width;
+        }
+        return Bitmap.createScaledBitmap(bitmap, Math.round(scaleWidth), Math.round(scaleHeight), true);
+    }
+
+    private void populateBranches(List<Branch> branches){
         final List<Branch> items = (List)branches;
         final Spinner dropdown = inputBranch;
         dropdown.post(new Runnable() {
@@ -112,12 +129,23 @@ public class AdminEquipmentAddActivity extends HomeActivity {
     }
 
     private void retrieveBranches(){
-        Thread t = new Thread(new Runnable() {
-            public void run() {
-                populateBranches(DBManager.getInstance().getBranches());
+        /*new AsyncTask<Void, Void, List<ParseObject>>() {
+            @Override
+            protected List<ParseObject> doInBackground(Void... p) {
+                return DBManager.getInstance().getBranches();
+            }
+
+            @Override
+            protected void onPostExecute(List<ParseObject> result) {
+                populateBranches(result);
+            }
+        }.execute();*/
+        DBManager.getInstance().geListParseObjects(Table.BRANCH, new FindCallback<Branch>() {
+            @Override
+            public void done(List<Branch> objects, ParseException e) {
+                populateBranches(objects);
             }
         });
-        t.start();
     }
 
     public void showDatePickerDialog(final View v) {
@@ -174,10 +202,43 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         dialog.show();
     }
 
-    public void imageViewClicked(View v) {
-        if(equipmentImage == null) {
-            openGallery();
+    private void imageViewClicked() {
+        final Dialog dialog = new Dialog(AdminEquipmentAddActivity.this);
+        dialog.setTitle(R.string.hint_equipment_image);
+        dialog.setContentView(getLayoutInflater().inflate(R.layout.image_preview_dialog, null));
+        dialog.show();
+
+        Button delete = (Button) dialog.findViewById(R.id.deleteButton);
+        Button gallery = (Button) dialog.findViewById(R.id.gallaryButton);
+        Button camera = (Button) dialog.findViewById(R.id.cameraButton);
+
+        if (equipmentImage == null) {
+            delete.setVisibility(View.GONE);
+        } else {
+            ((ImageView) (dialog.findViewById(R.id.imageView))).setImageBitmap(equipmentImage);
         }
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                deleteImage();
+            }
+        });
+        gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                openGallery();
+            }
+        });
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                openCamera();
+            }
+        });
     }
 
     //source: http://www.vogella.com/tutorials/AndroidCamera/article.html
@@ -186,48 +247,78 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(intent, CALLERY_REQUEST_CODE);
+        startActivityForResult(intent, GALLERY_REQUEST_CODE);
     }
 
     private void openCamera() {
         Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI.getPath());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.getPath());
         startActivityForResult(intent, CAMERA_REQUEST_CODE);
+    }
+
+    private void deleteImage() {
+
     }
 
     public void FABSaveClicked(View v) {
         if(isValidInput()) {
+            ImageModel imageModel;
+            if(selectedEquipment == null) {
+                imageModel = new ImageModel();
+                selectedEquipment = new Equipment();
+                selectedEquipment.setImage(imageModel);
+            }
+            imageModel = selectedEquipment.getImage();
+            selectedEquipment.setName(inputName.getText().toString());
+            selectedEquipment.setDescription(inputDescription.getText().toString());
+            selectedEquipment.setLocation(inputLocation.getText().toString());
+            int id = inputType.getSelectedItemPosition();
+            EquipmentType[] equipmentType = EquipmentType.values();
+            selectedEquipment.setType(equipmentType[id]);
+            selectedEquipment.setDateOfPurchase(dateOfPurchase.getTime());
+            selectedEquipment.setExpirationDate(expirationDate.getTime());
+            if(dateOfInspection != null)
+                selectedEquipment.setDateOfInspection(dateOfInspection.getTime());
+            Branch branch = (Branch) inputBranch.getSelectedItem();
+            selectedEquipment.setBranch(branch);
+            //imageModel.setImage(ImageModel.getBytes(equipmentImage));
+            //selectedEquipment.setImage(imageModel);
 
+            DBManager.getInstance().save(selectedEquipment, new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        AdminEquipmentAddActivity.this.popupShortToastMessage(getString(R.string.save_succes));
+                        AdminEquipmentAddActivity.this.setSaved(true);
+                        AdminEquipmentAddActivity.this.finish();
+                    } else {
+                        Log.d("ParseError", e.toString());
+                        AdminEquipmentAddActivity.this.popupShortToastMessage(getString(R.string.save_error));
+                    }
+                }
+            });
         }
     }
 
     private boolean isValidInput() {
-        return true;
-    }
-
-    @Override
-    public void finish() {
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                AdminEquipmentAddActivity.this);
-        alertDialogBuilder
-            .setTitle(R.string.warning)
-            .setMessage(getString(R.string.warning_exit_without_save))
-            .setCancelable(false)
-            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id){
-                    AdminEquipmentAddActivity.super.finish();
-                    dialog.dismiss();
-                }
-            })
-            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                }
-            });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        Boolean validInput = true;
+        if(inputName.getText().toString().equals("")) {
+            popupShortToastMessage(getString(R.string.error_empty_name));
+            validInput = false;
+        }
+        if(inputLocation.getText().toString().equals("")) {
+            popupShortToastMessage(getString(R.string.error_empty_location));
+            validInput = false;
+        }
+        if(dateOfPurchase == null) {
+            popupShortToastMessage(getString(R.string.error_empty_date_of_purchase));
+            validInput = false;
+        }
+        if(expirationDate == null) {
+            popupShortToastMessage(getString(R.string.error_empty_expiration_date));
+            validInput = false;
+        }
+        return validInput;
     }
 
     private void initializeInput() {
@@ -242,6 +333,12 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         equipmentTypeImage = (ImageView) findViewById(R.id.equipmentTypeImage);
         inputPicture = (ImageView) findViewById(R.id.equipmentImage);
 
+        inputPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageViewClicked();
+            }
+        });
         inputDateOfPurchase.setOnFocusChangeListener(new DateInputFocusListener());
         inputDateOfPurchase.setOnClickListener(new DateInputClickedListener());
         inputExpirationDate.setOnFocusChangeListener(new DateInputFocusListener());
@@ -249,6 +346,8 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         inputDateOfInspection.setOnFocusChangeListener(new DateInputFocusListener());
         inputDateOfInspection.setOnClickListener(new DateInputClickedListener());
     }
+
+
 
     private class DateInputClickedListener implements View.OnClickListener {
         @Override
@@ -260,7 +359,7 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
-                InputMethodManager imm =  (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 showDatePickerDialog(v);
             }
