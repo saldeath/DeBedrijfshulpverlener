@@ -5,37 +5,24 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.parse.Parse;
-import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import nl.debhver.debedrijfshulpverlener.enums.IncidentType;
-import nl.debhver.debedrijfshulpverlener.enums.UserRight;
 import nl.debhver.debedrijfshulpverlener.models.ImageModel;
 import nl.debhver.debedrijfshulpverlener.models.Incident;
 import nl.debhver.debedrijfshulpverlener.models.User;
@@ -49,9 +36,9 @@ public class HomeUserActivity extends HomeActivity {
     private User user = (User) User.getCurrentUser();
     private Calendar c = Calendar.getInstance();
     private static final int TAKE_FOTO_REQUEST = 0;
-    private Bitmap equipmentImage;
-    private byte[] scaledImageByte;
-    private ImageModel model;
+    //private Bitmap equipmentImage;
+    //pivate byte[] scaledImageByte;
+    private ImageModel model = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,14 +78,17 @@ public class HomeUserActivity extends HomeActivity {
                         incident.setType(incidentTypes[id]);
                         incident.setTime(getDate());
                         //incident.setImage(scaledImageByte);
-                        incident.setImage(model);
+                        if(model != null){
+                            incident.setImage(model);
+                            model=null;
+                        }
 
                         DBManager.getInstance().createIncident(incident, HomeUserActivity.this);
 
                     }
                 });
 
-                alertDialog.setNegativeButton("Cancel", null);
+                alertDialog.setNegativeButton("Annuleren", null);
                 alertDialog.setTitle("Incident Melden");
                 Dialog dialog = alertDialog.create();
                 dialog.show();
@@ -151,23 +141,12 @@ public class HomeUserActivity extends HomeActivity {
             byte[] scaledData = bos.toByteArray();
             Incident incident = new Incident();
 
-
-
             // Save the scaled image to Parse
             ParseFile photoFile = new ParseFile("incident.jpg", scaledData);
             model = new ImageModel();
             model.setParseFile(photoFile);
             incident.setImage(model);
 
-
-
-
-
-            Toast.makeText(this, "camera captured", Toast.LENGTH_LONG).show();
-
-
-        }else{
-            Toast.makeText(this, "nothing captured", Toast.LENGTH_LONG).show();
         }
     }
 }

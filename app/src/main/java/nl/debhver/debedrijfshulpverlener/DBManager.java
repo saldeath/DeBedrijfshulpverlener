@@ -4,7 +4,9 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
@@ -22,6 +24,7 @@ import java.util.List;
 
 import nl.debhver.debedrijfshulpverlener.models.Branch;
 import nl.debhver.debedrijfshulpverlener.models.Incident;
+import nl.debhver.debedrijfshulpverlener.models.Training;
 import nl.debhver.debedrijfshulpverlener.models.User;
 
 /**
@@ -38,12 +41,13 @@ public class DBManager {
         return instance;
     }
 
-    void createIncident(Incident i, final HomeUserActivity homeUserActivity){
+    void createIncident(final Incident i, final HomeUserActivity homeUserActivity){
         i.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
                     doToastMessageInView(homeUserActivity, "Incident saved to database.");
+
                     //homeUserActivity.clearFieldsAfterAddingBranch();
                 } else {
                     Log.d("ParseError", e.toString());
@@ -55,39 +59,42 @@ public class DBManager {
     }
 
     void pushIncident(final Incident i){
+        Log.d("pushIncident", "starting push incident");
         ParsePush parsePush = new ParsePush();
         User user = (User) User.getCurrentUser();
-
         try {
+            Log.d("pushIncident", "try1");
             String channel = user.getBranch().fetchIfNeeded().toString();
             JSONObject data = new JSONObject();
             try{
-                data.put("alert", i.getDescription() + " @ " + i.getLocation());
-                if(i.getImage() != null){
-                    data.put("imageId", i.getImage().getObjectId());
-                }
+                Log.d("pushIncident", "try2");
+                data.put("title", "Alarm");
+                data.put("description", i.getDescription());
+                data.put("location", i.getLocation());
+                data.put("incidentId", i.getObjectId());
+                parsePush.setData(data);
+                parsePush.setChannel(channel);
+                parsePush.sendInBackground(new SendCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            Log.d("ParseSuccess", i.getDescription() + " @ " + i.getLocation());
+                        } else {
+                            Log.d("ParseError", e.toString());
+                        }
+                    }
+                });
             } catch(JSONException ex) {
                 ex.printStackTrace();
             }
 
-            parsePush.setData(data);
-            parsePush.setChannel(channel);
 
         } catch (ParseException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
 
-        parsePush.sendInBackground(new SendCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d("ParseSuccess", i.getDescription() + " @ " + i.getLocation());
-                } else {
-                    Log.d("ParseError", e.toString());
-                }
-            }
-        });
+
 
     }
 
@@ -102,14 +109,19 @@ public class DBManager {
                 e1.printStackTrace();
             }
         }
-
     }
 
     public void unsubscribeUserFromBranch() {
-        List<String> subscribedChannels = ParseInstallation.getCurrentInstallation().getList("channels");
-
-        for(String channel : subscribedChannels){
-            ParsePush.unsubscribeInBackground(channel);
+        ParseInstallation parseInstallation = ParseInstallation.getCurrentInstallation();
+        if(parseInstallation != null){
+            List<String> subscribedChannels = parseInstallation.getList("channels");
+            if(subscribedChannels!=null){
+                if(!subscribedChannels.isEmpty()){
+                    for(String channel : subscribedChannels){
+                        ParsePush.unsubscribeInBackground(channel);
+                    }
+                }
+            }
         }
     }
 
@@ -249,8 +261,7 @@ public class DBManager {
             public void done(List<User> objects, ParseException e) {
                 if (e == null) {
                     // iterate over all messages and delete them
-                    for(User user : objects)
-                    {
+                    for (User user : objects) {
                         user.deleteInBackground();
                         doToastMessageInView(adminUserDefaultActivity, user.getName() + " deleted from database.");
                     }
@@ -291,4 +302,81 @@ public class DBManager {
             }
         });
     }
+
+    void createTraining(Training training, final TrainingAddActivity trainingAddActivity) {
+        training.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    trainingAddActivity.popupShortToastMessage("Saved Succesfully");
+                    trainingAddActivity.finish();
+                } else {
+                    trainingAddActivity.popupShortToastMessage("Unable to save");
+
+                }
+            }
+        });
+    }
+
+
+
+    void updateTraining(Training training, final TrainingAddActivity trainingAddActivity)
+    {
+        training.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    trainingAddActivity.popupShortToastMessage("Updated Succesfully");
+                    trainingAddActivity.finish();
+                } else {
+                    trainingAddActivity.popupShortToastMessage("Unable to save");
+                }
+            }
+        });
+    }
+
+    void deleteTraining(Training oldTraining, final TrainingAddActivity trainingAddActivity) {
+        oldTraining.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    trainingAddActivity.popupShortToastMessage("Deleted Succesfully");
+                    trainingAddActivity.finish();
+
+                } else {
+                    trainingAddActivity.popupShortToastMessage("Unable to Delete");
+                }
+            }
+        });
+    }
+
+
+    void getAllTraining(final TrainingActivity trainingActivity) {
+        ParseQuery<Training> query = ParseQuery.getQuery("training");
+        query.findInBackground(new FindCallback<Training>() {
+            public void done(List<Training> objects, ParseException e) {
+                if (e == null) {
+                    trainingActivity.populateTrainingList(objects);
+                } else {
+                    Log.d("ParseError", e.toString());
+                    trainingActivity.popupShortToastMessage("ERROR: Nothing was retrieved from database.");
+                }
+            }
+        });
+    }
+
+    void getTrainingbyID(final TrainingAddActivity trainingAddActivity, String trainingObjectId) {
+        ParseQuery<Training> query = ParseQuery.getQuery("training");
+        query.getInBackground(trainingObjectId, new GetCallback<Training>() {
+            @Override
+            public void done(Training object, com.parse.ParseException e) {
+                if (e == null) {
+                    trainingAddActivity.loadSingleTraining(object);
+                } else {
+                    // something went wrong
+                }
+            }
+        });
+    }
+
 }

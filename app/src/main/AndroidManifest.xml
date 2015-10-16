@@ -60,11 +60,34 @@
             android:name=".AdminEquipmentDefaultActivity"
             android:label="@string/title_activity_admin_equipment_default">
         </activity>
-
+        <activity
+            android:name=".TrainingActivity"
+            android:label="@string/title_activity_admin_training_default">
+        </activity>
+        <activity
+            android:name=".TrainingAddActivity"
+            android:label="@string/title_activity_admin_training_edit">
+        </activity>
+        <activity
+            android:name=".AdminUserFilterActivity"
+            android:label="@string/title_activity_admin_user_filter">
+        </activity>
         <activity android:name=".AdminBranchDefaultActivity" >
         </activity>
 
         <service android:name="com.parse.PushService" />
+        <receiver
+            android:name=".CustomPushReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="com.parse.push.intent.RECEIVE" />
+                <action android:name="com.parse.push.intent.DELETE" />
+                <action android:name="com.parse.push.intent.OPEN" />
+            </intent-filter>
+        </receiver>
+
         <receiver android:name="com.parse.ParsePushBroadcastReceiver"
             android:exported="false">
             <intent-filter>
