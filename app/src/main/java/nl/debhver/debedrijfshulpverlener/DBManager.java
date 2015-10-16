@@ -22,7 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +75,7 @@ public class DBManager {
         query.findInBackground(callback);
     }
 
-    void createIncident(Incident i, final HomeUserActivity homeUserActivity){
+    void createIncident(final Incident i, final HomeUserActivity homeUserActivity){
 
         i.saveInBackground(new SaveCallback() {
             @Override
@@ -84,7 +83,6 @@ public class DBManager {
                 if (e == null) {
                     doToastMessageInView(homeUserActivity, "Incident saved to database.");
                     pushIncident(i);
-                    //homeUserActivity.clearFieldsAfterAddingBranch();
                 } else {
                     Log.d("ParseError", e.toString());
                     doToastMessageInView(homeUserActivity, "ERROR: Incident was not saved to database.");
