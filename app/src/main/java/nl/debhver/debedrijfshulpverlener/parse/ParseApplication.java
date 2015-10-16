@@ -10,7 +10,14 @@ import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
-import nl.debhver.debedrijfshulpverlener.models.*;
+import nl.debhver.debedrijfshulpverlener.models.Branch;
+import nl.debhver.debedrijfshulpverlener.models.Equipment;
+import nl.debhver.debedrijfshulpverlener.models.EvacuationPlan;
+import nl.debhver.debedrijfshulpverlener.models.ImageModel;
+import nl.debhver.debedrijfshulpverlener.models.Incident;
+import nl.debhver.debedrijfshulpverlener.models.Training;
+import nl.debhver.debedrijfshulpverlener.models.User;
+import nl.debhver.debedrijfshulpverlener.models.UserTraining;
 
 public class ParseApplication extends Application {
     private static Context mContext;
@@ -33,6 +40,7 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(UserTraining.class);
 
         Parse.initialize(this, "f7TM8VHqrH17pUmlzPSgq567RryuYOjvnB96FC0P", "vdB7HpL58bnYc6TOij3NolTyq72PDh32fXiwYjiL");
+        // Specify an Activity to handle all pushes by default.
         ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
