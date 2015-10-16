@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseFile;
@@ -61,10 +62,14 @@ public class HomeUserActivity extends HomeActivity {
                 incidentLocation = (EditText) view.findViewById(R.id.incident_location);
                 incidentDescription = (EditText) view.findViewById(R.id.incident_description);
 
+                //final EditText[] allInput = {incidentDescription, incidentLocation};
+
                 alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        //checkInputFields(allInput);
 
                         //get selected item from spinner
                         int id = incidentTypes.getSelectedItemPosition();
@@ -149,4 +154,17 @@ public class HomeUserActivity extends HomeActivity {
 
         }
     }
+
+//    public void checkInputFields(TextView[] textView){
+//        for (TextView s: textView){
+//            if(s.getText().toString().isEmpty()){
+//                Toast.makeText(this, "Some", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//
+//    }
+
+
+
+
 }
