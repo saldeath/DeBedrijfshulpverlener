@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -54,7 +55,7 @@ public class HomeUserActivity extends HomeActivity {
 
                 View view = LayoutInflater.from(HomeUserActivity.this).inflate(R.layout.incident_dialog, null);
 
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeUserActivity.this);
+                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeUserActivity.this);
                 alertDialog.setView(view);
 
                 initSpinner(view);
@@ -62,42 +63,51 @@ public class HomeUserActivity extends HomeActivity {
                 incidentLocation = (EditText) view.findViewById(R.id.incident_location);
                 incidentDescription = (EditText) view.findViewById(R.id.incident_description);
 
-                //final EditText[] allInput = {incidentDescription, incidentLocation};
-
-                alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        //checkInputFields(allInput);
-
-                        //get selected item from spinner
-                        int id = incidentTypes.getSelectedItemPosition();
-                        IncidentType[] incidentTypes = IncidentType.values();
-
-                        //save incident
-                        Incident incident = new Incident();
-                        incident.setDescription(incidentDescription.getText().toString());
-                        incident.setLocation(incidentLocation.getText().toString());
-                        incident.setUser(user);
-                        incident.setType(incidentTypes[id]);
-                        incident.setTime(getDate());
-                        //incident.setImage(scaledImageByte);
-                        if(model != null){
-                            incident.setImage(model);
-                            model=null;
-                        }
-
-                        DBManager.getInstance().createIncident(incident, HomeUserActivity.this);
-
-                    }
-                });
+                alertDialog.setPositiveButton("ok", null);
 
                 alertDialog.setNegativeButton("Annuleren", null);
                 alertDialog.setTitle("Incident Melden");
                 Dialog dialog = alertDialog.create();
-                dialog.show();
 
+
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(final DialogInterface dialog) {
+                        Button b = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                        b.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+
+                                if (checkInputFields()) {
+                                    //get selected item from spinner
+                                    int id = incidentTypes.getSelectedItemPosition();
+                                    IncidentType[] incidentTypes = IncidentType.values();
+
+                                    //save incident
+                                    Incident incident = new Incident();
+                                    incident.setDescription(incidentDescription.getText().toString());
+                                    incident.setLocation(incidentLocation.getText().toString());
+                                    incident.setUser(user);
+                                    incident.setType(incidentTypes[id]);
+                                    incident.setTime(getDate());
+                                    //incident.setImage(scaledImageByte);
+                                    if (model != null) {
+                                        incident.setImage(model);
+                                        model = null;
+                                    }
+
+                                    DBManager.getInstance().createIncident(incident, HomeUserActivity.this);
+                                    dialog.dismiss();
+                                }
+
+
+                            }
+                        });
+                    }
+                });
+
+                dialog.show();
             }
         });
 
@@ -122,16 +132,16 @@ public class HomeUserActivity extends HomeActivity {
         startActivityForResult(intent, TAKE_FOTO_REQUEST);
     }
 
-    public void startCamera(View view){
+    public void startCamera(View view) {
         openCamera();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == TAKE_FOTO_REQUEST && resultCode == RESULT_OK){
+        if (requestCode == TAKE_FOTO_REQUEST && resultCode == RESULT_OK) {
 
-           // equipmentImage = (Bitmap) data.getExtras().get("data");
+            // equipmentImage = (Bitmap) data.getExtras().get("data");
             //Bitmap scaledIncident = Bitmap.createScaledBitmap(equipmentImage, 500, 500 * equipmentImage.getHeight() / equipmentImage.getWidth(), false);
 
             // Resize photo from camera byte array
@@ -155,16 +165,20 @@ public class HomeUserActivity extends HomeActivity {
         }
     }
 
-//    public void checkInputFields(TextView[] textView){
-//        for (TextView s: textView){
-//            if(s.getText().toString().isEmpty()){
-//                Toast.makeText(this, "Some", Toast.LENGTH_LONG).show();
-//            }
-//        }
-//
-//    }
+    public boolean checkInputFields() {
 
+        if (incidentLocation.getText().toString().isEmpty()) {
+            popupShortToastMessage("Locatie is verplicht");
+            return false;
+        }
 
+        if (incidentDescription.getText().toString().isEmpty()) {
+            popupShortToastMessage("Beschrijving is verplicht");
+            return false;
+        }
+
+        return true;
+    }
 
 
 }
