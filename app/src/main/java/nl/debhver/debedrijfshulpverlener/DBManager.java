@@ -7,7 +7,9 @@ import android.widget.Toast;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
@@ -26,6 +28,7 @@ import java.util.Map;
 
 import nl.debhver.debedrijfshulpverlener.enums.Table;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
+import nl.debhver.debedrijfshulpverlener.models.ImageModel;
 import nl.debhver.debedrijfshulpverlener.models.Incident;
 import nl.debhver.debedrijfshulpverlener.models.Training;
 import nl.debhver.debedrijfshulpverlener.models.User;
@@ -80,7 +83,7 @@ public class DBManager {
             public void done(ParseException e) {
                 if (e == null) {
                     doToastMessageInView(homeUserActivity, "Incident saved to database.");
-
+                    pushIncident(i);
                     //homeUserActivity.clearFieldsAfterAddingBranch();
                 } else {
                     Log.d("ParseError", e.toString());
@@ -88,7 +91,7 @@ public class DBManager {
                 }
             }
         });
-        pushIncident(i);
+
     }
 
     void pushIncident(final Incident i){
@@ -135,8 +138,19 @@ public class DBManager {
         User user = (User) User.getCurrentUser();
         if(user != null){
             try {
-                String branch = user.getBranch().fetchIfNeeded().toString();
-                ParsePush.subscribeInBackground(branch);
+                final String branch = user.getBranch().fetchIfNeeded().toString();
+                branch.replaceAll("\\s", ""); // remove whitespaces
+                ParsePush.subscribeInBackground(branch, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e == null){
+                            Log.d("ParseSuccess", "Subscribed to " + branch);
+                        }
+                        else{
+                            Log.d("ParseError", e.toString());
+                        }
+                    }
+                });
             } catch (ParseException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
@@ -410,5 +424,42 @@ public class DBManager {
             }
         });
     }
+
+    void getSingleIncidentById(final IncidentOpener incidentOpener, String incidentId){
+        ParseQuery<Incident> query = ParseQuery.getQuery(Incident.class);
+        query.whereEqualTo("objectId",incidentId);
+        query.findInBackground(new FindCallback<Incident>() {
+            public void done(List<Incident> objects, ParseException e) {
+                if (e == null) {
+                    if(!objects.isEmpty()){
+                        for(Incident incident : objects){
+                            incidentOpener.loadIncidentDetails(incident);
+                            try{
+                                ImageModel image = incident.getImage();
+                                if(image != null){
+                                    image = image.fetchIfNeeded();
+                                    ParseFile imageParseFile = image.getParseFile("image");
+                                    imageParseFile.getDataInBackground(new GetDataCallback() {
+                                        @Override
+                                        public void done(byte[] data, ParseException e) {
+                                            if (e == null) {
+                                                incidentOpener.loadIncidentPhoto(data);
+                                            } else {
+                                            }
+                                        }
+                                    });
+                                }
+                            } catch (ParseException f) {
+                                f.printStackTrace();
+                            }
+                        }
+                    }
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 
 }
