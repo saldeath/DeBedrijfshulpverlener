@@ -20,6 +20,7 @@ public class AdminAddBranchActivity extends HomeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_branch);
+        setBackButtonOnToolbar(true);
 
         String branchObjId = getIntent().getStringExtra(AdminBranchDefaultActivity.BRANCH_EXTRA);
         if(branchObjId != null){ // user was added in intent
@@ -63,10 +64,6 @@ public class AdminAddBranchActivity extends HomeActivity {
         else {
             return true;
         }
-    }
-
-    void popupShortToastMessage(String msg){
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     public void addBranch(View view){

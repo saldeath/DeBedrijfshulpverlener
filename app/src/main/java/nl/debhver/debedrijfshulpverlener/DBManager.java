@@ -44,15 +44,15 @@ public class DBManager {
         return instance;
     }
 
-	public void save(ParseObject object, SaveCallback callback){
+	public void save(ParseObject object, final SaveCallback callback){
         object.saveInBackground(callback);
     }
 
-    public void delete(ParseObject object, DeleteCallback callback){
+    public void delete(ParseObject object, final DeleteCallback callback){
         object.deleteInBackground(callback);
     }
 
-    public void geListParseObjects(Table table, final FindCallback callback) {
+    public void getListParseObjects(Table table, final FindCallback callback) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(table.toString());
         query.findInBackground(callback);
     }
@@ -63,7 +63,7 @@ public class DBManager {
         query.findInBackground(callback);
     }
 
-    public void geListParseObjects(Table table, Map<String, List<String>> argsEquelTo, final FindCallback callback) {
+    public void getListParseObjects(Table table, Map<String, List<String>> argsEquelTo, final FindCallback callback) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(table.toString());
         for (Map.Entry<String, List<String>> entry : argsEquelTo.entrySet()) {
             for(String arg : entry.getValue()) {
@@ -349,8 +349,6 @@ public class DBManager {
             }
         });
     }
-
-
 
     void updateTraining(Training training, final TrainingAddActivity trainingAddActivity)
     {

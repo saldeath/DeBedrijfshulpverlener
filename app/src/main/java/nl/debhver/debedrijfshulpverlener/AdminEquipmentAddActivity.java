@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,14 +21,15 @@ import android.widget.Button;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -49,16 +49,36 @@ public class AdminEquipmentAddActivity extends HomeActivity {
     private ImageView equipmentTypeImage, inputPicture;
     private Equipment selectedEquipment = null;
     private Bitmap equipmentImage;
+    private static DateFormat getDateFormat() {
+        return new SimpleDateFormat("EEE, MMM dd, yyyy", Locale.getDefault());
+    }
+    //source: http://stackoverflow.com/questions/6185966/converting-a-date-object-to-a-calendar-object
+    private static Calendar getDateToCalendar(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_equipment_add);
         setBackButtonOnToolbar(true);
-        initializeInput();
 
+        initializeInput();
         retrieveBranches();
         populateEquipmentTypeSpinner();
+
+        String equipmentObjId = getIntent().getStringExtra(AdminEquipmentDefaultActivity.EQUIPMENT_EXTRA);
+        if(equipmentObjId != null) { // user was added in intent
+            setTitle(R.string.title_activity_admin_equipment_edit);
+            DBManager.getInstance().getParseObjectById(Table.EQUIPMENT, equipmentObjId, new FindCallback<Equipment>() {
+                @Override
+                public void done(List<Equipment> objects, ParseException e) {
+                    setInputSelectedEquipment(selectedEquipment = objects.get(0));
+                }
+            });
+        }
     }
 
     //source: http://www.vogella.com/tutorials/AndroidCamera/article.html
@@ -114,13 +134,8 @@ public class AdminEquipmentAddActivity extends HomeActivity {
     private void populateBranches(List<Branch> branches){
         final List<Branch> items = (List)branches;
         final Spinner dropdown = inputBranch;
-        dropdown.post(new Runnable() {
-            @Override
-            public void run() {
                 ArrayAdapter<Branch> adapter = new ArrayAdapter<Branch>(AdminEquipmentAddActivity.this, android.R.layout.simple_spinner_dropdown_item, items);
                 dropdown.setAdapter(adapter);
-            }
-        });
     }
 
     private void populateEquipmentTypeSpinner() {
@@ -129,18 +144,7 @@ public class AdminEquipmentAddActivity extends HomeActivity {
     }
 
     private void retrieveBranches(){
-        /*new AsyncTask<Void, Void, List<ParseObject>>() {
-            @Override
-            protected List<ParseObject> doInBackground(Void... p) {
-                return DBManager.getInstance().getBranches();
-            }
-
-            @Override
-            protected void onPostExecute(List<ParseObject> result) {
-                populateBranches(result);
-            }
-        }.execute();*/
-        DBManager.getInstance().geListParseObjects(Table.BRANCH, new FindCallback<Branch>() {
+        DBManager.getInstance().getListParseObjects(Table.BRANCH, new FindCallback<Branch>() {
             @Override
             public void done(List<Branch> objects, ParseException e) {
                 populateBranches(objects);
@@ -161,20 +165,19 @@ public class AdminEquipmentAddActivity extends HomeActivity {
             public void onDateSet(DatePicker view, int selectedYear,
                                   int selectedMonth, int selectedDay) {
                 Calendar calendar = new GregorianCalendar(selectedYear, selectedMonth, selectedDay);
-                SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("EEE, MMM dd, yyyy", Locale.getDefault());
                 switch(id) {
                     case (inputDateOfPurchaseId): {
-                        inputDateOfPurchase.setText(DATE_FORMATTER.format(calendar.getTime()));
+                        inputDateOfPurchase.setText(getDateFormat().format(calendar.getTime()));
                         dateOfPurchase = calendar;
                         break;
                     }
                     case (inputExpirationDateId): {
-                        inputExpirationDate.setText(DATE_FORMATTER.format(calendar.getTime()));
+                        inputExpirationDate.setText(getDateFormat().format(calendar.getTime()));
                         expirationDate = calendar;
                         break;
                     }
                     case (inputDateOfInspectionId): {
-                        inputDateOfInspection.setText(DATE_FORMATTER.format(calendar.getTime()));
+                        inputDateOfInspection.setText(getDateFormat().format(calendar.getTime()));
                         dateOfInspection = calendar;
                         break;
                     }
@@ -279,8 +282,7 @@ public class AdminEquipmentAddActivity extends HomeActivity {
             selectedEquipment.setExpirationDate(expirationDate.getTime());
             if(dateOfInspection != null)
                 selectedEquipment.setDateOfInspection(dateOfInspection.getTime());
-            Branch branch = (Branch) inputBranch.getSelectedItem();
-            selectedEquipment.setBranch(branch);
+            selectedEquipment.setBranch((Branch) inputBranch.getSelectedItem());
             //imageModel.setImage(ImageModel.getBytes(equipmentImage));
             //selectedEquipment.setImage(imageModel);
 
@@ -288,12 +290,12 @@ public class AdminEquipmentAddActivity extends HomeActivity {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
-                        AdminEquipmentAddActivity.this.popupShortToastMessage(getString(R.string.save_succes));
+                        AdminEquipmentAddActivity.this.popupShortToastMessage(getString(R.string.equipment_save_succes));
                         AdminEquipmentAddActivity.this.setSaved(true);
                         AdminEquipmentAddActivity.this.finish();
                     } else {
                         Log.d("ParseError", e.toString());
-                        AdminEquipmentAddActivity.this.popupShortToastMessage(getString(R.string.save_error));
+                        AdminEquipmentAddActivity.this.popupShortToastMessage(getString(R.string.equipment_save_error));
                     }
                 }
             });
@@ -319,6 +321,31 @@ public class AdminEquipmentAddActivity extends HomeActivity {
             validInput = false;
         }
         return validInput;
+    }
+
+    private void setInputSelectedEquipment(Equipment equipment) {
+        selectedEquipment = equipment;
+
+        inputName.setText(equipment.getName());
+        inputDescription.setText(equipment.getDescription());
+        inputLocation.setText(equipment.getLocation());
+        int i = 0;
+        for(EquipmentType type : EquipmentType.values()) {
+            if(type == equipment.getType())
+                inputType.setSelection(i, false);
+            i++;
+        }
+        dateOfPurchase = getDateToCalendar(equipment.getDateOfPurchase());
+        inputDateOfPurchase.setText(getDateFormat().format(dateOfPurchase.getTime()));
+        expirationDate = getDateToCalendar(equipment.getExpirationDate());
+        inputExpirationDate.setText(getDateFormat().format(expirationDate.getTime()));
+        dateOfInspection = getDateToCalendar(equipment.getDateOfInspection());
+        if(dateOfInspection != null)
+            inputDateOfInspection.setText(getDateFormat().format(dateOfInspection.getTime()));
+        ArrayAdapter<Branch> adapter= (ArrayAdapter)inputBranch.getAdapter();
+        inputBranch.setSelection(adapter.getPosition(equipment.getBranch()));
+        //imageModel.setImage(ImageModel.getBytes(equipmentImage));
+        //selectedEquipment.setImage(imageModel);
     }
 
     private void initializeInput() {

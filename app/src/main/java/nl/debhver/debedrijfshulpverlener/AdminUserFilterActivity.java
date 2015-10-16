@@ -20,6 +20,7 @@ public class AdminUserFilterActivity extends HomeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_filter_user);
+        setBackButtonOnToolbar(false);
         addUserEROFunctions();
         addUserRights();
 
