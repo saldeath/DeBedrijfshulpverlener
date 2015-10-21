@@ -17,5 +17,5 @@
         android:id="@+id/incident_button"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/incident_button" />
+        android:background="@drawable/incident_button_2" />
 </RelativeLayout>
