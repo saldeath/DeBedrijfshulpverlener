@@ -211,10 +211,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         switch (menuItem.getItemId()){
             case R.id.navigation_item_1:
-                fullView.closeDrawer(GravityCompat.START);
-                intent = new Intent(getApplicationContext(), HomeUserActivity.class);
-                startActivity(intent);
-                return true;
+                    fullView.closeDrawer(GravityCompat.START);
+                if (!currentActivityName.equals(HomeUserActivity.class + "")) {
+                    intent = new Intent(HomeActivity.this, HomeUserActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                    return true;
+                }
+
         }
 
         return false;
