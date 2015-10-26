@@ -61,6 +61,14 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".EmergencyManualsActivity"
+            android:label="@string/title_activity_emergency_manuals">
+        </activity>
+        <activity
+            android:name=".SingleEmergencyDetailsActivity"
+            android:label="@string/title_activity_emergency_single_details">
+        </activity>
+        <activity
             android:name=".AdminEquipmentDefaultActivity"
             android:label="@string/title_activity_admin_equipment_default" >
         </activity>

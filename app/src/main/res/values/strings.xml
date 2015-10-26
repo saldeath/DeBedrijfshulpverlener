@@ -93,6 +93,10 @@
     <string name="title_activity_admin_training_edit">Cursussen Wijzigen</string>
     <string name="title_activity_admin_user_filter">Gebruikers filters</string>
     <string name="title_activity_incident_opener">Ontvangen incident</string>
+
+    <string name="title_activity_emergency_manuals">Possible emergencies</string>
+    <string name="title_activity_emergency_single_details">Emergency manual</string>
+
 	<string name="filter_apply_button">Apply filter</string>
 
     <string name="description">Description</string>
@@ -120,4 +124,27 @@
     <string name="equipment_show_expire">Verloopdatum: </string>
     <string name="equipment_show_inspection">Inspectiedatum: </string>
     <string name="equipment_show_image">Foto: </string>
+
+    <string name="heart_attack">Heart attack</string>
+    <string name="suffocation">Suffocation</string>
+    <string name="evacuation_plan">Evacuation plan</string>
+
+
+    <string name="step">Step</string>
+
+    <string name="ha_step1_details">Controleer het bewustzijn van het slachtoffer</string>
+    <string name="ha_step2_details">Roep om hulp</string>
+    <string name="ha_step3_details">Wanneer er geen ademhaling is bij het slachtoffer, bel dan direct 112</string>
+    <string name="ha_step4_details">Laat iemand zo snel mogelijk een AED halen</string>
+    <string name="ha_step5_details">Geef 30 borstcompressies</string>
+    <string name="ha_step6_details">Beadem na iedere 30 borstcompressies het slachtoffer twee keer</string>
+    <string name="ha_step7_details">Als de AED er is, gebruik deze dan zo snel mogelijk</string>
+    <string name="ha_step8_details">Ga door met de reanimatie totdat de professionele hulpverleners zeggen dat je mag stoppen</string>
+
+    <string name="suffocation_step1_details">Sla direct maximaal vijf keer tussen de schouderbladen. Kijk na elke klap of het probleem is opgelost</string>
+    <string name="suffocation_step2_details">Helpt slaan op de rug niet, voer dan maximaal vijf buikstoten uit</string>
+    <string name="suffocation_step3_details">Geef afwisselend vijf slagen tussen de schouderbladen en vijf buikstoten</string>
+    <string name="suffocation_step4_details">Bel direct 112 als het slachtoffer het bewustzijn verliest</string>
+    <string name="suffocation_step5_details">Start met reanimeren als het slachtoffer bewusteloos is en niet meer normaal ademt.</string>
+    <string name="suffocation_step6_details">Ga met kleine kinderen achteraf altijd naar de huisarts</string>
 </resources>

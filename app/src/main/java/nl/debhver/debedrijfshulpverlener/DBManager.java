@@ -135,7 +135,7 @@ public class DBManager {
     }
 
     public void subscribeUserToBranch(){
-        User user = (User) User.getCurrentUser();
+        final User user = (User) User.getCurrentUser();
         if(user != null){
             try {
                 final String branch = user.getBranch().fetchIfNeeded().toString();
@@ -145,6 +145,21 @@ public class DBManager {
                     public void done(ParseException e) {
                         if(e == null){
                             Log.d("ParseSuccess", "Subscribed to " + branch);
+
+                        }
+                        else{
+                            Log.d("ParseError", e.toString());
+                        }
+                    }
+                });
+                final String userId  = user.getObjectId();
+                branch.replaceAll("\\s", ""); // remove whitespaces
+                ParsePush.subscribeInBackground(userId, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e == null){
+                            Log.d("ParseSuccess", "Subscribed to " + userId);
+
                         }
                         else{
                             Log.d("ParseError", e.toString());
