@@ -8,6 +8,7 @@ import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseInstallation;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 import nl.debhver.debedrijfshulpverlener.enums.Table;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
+import nl.debhver.debedrijfshulpverlener.models.Equipment;
 import nl.debhver.debedrijfshulpverlener.models.ImageModel;
 import nl.debhver.debedrijfshulpverlener.models.Incident;
 import nl.debhver.debedrijfshulpverlener.models.Training;
@@ -346,6 +348,19 @@ public class DBManager {
             }
         });
     }
+    void getBranchForEquipments(final UserEquipmentDefaultActivity userEquipmentDefaultActivity, String branchObjectId){
+        ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
+        query.whereEqualTo("objectId",branchObjectId);
+        query.findInBackground(new FindCallback<Branch>() {
+            public void done(List<Branch> objects, ParseException e) {
+                if (e == null) {
+                    getEquipmentByUserBranch(userEquipmentDefaultActivity, objects.get(0));
+                } else {
+                    // error
+                }
+            }
+        });
+    }
 
     void createTraining(Training training, final TrainingAddActivity trainingAddActivity) {
         training.saveInBackground(new SaveCallback() {
@@ -416,6 +431,22 @@ public class DBManager {
                     trainingAddActivity.loadSingleTraining(object);
                 } else {
                     // something went wrong
+                }
+            }
+        });
+    }
+
+    void getEquipmentByUserBranch(final UserEquipmentDefaultActivity userEquipmentDefaultActivity, Branch branchObject){
+
+        ParseQuery<Equipment> query = ParseQuery.getQuery(Equipment.class);
+        query.whereEqualTo("branch",branchObject);
+        query.findInBackground(new FindCallback<Equipment>() {
+            public void done(List<Equipment> objects, ParseException e) {
+                if (e == null) {
+                    userEquipmentDefaultActivity.setEquipmentList(objects);
+                } else {
+                    Log.d("ParseError", e.toString());
+                    userEquipmentDefaultActivity.popupShortToastMessage("ERROR: Nothing was retrieved from database.");
                 }
             }
         });

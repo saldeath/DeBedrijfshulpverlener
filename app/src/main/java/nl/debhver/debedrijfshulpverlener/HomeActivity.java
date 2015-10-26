@@ -147,20 +147,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
-        menu.add(R.string.title_activity_admin_branch_default);
-        item = menu.getItem(menu.size()-1);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                fullView.closeDrawer(GravityCompat.START);
-                if (!currentActivityName.equals(AdminBranchDefaultActivity.class + "")) {
-                    Intent i = new Intent(HomeActivity.this, AdminBranchDefaultActivity.class);
-                    startActivity(i);
-                    return true;
-                }
-                return false;
-            }
-        });
     }
 
 
@@ -223,7 +209,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         Intent intent = null;
 
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
             case R.id.navigation_item_1:
                     fullView.closeDrawer(GravityCompat.START);
                 if (!currentActivityName.equals(HomeUserActivity.class + "")) {
@@ -303,5 +289,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else {
             HomeActivity.super.finish();
         }
+    }
+
+    public String getBranchObjectId(){
+        return this.user.getBranch().getObjectId();
     }
 }
