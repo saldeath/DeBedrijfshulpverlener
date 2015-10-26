@@ -52,7 +52,10 @@ public class UserEquipmentDefaultActivity extends HomeActivity {
         equipmentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                //To-Do: Popup met daarin de informatie van de equipment.
+                Equipment equipment = (Equipment) equipmentListView.getItemAtPosition(position);
+                Intent intent = new Intent(UserEquipmentDefaultActivity.this, UserEquipmentShowActivity.class);
+                intent.putExtra(EQUIP_EXTRA, equipment.getObjectId());
+                UserEquipmentDefaultActivity.this.startActivity(intent);
 
             }
         });

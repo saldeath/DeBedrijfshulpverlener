@@ -112,4 +112,12 @@
     <string name="equipment_delete_error">Error: apparaat niet verweiderd</string>
     <string name="error_loading_picture">Error met het ophalen van de afbeelding</string>
 
+    <string name="equipment_show_name">Naam: </string>
+    <string name="equipment_show_description">Omschrijving: </string>
+    <string name="equipment_show_location">Locatie: </string>
+    <string name="equipment_show_type">Type: </string>
+    <string name="equipment_show_purchase">Aankoopdatum: </string>
+    <string name="equipment_show_expire">Verloopdatum: </string>
+    <string name="equipment_show_inspection">Inspectiedatum: </string>
+    <string name="equipment_show_image">Foto: </string>
 </resources>

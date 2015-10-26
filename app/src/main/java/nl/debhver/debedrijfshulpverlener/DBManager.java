@@ -489,4 +489,17 @@ public class DBManager {
     }
 
 
+    public void getSingleEuipmentById(final UserEquipmentShowActivity userEquipmentShowActivity, String equipmentObjId) {
+        ParseQuery<Equipment> query = ParseQuery.getQuery(Equipment.class);
+        query.whereEqualTo("objectId",equipmentObjId);
+        query.findInBackground(new FindCallback<Equipment>() {
+            public void done(List<Equipment> objects, ParseException e) {
+                if (e == null) {
+                    userEquipmentShowActivity.loadSingleBranchDetails(objects);
+                } else {
+                    // error
+                }
+            }
+        });
+    }
 }
