@@ -20,9 +20,12 @@ import android.widget.TextView;
 import android.widget.Button;
 
 import com.parse.FindCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,6 +51,7 @@ public class AdminEquipmentAddActivity extends HomeActivity {
     private Spinner inputType, inputBranch;
     private ImageView equipmentTypeImage, inputPicture;
     private Equipment selectedEquipment = null;
+    private ImageModel equipmentPhoto;
     private Bitmap equipmentImage;
     private static DateFormat getDateFormat() {
         return new SimpleDateFormat("EEE, MMM dd, yyyy", Locale.getDefault());
@@ -61,24 +65,17 @@ public class AdminEquipmentAddActivity extends HomeActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String equipmentObjId = getIntent().getStringExtra(AdminEquipmentDefaultActivity.EQUIPMENT_EXTRA);
+        if(equipmentObjId != null) // user was added in intent
+            setTitle(R.string.title_activity_admin_equipment_edit);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_equipment_add);
         setBackButtonOnToolbar(true);
 
         initializeInput();
-        retrieveBranches();
+        retrieveBranches(equipmentObjId);
         populateEquipmentTypeSpinner();
-
-        String equipmentObjId = getIntent().getStringExtra(AdminEquipmentDefaultActivity.EQUIPMENT_EXTRA);
-        if(equipmentObjId != null) { // user was added in intent
-            setTitle(R.string.title_activity_admin_equipment_edit);
-            DBManager.getInstance().getParseObjectById(Table.EQUIPMENT, equipmentObjId, new FindCallback<Equipment>() {
-                @Override
-                public void done(List<Equipment> objects, ParseException e) {
-                    setInputSelectedEquipment(selectedEquipment = objects.get(0));
-                }
-            });
-        }
     }
 
     //source: http://www.vogella.com/tutorials/AndroidCamera/article.html
@@ -110,11 +107,24 @@ public class AdminEquipmentAddActivity extends HomeActivity {
             else if(requestCode == CAMERA_REQUEST_CODE) {
                 equipmentImage = scaleBitmap((Bitmap) data.getExtras().get("data"));
             }
+
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            equipmentImage.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+
             inputPicture.setImageBitmap(equipmentImage);
+            byte[] scaledData = bos.toByteArray();
+
+            // Save the scaled image to Parse
+            if(equipmentPhoto == null)
+                equipmentPhoto = new ImageModel();
+            ParseFile photoFile = new ParseFile("equipment.jpg", scaledData);
+
+            equipmentPhoto.setImageParseFile(photoFile);
         }
     }
 
-    private Bitmap scaleBitmap(Bitmap bitmap) {
+    private static Bitmap scaleBitmap(Bitmap bitmap) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         float scaleWidth = 0;
@@ -143,11 +153,19 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         inputType.setAdapter(adapter);
     }
 
-    private void retrieveBranches(){
+    private void retrieveBranches(final String equipmentObjId){
         DBManager.getInstance().getListParseObjects(Table.BRANCH, new FindCallback<Branch>() {
             @Override
             public void done(List<Branch> objects, ParseException e) {
                 populateBranches(objects);
+                if(equipmentObjId != null) { // user was added in intent
+                    DBManager.getInstance().getParseObjectById(Table.EQUIPMENT, equipmentObjId, new FindCallback<Equipment>() {
+                        @Override
+                        public void done(List<Equipment> objects, ParseException e) {
+                            setInputSelectedEquipment(selectedEquipment = objects.get(0));
+                        }
+                    });
+                }
             }
         });
     }
@@ -265,13 +283,8 @@ public class AdminEquipmentAddActivity extends HomeActivity {
 
     public void FABSaveClicked(View v) {
         if(isValidInput()) {
-            ImageModel imageModel;
-            if(selectedEquipment == null) {
-                imageModel = new ImageModel();
+            if(selectedEquipment == null)
                 selectedEquipment = new Equipment();
-                selectedEquipment.setImage(imageModel);
-            }
-            imageModel = selectedEquipment.getImage();
             selectedEquipment.setName(inputName.getText().toString());
             selectedEquipment.setDescription(inputDescription.getText().toString());
             selectedEquipment.setLocation(inputLocation.getText().toString());
@@ -283,8 +296,7 @@ public class AdminEquipmentAddActivity extends HomeActivity {
             if(dateOfInspection != null)
                 selectedEquipment.setDateOfInspection(dateOfInspection.getTime());
             selectedEquipment.setBranch((Branch) inputBranch.getSelectedItem());
-            //imageModel.setImage(ImageModel.getBytes(equipmentImage));
-            //selectedEquipment.setImage(imageModel);
+            selectedEquipment.setImage(equipmentPhoto);
 
             DBManager.getInstance().save(selectedEquipment, new SaveCallback() {
                 @Override
@@ -339,13 +351,29 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         inputDateOfPurchase.setText(getDateFormat().format(dateOfPurchase.getTime()));
         expirationDate = getDateToCalendar(equipment.getExpirationDate());
         inputExpirationDate.setText(getDateFormat().format(expirationDate.getTime()));
-        dateOfInspection = getDateToCalendar(equipment.getDateOfInspection());
-        if(dateOfInspection != null)
+        if(equipment.getDateOfInspection() != null) {
+            dateOfInspection = getDateToCalendar(equipment.getDateOfInspection());
             inputDateOfInspection.setText(getDateFormat().format(dateOfInspection.getTime()));
+        }
         ArrayAdapter<Branch> adapter= (ArrayAdapter)inputBranch.getAdapter();
         inputBranch.setSelection(adapter.getPosition(equipment.getBranch()));
-        //imageModel.setImage(ImageModel.getBytes(equipmentImage));
-        //selectedEquipment.setImage(imageModel);
+        equipmentPhoto = equipment.getImage();
+        if(equipmentPhoto != null) {
+            ParseFile file = equipmentPhoto.getImageParseFile();
+            if (file != null) {
+                file.getDataInBackground(new GetDataCallback() {
+                    @Override
+                    public void done(byte[] data, ParseException e) {
+                        if (e == null)
+                            if (data.length > 1) {
+                                equipmentImage = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                inputPicture.setImageBitmap(equipmentImage);
+                            } else
+                                popupShortToastMessage(getString(R.string.error_loading_picture));
+                    }
+                });
+            }
+        }
     }
 
     private void initializeInput() {
@@ -373,8 +401,6 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         inputDateOfInspection.setOnFocusChangeListener(new DateInputFocusListener());
         inputDateOfInspection.setOnClickListener(new DateInputClickedListener());
     }
-
-
 
     private class DateInputClickedListener implements View.OnClickListener {
         @Override

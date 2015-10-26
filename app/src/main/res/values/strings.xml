@@ -110,5 +110,6 @@
     <string name="equipment_save_error">Error: apparaat niet opgeslagen</string>
     <string name="equipment_delete_succes">Apparaat succesvol verweiderd</string>
     <string name="equipment_delete_error">Error: apparaat niet verweiderd</string>
+    <string name="error_loading_picture">Error met het ophalen van de afbeelding</string>
 
 </resources>

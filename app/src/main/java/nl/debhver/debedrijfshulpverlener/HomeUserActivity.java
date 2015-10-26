@@ -15,8 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.ParseFile;
 
@@ -159,7 +157,7 @@ public class HomeUserActivity extends HomeActivity {
             // Save the scaled image to Parse
             ParseFile photoFile = new ParseFile("incident.jpg", scaledData);
             model = new ImageModel();
-            model.setParseFile(photoFile);
+            model.setImageParseFile(photoFile);
             incident.setImage(model);
 
         }
