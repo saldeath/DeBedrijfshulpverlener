@@ -24,8 +24,8 @@
     <string name="user_right_none">Geen</string>
     <string name="user_right_admin">Admin</string>
     <string name="user_right_equipment">Alleen apparaten</string>
-    <string name="user_right_user">Alleen gebruikers</string>
-    <string name="user_right_equipment_user">Apparaten en gebruikers</string>
+    <string name="user_right_training">Alleen cursussen</string>
+    <string name="user_right_equipment_training">Apparaten en cursussen</string>
 
     <string name="user_ERO_function_fire">Brand blussen</string>
     <string name="user_ERO_function_first_aid">EHBO</string>

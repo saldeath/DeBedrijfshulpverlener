@@ -8,7 +8,7 @@ import nl.debhver.debedrijfshulpverlener.parse.ParseApplication;
  */
 public enum UserRight {
     NONE(R.string.user_right_none), ADMIN(R.string.user_right_admin), EQUIPMENT(R.string.user_right_equipment),
-    USER(R.string.user_right_user), EQUIPMENT_USER(R.string.user_right_equipment_user);
+    TRAINING(R.string.user_right_training), EQUIPMENT_TRAINING(R.string.user_right_equipment_training);
 
     private final int resourceId;
 

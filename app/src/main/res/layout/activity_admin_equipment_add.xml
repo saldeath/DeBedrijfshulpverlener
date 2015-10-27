@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/inputDescription"
                     android:hint="@string/hint_equipment_description"
-                    android:singleLine="true"
+                    android:singleLine="false"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
@@ -223,11 +223,13 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minWidth="200dp"
+                android:minHeight="200dp"
                 android:id="@+id/equipmentImage"
                 android:layout_gravity="center_horizontal"
                 android:nestedScrollingEnabled="true"
-                android:background="@drawable/ic_camera"
-                android:backgroundTint="@color/button_material_light"
+                android:background="@android:color/darker_gray"
+                android:backgroundTint="@android:color/darker_gray"
                 android:scaleType="centerCrop"/>
 
             <Space

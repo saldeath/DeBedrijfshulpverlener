@@ -2,6 +2,9 @@ package nl.debhver.debedrijfshulpverlener.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+
+import org.json.JSONObject;
+
 import java.util.Date;
 import nl.debhver.debedrijfshulpverlener.enums.EquipmentType;
 
@@ -57,7 +60,10 @@ public class Equipment extends ParseObject{
         put("date_of_inspection", dateOfInspection);
     }
     public void setImage(ImageModel imageModel) {
-        put("image", imageModel);
+        if(imageModel == null)
+            put("image", JSONObject.NULL);
+        else
+            put("image", imageModel);
     }
     public ImageModel getImage()  {
         return (ImageModel) getParseObject("image");

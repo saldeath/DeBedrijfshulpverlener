@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.parse.ParseUser;
 
+import nl.debhver.debedrijfshulpverlener.enums.UserRight;
 import nl.debhver.debedrijfshulpverlener.models.User;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -38,13 +39,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private String currentActivityName = "";
 
     private TextView currentUser, currentBranch;
-    private User user;
+    public static User getUser() {
+        return (User) User.getCurrentUser();
+    }
 
     private boolean finishWarning = false;
-    private static Intent homeUserActivity;
-    private static Intent adminUserDefaultActivity;
-    private static Intent adminEquipmentDefaultActivity;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +55,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setValuesHeader() throws ParseException {
-        user = (User) User.getCurrentUser();
         currentUser = (TextView)findViewById(R.id.app_header_name);
         currentBranch = (TextView)findViewById(R.id.app_header_branch);
 
-        currentUser.setText(user.getName());
-        currentBranch.setText(user.getBranch().fetchIfNeeded().getString("name"));
+        currentUser.setText(getUser().getName());
+        currentBranch.setText(getUser().getBranch().fetchIfNeeded().getString("name"));
 
     }
 
@@ -98,55 +96,61 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void addAdminOptions(Menu menu) {
-        MenuItem item;
-        menu.add(R.string.title_activity_admin_equipment_default);
-        item = menu.getItem(menu.size()-1);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                fullView.closeDrawer(GravityCompat.START);
-                if (!currentActivityName.equals(AdminEquipmentDefaultActivity.class + "")) {
-                    Intent i = new Intent(HomeActivity.this, AdminEquipmentDefaultActivity.class);
-                    startActivity(i);
-                    return true;
-                }
-                return false;
-            }
-        });
-        menu.add(R.string.title_activity_admin_user_default);
-        item = menu.getItem(menu.size()-1);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                fullView.closeDrawer(GravityCompat.START);
-                if(!currentActivityName.equals(AdminUserDefaultActivity.class + "")) {
-                    if(adminUserDefaultActivity == null) {
-                        adminUserDefaultActivity = new Intent(HomeActivity.this, AdminUserDefaultActivity.class);
-                    } else {
-                        adminUserDefaultActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        adminUserDefaultActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        adminUserDefaultActivity.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        UserRight right = getUser().getRight();
+        if(right != UserRight.NONE) {
+            MenuItem item;
+            if(right != UserRight.TRAINING) {
+                menu.add(R.string.title_activity_admin_equipment_default);
+                item = menu.getItem(menu.size() - 1);
+                item.setIcon(getDrawable(R.drawable.ic_add_fire_extinguisher_18dp));
+                item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        fullView.closeDrawer(GravityCompat.START);
+                        if (!currentActivityName.equals(AdminEquipmentDefaultActivity.class + "")) {
+                            Intent i = new Intent(HomeActivity.this, AdminEquipmentDefaultActivity.class);
+                            startActivity(i);
+                            return true;
+                        }
+                        return false;
                     }
-                    startActivity(adminUserDefaultActivity);
-                    return true;
-                }
-                return false;
+                });
             }
-        });
-        menu.add(R.string.title_activity_admin_training_default);
-        item = menu.getItem(menu.size()-1);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                fullView.closeDrawer(GravityCompat.START);
-                if(!currentActivityName.equals(AdminUserDefaultActivity.class + "")) {
-                    Intent i = new Intent(HomeActivity.this, TrainingActivity.class);
-                    startActivity(i);
-                    return true;
-                }
-                return false;
+            if(right != UserRight.EQUIPMENT) {
+                menu.add(R.string.title_activity_admin_training_default);
+                item = menu.getItem(menu.size() - 1);
+                item.setIcon(getDrawable(R.drawable.ic_add_file_document_box_white_18dp));
+                item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        fullView.closeDrawer(GravityCompat.START);
+                        if (!currentActivityName.equals(TrainingActivity.class + "")) {
+                            Intent i = new Intent(HomeActivity.this, TrainingActivity.class);
+                            startActivity(i);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
             }
-        });
+            if(right == UserRight.ADMIN) {
+                menu.add(R.string.title_activity_admin_user_default);
+                item = menu.getItem(menu.size() - 1);
+                item.setIcon(getDrawable(R.drawable.ic_add_account_white_18dp));
+                item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        fullView.closeDrawer(GravityCompat.START);
+                        if (!currentActivityName.equals(AdminUserDefaultActivity.class + "")) {
+                            Intent i  = new Intent(HomeActivity.this, AdminUserDefaultActivity.class);
+                            startActivity(i);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+            }
+        }
     }
 
 
@@ -207,13 +211,36 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
-        Intent intent = null;
-
+        Intent intent;
         switch (menuItem.getItemId()) {
             case R.id.navigation_item_1:
                     fullView.closeDrawer(GravityCompat.START);
                 if (!currentActivityName.equals(HomeUserActivity.class + "")) {
                     intent = new Intent(HomeActivity.this, HomeUserActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                    return true;
+                }
+
+        }
+        switch (menuItem.getItemId()) {
+            case R.id.navigation_item_2:
+                fullView.closeDrawer(GravityCompat.START);
+                if (!currentActivityName.equals(UserEquipmentDefaultActivity.class + "")) {
+                    intent = new Intent(HomeActivity.this, UserEquipmentDefaultActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                    return true;
+                }
+
+        }
+        switch (menuItem.getItemId()) {
+            case R.id.navigation_item_3:
+                fullView.closeDrawer(GravityCompat.START);
+                if (!currentActivityName.equals(UserEquipmentDefaultActivity.class + "")) {
+                    intent = new Intent(HomeActivity.this, UserEquipmentDefaultActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
@@ -292,6 +319,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public String getBranchObjectId(){
-        return this.user.getBranch().getObjectId();
+        return getUser().getBranch().getObjectId();
     }
 }

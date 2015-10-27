@@ -7,11 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -19,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Button;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -51,8 +54,9 @@ public class AdminEquipmentAddActivity extends HomeActivity {
     private Spinner inputType, inputBranch;
     private ImageView equipmentTypeImage, inputPicture;
     private Equipment selectedEquipment = null;
-    private ImageModel equipmentPhoto;
+    private ImageModel equipmentPhoto, OldEquipmentPhoto;
     private Bitmap equipmentImage;
+    private boolean deleteOldPhoto = false;
     private static DateFormat getDateFormat() {
         return new SimpleDateFormat("EEE, MMM dd, yyyy", Locale.getDefault());
     }
@@ -76,6 +80,16 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         initializeInput();
         retrieveBranches(equipmentObjId);
         populateEquipmentTypeSpinner();
+
+        if (equipmentObjId != null) { // user was added in intent
+            DBManager.getInstance().getParseObjectById(Table.EQUIPMENT, equipmentObjId, new FindCallback<Equipment>() {
+                @Override
+                public void done(List<Equipment> objects, ParseException e) {
+                    if(e == null)
+                        setInputSelectedEquipment(selectedEquipment = objects.get(0));
+                }
+            });
+        }
     }
 
     //source: http://www.vogella.com/tutorials/AndroidCamera/article.html
@@ -158,14 +172,7 @@ public class AdminEquipmentAddActivity extends HomeActivity {
             @Override
             public void done(List<Branch> objects, ParseException e) {
                 populateBranches(objects);
-                if(equipmentObjId != null) { // user was added in intent
-                    DBManager.getInstance().getParseObjectById(Table.EQUIPMENT, equipmentObjId, new FindCallback<Equipment>() {
-                        @Override
-                        public void done(List<Equipment> objects, ParseException e) {
-                            setInputSelectedEquipment(selectedEquipment = objects.get(0));
-                        }
-                    });
-                }
+
             }
         });
     }
@@ -278,7 +285,14 @@ public class AdminEquipmentAddActivity extends HomeActivity {
     }
 
     private void deleteImage() {
-
+        equipmentImage = null;
+        if(OldEquipmentPhoto != null) {
+            deleteOldPhoto = true;
+        }
+        equipmentPhoto = null;
+        //source: http://stackoverflow.com/questions/5663671/creating-an-empty-bitmap-and-drawing-though-canvas-in-android
+        Bitmap bmp = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
+        inputPicture.setImageBitmap(bmp);
     }
 
     public void FABSaveClicked(View v) {
@@ -305,7 +319,20 @@ public class AdminEquipmentAddActivity extends HomeActivity {
                         AdminEquipmentAddActivity.this.popupShortToastMessage(getString(R.string.equipment_save_succes));
                         AdminEquipmentAddActivity.this.setSaved(true);
                         AdminEquipmentAddActivity.this.finish();
+                        if(deleteOldPhoto) {
+                            DBManager.getInstance().delete(OldEquipmentPhoto, new DeleteCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null) {
+
+                                    } else {
+                                        Log.d("ParseError", e.toString());
+                                    }
+                                }
+                            });
+                        }
                     } else {
+                        System.out.println(e.toString());
                         Log.d("ParseError", e.toString());
                         AdminEquipmentAddActivity.this.popupShortToastMessage(getString(R.string.equipment_save_error));
                     }
@@ -359,6 +386,7 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         inputBranch.setSelection(adapter.getPosition(equipment.getBranch()));
         equipmentPhoto = equipment.getImage();
         if(equipmentPhoto != null) {
+            OldEquipmentPhoto = equipmentPhoto;
             ParseFile file = equipmentPhoto.getImageParseFile();
             if (file != null) {
                 file.getDataInBackground(new GetDataCallback() {
@@ -374,6 +402,7 @@ public class AdminEquipmentAddActivity extends HomeActivity {
                 });
             }
         }
+
     }
 
     private void initializeInput() {
@@ -388,6 +417,31 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         equipmentTypeImage = (ImageView) findViewById(R.id.equipmentTypeImage);
         inputPicture = (ImageView) findViewById(R.id.equipmentImage);
 
+        inputType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                EquipmentType[] equipmentType = EquipmentType.values();
+                switch (equipmentType[position]) {
+                    case FIRE : {
+                        equipmentTypeImage.setBackgroundResource(R.drawable.ic_fire_grey600_24dp);
+                        break;
+                    }
+                    case MEDICAL : {
+                        equipmentTypeImage.setBackgroundResource(R.drawable.ic_first_aid_grey600_24dp);
+                        break;
+                    }
+                    case PERSONNEL_EQUIPMENT : {
+                        equipmentTypeImage.setBackgroundResource(R.drawable.ic_helmet_grey600_24dp);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         inputPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
