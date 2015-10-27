@@ -11,7 +11,12 @@ public class EvacuationPlan extends ParseObject {
     public EvacuationPlan() {
         super();
     }
-
+    public Number getFloor() {
+        return getNumber("floor");
+    }
+    public void setFloor(Number floor) {
+        put("floor", floor);
+    }
     public void setEvacuationPlan(ImageModel evacuationPlan) {
         put("evacuation_plan", evacuationPlan);
     }
@@ -23,5 +28,9 @@ public class EvacuationPlan extends ParseObject {
     }
     public Branch getBranch()  {
         return (Branch) getParseObject("branch");
+    }
+    @Override
+    public String toString(){
+        return getFloor().toString();
     }
 }

@@ -147,4 +147,6 @@
     <string name="suffocation_step4_details">Bel direct 112 als het slachtoffer het bewustzijn verliest</string>
     <string name="suffocation_step5_details">Start met reanimeren als het slachtoffer bewusteloos is en niet meer normaal ademt.</string>
     <string name="suffocation_step6_details">Ga met kleine kinderen achteraf altijd naar de huisarts</string>
+
+    <string name="select_floor">Select a floor of which you want to see the evacuation plan:</string>
 </resources>

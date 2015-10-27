@@ -8,7 +8,6 @@ import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseInstallation;
@@ -29,6 +28,7 @@ import java.util.Map;
 import nl.debhver.debedrijfshulpverlener.enums.Table;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
 import nl.debhver.debedrijfshulpverlener.models.Equipment;
+import nl.debhver.debedrijfshulpverlener.models.EvacuationPlan;
 import nl.debhver.debedrijfshulpverlener.models.ImageModel;
 import nl.debhver.debedrijfshulpverlener.models.Incident;
 import nl.debhver.debedrijfshulpverlener.models.Training;
@@ -78,7 +78,6 @@ public class DBManager {
     }
 
     void createIncident(final Incident i, final HomeUserActivity homeUserActivity){
-
         i.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -93,6 +92,8 @@ public class DBManager {
         });
 
     }
+
+
 
     void pushIncident(final Incident i){
         Log.d("pushIncident", "starting push incident");
@@ -516,5 +517,52 @@ public class DBManager {
                 }
             }
         });
+    }
+
+    public void getEvacuationPlansFromCurrentBranch(final SingleEmergencyDetailsActivity singleEmergencyDetailsActivity){
+        User user = (User) User.getCurrentUser();
+        Branch branch = null;
+        try {
+            branch = user.getBranch().fetchIfNeeded();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(branch != null){
+            ParseQuery<EvacuationPlan> query = ParseQuery.getQuery(EvacuationPlan.class);
+            query.whereEqualTo("branch", branch);
+            query.findInBackground(new FindCallback<EvacuationPlan>() {
+                public void done(List<EvacuationPlan> objects, ParseException e) {
+                    if (e == null) {
+                        if(!objects.isEmpty()){
+                            singleEmergencyDetailsActivity.createDropdownWithFloors(objects);
+                        }
+                    } else {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
+    }
+
+    public void getEvacuationPlan(final SingleEmergencyDetailsActivity singleEmergencyDetailsActivity, EvacuationPlan evacuationPlan){
+        try{
+            ImageModel image = evacuationPlan.getEvacuationPlan();
+            if(image != null){
+                image = image.fetchIfNeeded();
+                ParseFile imageParseFile = image.getParseFile("image");
+                imageParseFile.getDataInBackground(new GetDataCallback() {
+                    @Override
+                    public void done(byte[] data, ParseException e) {
+                        if (e == null) {
+                            singleEmergencyDetailsActivity.loadEvacuationPlan(data);
+                        } else {
+                        }
+                    }
+                });
+            }
+        } catch (ParseException f) {
+            f.printStackTrace();
+        }
     }
 }

@@ -7,12 +7,6 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.parse.GetDataCallback;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-
-import java.util.List;
-
 import nl.debhver.debedrijfshulpverlener.models.Incident;
 
 /**
@@ -50,29 +44,5 @@ public class IncidentOpener extends HomeActivity {
         ImageView imageView = (ImageView)findViewById(R.id.receivedImage);
         imageView.setImageBitmap(bmp);
     }
-
-    public void loadSingleIncidentDetails(List<Incident> incidents){
-
-            ImageView imageView = (ImageView)findViewById(R.id.receivedImage);
-
-
-    }
-
-
-
-    private void loadImage(ParseFile imageParseFile, final ImageView img) {
-
-        if (imageParseFile != null) {
-            imageParseFile.getDataInBackground(new GetDataCallback() {
-                @Override
-                public void done(byte[] data, ParseException e) {
-                    if (e == null) {
-                        // loadImage
-                    } else {
-                    }
-                }
-            });
-        }
-    }// load image
 
 }
