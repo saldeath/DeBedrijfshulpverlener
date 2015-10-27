@@ -65,6 +65,7 @@
     <string name="warning">Waarschuwing</string>
     <string name="warning_logout">Weet u zeker dat u uit wil loggen?</string>
     <string name="warning_exit_without_save">Weet u zeker dat u terug wil gaan zonder op te slaan?</string>
+    <string name="warning_delete_equipment">Weet u zeker dat u dit apparaat wilt verwijderen?</string>
 
     <string name="branch_name">Name</string>
     <string name="branch_city">City</string>

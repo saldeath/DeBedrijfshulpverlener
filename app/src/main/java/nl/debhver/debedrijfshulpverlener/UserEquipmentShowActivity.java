@@ -37,6 +37,7 @@ public class UserEquipmentShowActivity extends HomeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_equipment_show);
+        setBackButtonOnToolbar(false);
         String equipmentObjId = getIntent().getStringExtra(UserEquipmentDefaultActivity.EQUIP_EXTRA);
 
         if(equipmentObjId != null){ // equipment was added in intent
@@ -71,7 +72,8 @@ public class UserEquipmentShowActivity extends HomeActivity {
             text = (TextView)findViewById(R.id.expireDate);
             text.setText(getDateFormat().format(selectedEquipment.getExpirationDate()));
             text = (TextView)findViewById(R.id.inspectionDate);
-            text.setText(getDateFormat().format(selectedEquipment.getDateOfInspection()));
+            if(selectedEquipment.getDateOfInspection() != null)
+                text.setText(getDateFormat().format(selectedEquipment.getDateOfInspection()));
 
             final ImageView image = (ImageView)findViewById(R.id.equipmentPhoto);
             ImageModel equipmentPhoto = selectedEquipment.getImage();

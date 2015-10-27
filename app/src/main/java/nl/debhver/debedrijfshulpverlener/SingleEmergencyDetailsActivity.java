@@ -31,17 +31,17 @@ public class SingleEmergencyDetailsActivity extends HomeActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //setBackButtonOnToolbar(true);
-        viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
         String emergencyType = getIntent().getStringExtra(EmergencyManualsActivity.EMERGENCY_EXTRA);
 
         if(emergencyType != null){ // emergency chosen
             populateSingleEmergency(emergencyType);
         }
         else{
+            setContentView(R.layout.activity_single_emergency_details);
             System.out.println("NO EXTRA");
         }
+
+        setBackButtonOnToolbar(false);
     }
 
     private void populateSingleEmergency(String emergency){
@@ -58,6 +58,7 @@ public class SingleEmergencyDetailsActivity extends HomeActivity {
 
     private void loadHeartAttackInstructions(){
         setContentView(R.layout.activity_single_emergency_details);
+        viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
         final Context context = getApplicationContext();
         CustomManualStepLinearLayout stepOne = new CustomManualStepLinearLayout(context, 1, 8, getResources().getString(R.string.ha_step1_details));
         CustomManualStepLinearLayout stepTwo = new CustomManualStepLinearLayout(context, 2, 8, getResources().getString(R.string.ha_step2_details));
@@ -105,8 +106,8 @@ public class SingleEmergencyDetailsActivity extends HomeActivity {
 
     private void loadSuffocationInstructions(){
         setContentView(R.layout.activity_single_emergency_details);
+        viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
         final Context context = getApplicationContext();
-
         CustomManualStepLinearLayout stepOne = new CustomManualStepLinearLayout(context, 1, 6, getResources().getString(R.string.suffocation_step1_details));
         CustomManualStepLinearLayout stepTwo = new CustomManualStepLinearLayout(context, 2, 6, getResources().getString(R.string.suffocation_step2_details));
         CustomManualStepLinearLayout stepThree = new CustomManualStepLinearLayout(context, 3, 6, getResources().getString(R.string.suffocation_step3_details));

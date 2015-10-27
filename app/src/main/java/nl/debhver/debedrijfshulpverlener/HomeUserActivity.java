@@ -45,6 +45,7 @@ public class HomeUserActivity extends HomeActivity {
     private String description;
     private int spinnerId;
     private byte[] image = null;
+    private boolean boxOpen = false;
 
 
     @Override
@@ -52,17 +53,13 @@ public class HomeUserActivity extends HomeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_user);
 
-        checkState(savedInstanceState);
-
         incidentButton = (ImageButton) findViewById(R.id.incident_button);
 
-        incidentButton.setOnClickListener(new imageClick() {
-        });
-
+        incidentButton.setOnClickListener(new imageClick());
     }
 
     private void checkState(Bundle savedInstanceState) {
-        if( savedInstanceState != null ) {
+        if(boxOpen) {
             location = savedInstanceState.getString("location");
             description = savedInstanceState.getString("description");
             spinnerId = savedInstanceState.getInt("spinnerId");
@@ -72,7 +69,6 @@ public class HomeUserActivity extends HomeActivity {
             imageClick a = new imageClick();
             View view = LayoutInflater.from(HomeUserActivity.this).inflate(R.layout.incident_dialog, null);
             a.onClick(view);
-
         }
     }
 
@@ -147,7 +143,8 @@ public class HomeUserActivity extends HomeActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(outState != null){
+        outState.putBoolean("boxOpen", boxOpen);
+        if(boxOpen){
             if(!incidentLocation.getText().toString().isEmpty()){
                 outState.putString("location", incidentLocation.getText().toString());
             }
@@ -161,12 +158,13 @@ public class HomeUserActivity extends HomeActivity {
 
             outState.putByteArray("image", image);
         }
-
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        boxOpen = savedInstanceState.getBoolean("boxOpen");
+        checkState(savedInstanceState);
     }
 
     private class imageClick implements View.OnClickListener {
@@ -185,10 +183,16 @@ public class HomeUserActivity extends HomeActivity {
             incidentLocation.setText(location);
             incidentDescription.setText(description);
             incidentTypes.setSelection(spinnerId);
+            boxOpen = true;
 
             alertDialog.setPositiveButton("ok", null);
 
-            alertDialog.setNegativeButton("Annuleren", null);
+            alertDialog.setNegativeButton("Annuleren", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    boxOpen = false;
+                    dialog.dismiss();
+                }
+            });
             alertDialog.setTitle("Incident Melden");
             Dialog dialog = alertDialog.create();
 
@@ -229,6 +233,7 @@ public class HomeUserActivity extends HomeActivity {
                                 }
 
                                 DBManager.getInstance().createIncident(incident, HomeUserActivity.this);
+                                boxOpen = false;
                                 dialog.dismiss();
                             }
                         }

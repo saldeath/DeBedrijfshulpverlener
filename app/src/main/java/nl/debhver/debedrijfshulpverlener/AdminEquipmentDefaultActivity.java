@@ -1,5 +1,7 @@
 package nl.debhver.debedrijfshulpverlener;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -74,30 +76,49 @@ public class AdminEquipmentDefaultActivity extends HomeActivity {
         expListView.setAdapter(listAdapter);
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+            public boolean onChildClick(ExpandableListView parent, View v, final int groupPosition, int childPosition, long id) {
                 if(childPosition == 0){
                     Intent intent = new Intent(AdminEquipmentDefaultActivity.this, AdminEquipmentAddActivity.class);
                     intent.putExtra(EQUIPMENT_EXTRA, result.get(groupPosition).getObjectId());
                     AdminEquipmentDefaultActivity.this.startActivity(intent);
                 } else if(childPosition == 1){
-                    String objectId = result.get(groupPosition).getObjectId();
-                    DBManager.getInstance().getParseObjectById(Table.EQUIPMENT, objectId, new FindCallback<Equipment>() {
-                        @Override
-                        public void done(List<Equipment> objects, ParseException e) {
-                            DBManager.getInstance().delete(objects.get(0), new DeleteCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if(e == null) {
-                                        popupShortToastMessage(getString(R.string.equipment_delete_succes));
-                                        retrieveEquipment();
-                                    } else {
-                                        Log.d("ParseError", e.toString());
-                                        popupShortToastMessage(getString(R.string.equipment_delete_error));
-                                    }
+                    final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            AdminEquipmentDefaultActivity.this);
+                    alertDialogBuilder
+                            .setTitle(R.string.warning)
+                            .setMessage(getString(R.string.warning_delete_equipment) + "\n" + result.get(groupPosition).toString())
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    String objectId = result.get(groupPosition).getObjectId();
+                                    DBManager.getInstance().getParseObjectById(Table.EQUIPMENT, objectId, new FindCallback<Equipment>() {
+                                        @Override
+                                        public void done(List<Equipment> objects, ParseException e) {
+                                            DBManager.getInstance().delete(objects.get(0), new DeleteCallback() {
+                                                @Override
+                                                public void done(ParseException e) {
+                                                    if (e == null) {
+                                                        popupShortToastMessage(getString(R.string.equipment_delete_succes));
+                                                        retrieveEquipment();
+                                                    } else {
+                                                        Log.d("ParseError", e.toString());
+                                                        popupShortToastMessage(getString(R.string.equipment_delete_error));
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
                                 }
                             });
-                        }
-                    });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 }
                 return true;
             }
