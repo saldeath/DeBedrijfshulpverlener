@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import nl.debhver.debedrijfshulpverlener.enums.IncidentType;
+import nl.debhver.debedrijfshulpverlener.models.Branch;
 import nl.debhver.debedrijfshulpverlener.models.ImageModel;
 import nl.debhver.debedrijfshulpverlener.models.Incident;
 import nl.debhver.debedrijfshulpverlener.models.User;
@@ -145,18 +146,22 @@ public class HomeUserActivity extends HomeActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if(!incidentLocation.getText().toString().isEmpty()){
-            outState.putString("location", incidentLocation.getText().toString());
+        super.onSaveInstanceState(outState);
+        if(outState != null){
+            if(!incidentLocation.getText().toString().isEmpty()){
+                outState.putString("location", incidentLocation.getText().toString());
+            }
+
+            if(!incidentDescription.getText().toString().isEmpty()){
+                outState.putString("description", incidentDescription.getText().toString());
+            }
+
+            int id = incidentTypes.getSelectedItemPosition();
+            outState.putInt("spinnerId", id);
+
+            outState.putByteArray("image", image);
         }
 
-        if(!incidentDescription.getText().toString().isEmpty()){
-            outState.putString("description", incidentDescription.getText().toString());
-        }
-
-        int id = incidentTypes.getSelectedItemPosition();
-        outState.putInt("spinnerId", id);
-
-        outState.putByteArray("image", image);
     }
 
     @Override
