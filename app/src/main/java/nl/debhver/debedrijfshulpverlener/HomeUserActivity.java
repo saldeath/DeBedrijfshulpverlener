@@ -44,7 +44,7 @@ public class HomeUserActivity extends HomeActivity {
     private String location;
     private String description;
     private int spinnerId;
-    private byte[] image;
+    private byte[] image = null;
 
 
     @Override
@@ -213,9 +213,10 @@ public class HomeUserActivity extends HomeActivity {
                                 incident.setUser(user);
                                 incident.setType(incidentTypes[id]);
                                 incident.setTime(getDate());
+                                incident.setBranch(user.getBranch());
 
                                 //check saved state image
-                                if(image.length > 0){
+                                if(image != null){
                                     ParseFile photoFile = new ParseFile("incident.jpg", image);
                                     model = new ImageModel();
                                     model.setImageParseFile(photoFile);
