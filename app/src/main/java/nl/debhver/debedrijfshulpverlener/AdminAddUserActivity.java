@@ -2,9 +2,7 @@ package nl.debhver.debedrijfshulpverlener;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.parse.ParseObject;
 
@@ -76,7 +73,9 @@ public class AdminAddUserActivity extends HomeActivity {
     }
 
     public void loadSingleUserDetails(List<User> users){
+        Log.d("AdminAddUser", "before size");
         if(users.size()==1){
+            Log.d("AdminAddUser", "na size");
             EditText editText;
             selectedUser = users.get(0);
             editText = (EditText)findViewById(R.id.inputName);
@@ -87,7 +86,7 @@ public class AdminAddUserActivity extends HomeActivity {
             editText.setText(selectedUser.getEmail());
             editText = (EditText)findViewById(R.id.inputPassword);
             editText.setText("dummy"); // not used, but needs to be set in order to pass checkFields()
-
+            Log.d("AdminAddUser", "na text ");
 
             List<UserEROFunction> userEROFunctions = selectedUser.getEROFunction();
             if(userEROFunctions != null){
@@ -106,16 +105,18 @@ public class AdminAddUserActivity extends HomeActivity {
 
             }
 
+            Log.d("AdminAddUser", "na ERO ");
             Spinner spinner;
             spinner = (Spinner)findViewById(R.id.spinner_adminrights);
             ArrayAdapter<UserRight> adapter1;
             adapter1= (ArrayAdapter)spinner.getAdapter();
             spinner.setSelection(adapter1.getPosition(selectedUser.getRight()));
-
+            Log.d("AdminAddUser", "na rights ");
             spinner = (Spinner)findViewById(R.id.spinner_working_at_branch);
             ArrayAdapter<Branch> adapter2;
             adapter2= (ArrayAdapter)spinner.getAdapter();
             spinner.setSelection(adapter2.getPosition(selectedUser.getBranch()));
+            Log.d("AdminAddUser", "na branch ");
         }
     }
 
@@ -230,7 +231,14 @@ public class AdminAddUserActivity extends HomeActivity {
                 .setCancelable(false)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id){
-                        AdminAddUserActivity.this.createUser();
+                        if(selectedUser==null){ // user is new and should be created
+                            Log.d("AddUser", "trying to create new user");
+                            createUser();
+                        }
+                        else{
+                            Log.d("AddUser", "trying to update exisiting user");
+                            updateUser();
+                        }
                         dialog.dismiss();
                     }
                 })
@@ -253,9 +261,11 @@ public class AdminAddUserActivity extends HomeActivity {
             checkFields = checkFields();
             if(checkFields == true){ // fields were ok, create user
                 if(selectedUser==null){ // user is new and should be created
+                    Log.d("AddUser", "trying to create new user");
                     createUser();
                 }
                 else{
+                    Log.d("AddUser", "trying to update exisiting user");
                     updateUser();
                 }
 
@@ -309,7 +319,9 @@ public class AdminAddUserActivity extends HomeActivity {
             ERO.add(UserEROFunction.NONE); // replace with enum
         }
         selectedUser.setEROFunction(ERO);
-        DBManager.getInstance().updateUser(selectedUser, this);
+        Log.d("AddUser", "Before testUpdate");
+        DBManager.getInstance().testUpdateUser(selectedUser);
+        //DBManager.getInstance().updateUser(selectedUser, this);
     }
 
     public void createUser(){

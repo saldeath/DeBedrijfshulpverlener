@@ -6,8 +6,10 @@ import android.widget.Toast;
 
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.FunctionCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseInstallation;
@@ -18,14 +20,17 @@ import com.parse.SaveCallback;
 import com.parse.SendCallback;
 import com.parse.SignUpCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import nl.debhver.debedrijfshulpverlener.enums.Table;
+import nl.debhver.debedrijfshulpverlener.enums.UserEROFunction;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
 import nl.debhver.debedrijfshulpverlener.models.Equipment;
 import nl.debhver.debedrijfshulpverlener.models.EvacuationPlan;
@@ -564,5 +569,34 @@ public class DBManager {
         } catch (ParseException f) {
             f.printStackTrace();
         }
+    }
+
+    public void testUpdateUser(User user){
+        Log.d("cloudecode", user.getEROFunction().toString());
+
+        JSONArray jArray = new JSONArray();
+        for(UserEROFunction userEROFunction : user.getEROFunction()){
+            jArray.put(userEROFunction.name());
+        }
+
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("username", user.getUsername() );
+        params.put("branch", user.getBranch().getObjectId());
+        params.put("name", user.getName() );
+        params.put("ERO_function", jArray);
+        params.put("right", user.getRight().name() );
+        params.put("telephone_number",user.getTelephoneNumber());
+        ParseCloud.callFunctionInBackground("modifyUser", params, new FunctionCallback<String>() {
+            @Override
+            public void done(String object, ParseException e) {
+                if (e == null) {
+                    Log.d("cloudecode", object);
+                } else {
+
+                    Log.d("cloudecode", "error " + e.getCode() + " " + e.getMessage());
+                }
+            }
+        });
     }
 }
