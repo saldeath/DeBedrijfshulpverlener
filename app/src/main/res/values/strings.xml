@@ -69,7 +69,6 @@
     <string name="branch_postal_code">Postal code</string>
     <string name="branch_address">Address</string>
     <string name="add_branch">Add branch</string>
-    <string name="title_activity_home_user">HomeUserActivity</string>
     <string name="incident_description">Beschrijving</string>
     <string name="incident_location">Locatie</string>
 
@@ -83,6 +82,7 @@
     <string name="hint_equipment_image">Apparaat afbeelding</string>
     <string name="hint_equipment_branch">Selecteer vestiging</string>
 
+    <string name="title_activity_home_user">Incident melden</string>
     <string name="title_activity_admin_equipment_add">Apparaat toevoegen</string>
     <string name="title_activity_admin_equipment_edit">Apparaat wijzigen</string>
     <string name="title_activity_admin_equipment_default">Apparaten Beheren</string>
@@ -92,6 +92,8 @@
     <string name="title_activity_admin_training_default">Cursussen Beheren</string>
     <string name="title_activity_admin_training_edit">Cursussen Wijzigen</string>
     <string name="title_activity_admin_user_filter">Gebruikers filters</string>
+    <string name="title_activity_user_equipment_default">Apparaten</string>
+    <string name="title_activity_user_equipment_details">Apparaat overzicht</string>
     <string name="title_activity_incident_opener">Ontvangen incident</string>
 
     <string name="title_activity_emergency_manuals">Possible emergencies</string>
