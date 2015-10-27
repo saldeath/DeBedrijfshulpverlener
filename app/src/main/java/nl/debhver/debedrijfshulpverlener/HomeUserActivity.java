@@ -209,9 +209,12 @@ public class HomeUserActivity extends HomeActivity {
                                 incident.setType(incidentTypes[id]);
                                 incident.setTime(getDate());
 
-                                ParseFile photoFile = new ParseFile("incident.jpg", image);
-                                model = new ImageModel();
-                                model.setImageParseFile(photoFile);
+                                //check saved state image
+                                if(image.length > 0){
+                                    ParseFile photoFile = new ParseFile("incident.jpg", image);
+                                    model = new ImageModel();
+                                    model.setImageParseFile(photoFile);
+                                }
 
                                 incident.setImage(model);
                                 if (model != null) {

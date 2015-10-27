@@ -3,6 +3,9 @@ package nl.debhver.debedrijfshulpverlener.models;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+
+import org.json.JSONObject;
+
 import nl.debhver.debedrijfshulpverlener.enums.IncidentType;
 
 import java.util.Date;
@@ -41,7 +44,10 @@ public class Incident extends ParseObject{
         put("description", description);
     }
     public void setImage(ImageModel imageModel) {
-        put("image", imageModel);
+        if(imageModel == null)
+            put("image", JSONObject.NULL);
+        else
+            put("image", imageModel);
     }
     public ImageModel getImage()  {
         return (ImageModel) getParseObject("image");
@@ -51,5 +57,11 @@ public class Incident extends ParseObject{
     }
     public User getUser()  {
         return (User) getParseObject("user");
+    }
+    public void setBranch(Branch branch){
+        put("branch", branch);
+    }
+    public Branch getBranch(){
+        return (Branch) getParseObject("branch");
     }
 }
