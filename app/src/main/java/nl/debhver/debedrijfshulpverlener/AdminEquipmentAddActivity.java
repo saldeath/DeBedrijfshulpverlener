@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.util.Log;
@@ -85,8 +84,8 @@ public class AdminEquipmentAddActivity extends HomeActivity {
             DBManager.getInstance().getParseObjectById(Table.EQUIPMENT, equipmentObjId, new FindCallback<Equipment>() {
                 @Override
                 public void done(List<Equipment> objects, ParseException e) {
-                    if(e == null)
-                        setInputSelectedEquipment(selectedEquipment = objects.get(0));
+                    if (e == null)
+                        setInputSelectedEquipment(objects.get(0));
                 }
             });
         }
@@ -122,14 +121,13 @@ public class AdminEquipmentAddActivity extends HomeActivity {
                 equipmentImage = scaleBitmap((Bitmap) data.getExtras().get("data"));
             }
 
-
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             equipmentImage.compress(Bitmap.CompressFormat.JPEG, 100, bos);
 
             inputPicture.setImageBitmap(equipmentImage);
             byte[] scaledData = bos.toByteArray();
 
-            // Save the scaled image to Parse
+            // Save the scaled image to ParseFile
             if(equipmentPhoto == null)
                 equipmentPhoto = new ImageModel();
             ParseFile photoFile = new ParseFile("equipment.jpg", scaledData);
@@ -171,8 +169,8 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         DBManager.getInstance().getListParseObjects(Table.BRANCH, new FindCallback<Branch>() {
             @Override
             public void done(List<Branch> objects, ParseException e) {
-                populateBranches(objects);
-
+                if(e == null)
+                    populateBranches(objects);
             }
         });
     }
@@ -362,15 +360,15 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         return validInput;
     }
 
-    private void setInputSelectedEquipment(Equipment equipment) {
+    private void setInputSelectedEquipment(final Equipment equipment) {
         selectedEquipment = equipment;
 
         inputName.setText(equipment.getName());
         inputDescription.setText(equipment.getDescription());
         inputLocation.setText(equipment.getLocation());
         int i = 0;
-        for(EquipmentType type : EquipmentType.values()) {
-            if(type == equipment.getType())
+        for (EquipmentType type : EquipmentType.values()) {
+            if (type == equipment.getType())
                 inputType.setSelection(i, false);
             i++;
         }
@@ -378,14 +376,12 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         inputDateOfPurchase.setText(getDateFormat().format(dateOfPurchase.getTime()));
         expirationDate = getDateToCalendar(equipment.getExpirationDate());
         inputExpirationDate.setText(getDateFormat().format(expirationDate.getTime()));
-        if(equipment.getDateOfInspection() != null) {
+        if (equipment.getDateOfInspection() != null) {
             dateOfInspection = getDateToCalendar(equipment.getDateOfInspection());
             inputDateOfInspection.setText(getDateFormat().format(dateOfInspection.getTime()));
         }
-        ArrayAdapter<Branch> adapter= (ArrayAdapter)inputBranch.getAdapter();
-        inputBranch.setSelection(adapter.getPosition(equipment.getBranch()));
         equipmentPhoto = equipment.getImage();
-        if(equipmentPhoto != null) {
+        if (equipmentPhoto != null) {
             OldEquipmentPhoto = equipmentPhoto;
             ParseFile file = equipmentPhoto.getImageParseFile();
             if (file != null) {
@@ -403,6 +399,21 @@ public class AdminEquipmentAddActivity extends HomeActivity {
             }
         }
 
+        Thread t = new Thread() {
+            public void run() {
+                boolean done = false;
+                while(!done) {
+                    try {
+                        ArrayAdapter<Branch> adapter = (ArrayAdapter) inputBranch.getAdapter();
+                        inputBranch.setSelection(adapter.getPosition(equipment.getBranch()));
+                        done = true;
+                    } catch (Exception e) {
+
+                    }
+                }
+            }
+        };
+        t.start();
     }
 
     private void initializeInput() {

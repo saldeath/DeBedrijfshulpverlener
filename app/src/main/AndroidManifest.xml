@@ -88,10 +88,22 @@
             android:name=".IncidentOpener"
             android:label="@string/title_activity_incident_opener" >
         </activity>
-        <activity android:name=".AdminBranchDefaultActivity" >
+        <activity
+            android:name=".AdminBranchDefaultActivity"
+            android:label="@string/title_activity_admin_branch_default">
+        </activity>
+        <activity
+            android:name=".UserEquipmentDefaultActivity"
+            android:label="@string/title_activity_user_equipment_default">
+        </activity>
+        <activity
+            android:name=".UserEquipmentShowActivity"
+            android:label="@string/title_activity_user_equipment_details">
         </activity>
 
-        <service android:name="com.parse.PushService" />
+        <service
+            android:name="com.parse.PushService"
+            />
 
         <receiver
             android:name=".CustomPushReceiver"
@@ -122,11 +134,6 @@
                 <category android:name="nl.debhver.debedrijfshulpverlener" />
             </intent-filter>
         </receiver>
-
-        <activity android:name=".UserEquipmentDefaultActivity" >
-        </activity>
-        <activity android:name=".UserEquipmentShowActivity" >
-        </activity>
     </application>
 
 </manifest>

@@ -17,9 +17,11 @@
 
     <string name="action_settings">Opties</string>
     <string name="action_logout">Uitloggen</string>
-    <string name="course">Cursus</string>
-    <string name="devices">Apparatuur</string>
+    <string name="home">Incident melden</string>
+    <string name="courses">Cursussen</string>
+    <string name="devices">Apparaten</string>
     <string name="incidents">Incidenten</string>
+    <string name="manuals">Handleiding</string>
 
     <string name="user_right_none">Geen</string>
     <string name="user_right_admin">Admin</string>

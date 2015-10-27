@@ -34,6 +34,10 @@ public class AdminAddUserActivity extends HomeActivity {
     private User selectedUser = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String userObjId = getIntent().getStringExtra(AdminUserDefaultActivity.USER_EXTRA);
+        if(userObjId != null)
+            setTitle(R.string.title_activity_admin_user_edit);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_user);
         setBackButtonOnToolbar(true);
@@ -41,8 +45,6 @@ public class AdminAddUserActivity extends HomeActivity {
         retrieveBranches();
         populateEROFunctionList();
         populateUserRightsDropdown();
-
-        String userObjId = getIntent().getStringExtra(AdminUserDefaultActivity.USER_EXTRA);
 
         if(userObjId != null){ // user was added in intent
             findViewById(R.id.inputPassword).setVisibility(View.GONE); // admin cannot change password

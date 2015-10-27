@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/navigation_item_0"
+        android:title="@string/home"
+        android:icon="@drawable/ic_report_incident_18dp"/>
+    <item
         android:id="@+id/navigation_item_1"
-        android:title="@string/course"
+        android:title="@string/courses"
         android:icon="@drawable/ic_file_document_box_white_18dp"/>
     <item
         android:id="@+id/navigation_item_2"
@@ -13,4 +17,8 @@
         android:title="@string/incidents"
         android:icon="@drawable/ic_account_alert_white_18dp"
         />
+    <item
+        android:id="@+id/navigation_item_4"
+        android:title="@string/manuals"
+        android:icon="@drawable/ic_manual_18dp"/>
 </menu>

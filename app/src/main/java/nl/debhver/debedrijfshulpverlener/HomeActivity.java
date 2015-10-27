@@ -109,7 +109,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         fullView.closeDrawer(GravityCompat.START);
                         if (!currentActivityName.equals(AdminEquipmentDefaultActivity.class + "")) {
                             Intent i = new Intent(HomeActivity.this, AdminEquipmentDefaultActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
+                            finish();
                             return true;
                         }
                         return false;
@@ -126,7 +128,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         fullView.closeDrawer(GravityCompat.START);
                         if (!currentActivityName.equals(TrainingActivity.class + "")) {
                             Intent i = new Intent(HomeActivity.this, TrainingActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
+                            finish();
                             return true;
                         }
                         return false;
@@ -143,7 +147,26 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         fullView.closeDrawer(GravityCompat.START);
                         if (!currentActivityName.equals(AdminUserDefaultActivity.class + "")) {
                             Intent i  = new Intent(HomeActivity.this, AdminUserDefaultActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
+                            finish();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                menu.add(R.string.title_activity_admin_branch_default);
+                item = menu.getItem(menu.size() - 1);
+                item.setIcon(getDrawable(R.drawable.ic_add_branch_18dp));
+                item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        fullView.closeDrawer(GravityCompat.START);
+                        if (!currentActivityName.equals(AdminBranchDefaultActivity.class + "")) {
+                            Intent i  = new Intent(HomeActivity.this, AdminBranchDefaultActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(i);
+                            finish();
                             return true;
                         }
                         return false;
@@ -213,13 +236,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         Intent intent;
         switch (menuItem.getItemId()) {
-            case R.id.navigation_item_1:
-                    fullView.closeDrawer(GravityCompat.START);
+            case R.id.navigation_item_0:
+                fullView.closeDrawer(GravityCompat.START);
                 if (!currentActivityName.equals(HomeUserActivity.class + "")) {
                     intent = new Intent(HomeActivity.this, HomeUserActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
+                    return true;
+                }
+
+        }
+        switch (menuItem.getItemId()) {
+            case R.id.navigation_item_1:
+                fullView.closeDrawer(GravityCompat.START);
+                if (!currentActivityName.equals(HomeUserActivity.class + "")) {
+
                     return true;
                 }
 
@@ -240,7 +272,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.navigation_item_3:
                 fullView.closeDrawer(GravityCompat.START);
                 if (!currentActivityName.equals(UserEquipmentDefaultActivity.class + "")) {
-                    intent = new Intent(HomeActivity.this, UserEquipmentDefaultActivity.class);
+
+                    return true;
+                }
+
+        }
+        switch (menuItem.getItemId()) {
+            case R.id.navigation_item_4:
+                fullView.closeDrawer(GravityCompat.START);
+                if (!currentActivityName.equals(EmergencyManualsActivity.class + "")) {
+                    intent = new Intent(HomeActivity.this, EmergencyManualsActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
