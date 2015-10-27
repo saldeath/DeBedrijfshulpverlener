@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -39,76 +40,39 @@ public class HomeUserActivity extends HomeActivity {
     //private Bitmap equipmentImage;
     //pivate byte[] scaledImageByte;
     private ImageModel model = null;
+    private String location;
+    private String description;
+    private int spinnerId;
+    private byte[] image;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_user);
 
+        checkState(savedInstanceState);
+
         incidentButton = (ImageButton) findViewById(R.id.incident_button);
 
-        incidentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                View view = LayoutInflater.from(HomeUserActivity.this).inflate(R.layout.incident_dialog, null);
-
-                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeUserActivity.this);
-                alertDialog.setView(view);
-
-                initSpinner(view);
-
-                incidentLocation = (EditText) view.findViewById(R.id.incident_location);
-                incidentDescription = (EditText) view.findViewById(R.id.incident_description);
-
-                alertDialog.setPositiveButton("ok", null);
-
-                alertDialog.setNegativeButton("Annuleren", null);
-                alertDialog.setTitle("Incident Melden");
-                Dialog dialog = alertDialog.create();
-
-
-                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                    @Override
-                    public void onShow(final DialogInterface dialog) {
-                        Button b = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                        b.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-
-                                if (checkInputFields()) {
-                                    //get selected item from spinner
-                                    int id = incidentTypes.getSelectedItemPosition();
-                                    IncidentType[] incidentTypes = IncidentType.values();
-
-                                    //save incident
-                                    Incident incident = new Incident();
-                                    incident.setDescription(incidentDescription.getText().toString());
-                                    incident.setLocation(incidentLocation.getText().toString());
-                                    incident.setUser(user);
-                                    incident.setType(incidentTypes[id]);
-                                    incident.setTime(getDate());
-                                    //incident.setImage(scaledImageByte);
-                                    if (model != null) {
-                                        incident.setImage(model);
-                                        model = null;
-                                    }
-
-                                    DBManager.getInstance().createIncident(incident, HomeUserActivity.this);
-                                    dialog.dismiss();
-                                }
-
-
-                            }
-                        });
-                    }
-                });
-
-                dialog.show();
-            }
+        incidentButton.setOnClickListener(new imageClick() {
         });
 
+    }
+
+    private void checkState(Bundle savedInstanceState) {
+        if( savedInstanceState != null ) {
+            location = savedInstanceState.getString("location");
+            description = savedInstanceState.getString("description");
+            spinnerId = savedInstanceState.getInt("spinnerId");
+            image = savedInstanceState.getByteArray("image");
+
+            //show dialog on restore
+            imageClick a = new imageClick();
+            View view = LayoutInflater.from(HomeUserActivity.this).inflate(R.layout.incident_dialog, null);
+            a.onClick(view);
+
+        }
     }
 
     @NonNull
@@ -144,7 +108,7 @@ public class HomeUserActivity extends HomeActivity {
 
             // Resize photo from camera byte array
             Bitmap mealImage = (Bitmap) data.getExtras().get("data");
-            Bitmap mealImageScaled = Bitmap.createScaledBitmap(mealImage, 200, 200
+            Bitmap mealImageScaled = Bitmap.createScaledBitmap(mealImage, 500, 500
                     * mealImage.getHeight() / mealImage.getWidth(), false);
 
 
@@ -152,6 +116,7 @@ public class HomeUserActivity extends HomeActivity {
             mealImageScaled.compress(Bitmap.CompressFormat.JPEG, 100, bos);
 
             byte[] scaledData = bos.toByteArray();
+            image = scaledData;
             Incident incident = new Incident();
 
             // Save the scaled image to Parse
@@ -178,5 +143,90 @@ public class HomeUserActivity extends HomeActivity {
         return true;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(!incidentLocation.getText().toString().isEmpty()){
+            outState.putString("location", incidentLocation.getText().toString());
+        }
 
+        if(!incidentDescription.getText().toString().isEmpty()){
+            outState.putString("description", incidentDescription.getText().toString());
+        }
+
+        int id = incidentTypes.getSelectedItemPosition();
+        outState.putInt("spinnerId", id);
+
+        outState.putByteArray("image", image);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    private class imageClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+
+            View view = LayoutInflater.from(HomeUserActivity.this).inflate(R.layout.incident_dialog, null);
+
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeUserActivity.this);
+            alertDialog.setView(view);
+
+            initSpinner(view);
+
+            incidentLocation = (EditText) view.findViewById(R.id.incident_location);
+            incidentDescription = (EditText) view.findViewById(R.id.incident_description);
+            incidentLocation.setText(location);
+            incidentDescription.setText(description);
+            incidentTypes.setSelection(spinnerId);
+
+            alertDialog.setPositiveButton("ok", null);
+
+            alertDialog.setNegativeButton("Annuleren", null);
+            alertDialog.setTitle("Incident Melden");
+            Dialog dialog = alertDialog.create();
+
+
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(final DialogInterface dialog) {
+                    Button b = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                    b.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            if (checkInputFields()) {
+                                //get selected item from spinner
+                                int id = incidentTypes.getSelectedItemPosition();
+                                IncidentType[] incidentTypes = IncidentType.values();
+
+                                //save incident
+                                Incident incident = new Incident();
+                                incident.setDescription(incidentDescription.getText().toString());
+                                incident.setLocation(incidentLocation.getText().toString());
+                                incident.setUser(user);
+                                incident.setType(incidentTypes[id]);
+                                incident.setTime(getDate());
+
+                                ParseFile photoFile = new ParseFile("incident.jpg", image);
+                                model = new ImageModel();
+                                model.setParseFile(photoFile);
+
+                                incident.setImage(model);
+                                if (model != null) {
+                                    incident.setImage(model);
+                                    model = null;
+                                }
+
+                                DBManager.getInstance().createIncident(incident, HomeUserActivity.this);
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+                }
+            });
+            dialog.show();
+        }
+    }
 }
