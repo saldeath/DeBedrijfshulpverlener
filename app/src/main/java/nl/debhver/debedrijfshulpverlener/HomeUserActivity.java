@@ -211,7 +211,7 @@ public class HomeUserActivity extends HomeActivity {
 
                                 ParseFile photoFile = new ParseFile("incident.jpg", image);
                                 model = new ImageModel();
-                                model.setParseFile(photoFile);
+                                model.setImageParseFile(photoFile);
 
                                 incident.setImage(model);
                                 if (model != null) {
