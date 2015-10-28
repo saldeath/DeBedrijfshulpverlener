@@ -85,7 +85,6 @@
     <string name="hint_equipment_date_of_inspection">Laatste inspectie datum</string>
     <string name="hint_equipment_image">Apparaat afbeelding</string>
     <string name="hint_equipment_branch">Selecteer vestiging</string>
-    <string name="hint_user_training_default">Naam - Behaald - Verloopt op</string>
 
     <string name="title_activity_home_user">Incident melden</string>
     <string name="title_activity_admin_equipment_add">Apparaat toevoegen</string>
@@ -168,4 +167,12 @@
 
     <string name="select_floor">Selecteer de verdieping waarvan je de evacuatieplan wilt zien:</string>
     <string name="warning_delete_equipment">Weet u zeker dat u dit apparaat wilt verwijderen?</string>
+    <string name="nothing">geen</string>
+    <string name="hint_user_training_achieved">Actief</string>
+    <string name="hint_user_training_scheduled">Gepland</string>
+    <string name="hint_user_training_expired">Verlopen</string>
+    <string name="hint_user_training_failed">Gezakt</string>
+    <string name="hint_user_training_alternate"><i>Naam - Datum \n</i></string>
+    <string name="hint_user_training_default"><i>Naam - Behaald op - Verloopt op \n</i></string>
+    <string name="Description">Bescrijving: </string>
 </resources>

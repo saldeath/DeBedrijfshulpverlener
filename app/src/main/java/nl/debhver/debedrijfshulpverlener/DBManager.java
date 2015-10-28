@@ -71,16 +71,13 @@ public class DBManager {
         query.findInBackground(callback);
     }
 
-    public void getListParseObjects(Table table, Map<String, List<Object>> argsEquelTo, String columnExists, final FindCallback callback) {
+    public void getListParseObjects(Table table, Map<String, List<Object>> argsEquelTo, final FindCallback callback) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(table.toString());
         for (Map.Entry<String, List<Object>> entry : argsEquelTo.entrySet()) {
             for(Object arg : entry.getValue()) {
                 query.whereEqualTo(entry.getKey(),arg);
             }
         }
-        if(!columnExists.equals(""))
-            query.whereExists(columnExists);
-
         query.findInBackground(callback);
     }
 
