@@ -4,12 +4,18 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import nl.debhver.debedrijfshulpverlener.parse.ParseApplication;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -17,12 +23,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
+    private List<Drawable> icons;
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData) {
+                                 HashMap<String, List<String>> listChildData, List<Drawable> icons) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
+        this.icons = icons;
     }
 
     @Override
@@ -41,6 +49,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
         final String childText = (String) getChild(groupPosition, childPosition);
+        final Drawable icon = icons.get(childPosition);
+        icon.setColorFilter(ContextCompat.getColor(ParseApplication.getContext(), R.color.colorAccent), PorterDuff.Mode.MULTIPLY );
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -48,9 +58,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.expandable_list_view_child, null);
         }
 
+        ImageView iconView = (ImageView) convertView
+                .findViewById(R.id.icon);
+
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.lblListItem);
 
+        iconView.setImageDrawable(icon);
         txtListChild.setText(childText);
         return convertView;
     }

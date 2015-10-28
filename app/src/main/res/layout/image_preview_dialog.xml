@@ -22,7 +22,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/deleteButton"
-            android:drawableStart="@drawable/ic_recycle_bin"
             android:backgroundTint="@color/colorAccent"
             android:layout_gravity="left"/>
 
@@ -31,7 +30,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/gallaryButton"
-            android:drawableStart="@drawable/ic_gallery"
             android:backgroundTint="@color/colorAccent"
             android:layout_gravity="center_horizontal"/>
 
@@ -40,7 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/cameraButton"
-            android:drawableStart="@drawable/ic_camera"
             android:backgroundTint="@color/colorAccent"
             android:layout_gravity="right"/>
 

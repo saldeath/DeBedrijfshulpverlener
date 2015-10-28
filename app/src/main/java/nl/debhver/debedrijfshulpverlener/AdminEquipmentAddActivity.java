@@ -7,8 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -44,6 +48,7 @@ import nl.debhver.debedrijfshulpverlener.enums.Table;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
 import nl.debhver.debedrijfshulpverlener.models.Equipment;
 import nl.debhver.debedrijfshulpverlener.models.ImageModel;
+import nl.debhver.debedrijfshulpverlener.parse.ParseApplication;
 
 public class AdminEquipmentAddActivity extends HomeActivity {
     private static final int GALLERY_REQUEST_CODE = 1;
@@ -238,6 +243,20 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         Button delete = (Button) dialog.findViewById(R.id.deleteButton);
         Button gallery = (Button) dialog.findViewById(R.id.gallaryButton);
         Button camera = (Button) dialog.findViewById(R.id.cameraButton);
+
+        Drawable recycleBinIcon = getDrawable(R.drawable.ic_recycle_bin);
+        Drawable galleryIcon = getDrawable(R.drawable.ic_gallery);
+        Drawable cameraIcon = getDrawable(R.drawable.ic_camera);
+        recycleBinIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+        galleryIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+        cameraIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY );
+
+        delete.setCompoundDrawablesRelativeWithIntrinsicBounds(recycleBinIcon, null, null, null);
+        gallery.setCompoundDrawablesRelativeWithIntrinsicBounds(galleryIcon, null, null, null);
+        camera.setCompoundDrawablesRelativeWithIntrinsicBounds(cameraIcon, null, null, null);
+        delete.getBackground().setColorFilter(ContextCompat.getColor(ParseApplication.getContext(), R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+        gallery.getBackground().setColorFilter(ContextCompat.getColor(ParseApplication.getContext(), R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+        camera.getBackground().setColorFilter(ContextCompat.getColor(ParseApplication.getContext(), R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
 
         if (equipmentImage == null) {
             delete.setVisibility(View.GONE);

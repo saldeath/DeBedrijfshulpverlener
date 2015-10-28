@@ -43,7 +43,6 @@ public class UserEquipmentShowActivity extends HomeActivity {
         if(equipmentObjId != null){ // equipment was added in intent
             showProgressBar(true);
             DBManager.getInstance().getSingleEuipmentById(this, equipmentObjId);
-            //
         }
         else{
             Intent intent = new Intent(UserEquipmentShowActivity.this, UserEquipmentDefaultActivity.class);

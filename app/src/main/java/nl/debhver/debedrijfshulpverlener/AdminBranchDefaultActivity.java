@@ -7,6 +7,7 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -116,14 +117,15 @@ public class AdminBranchDefaultActivity extends HomeActivity {
 
     public void prepareListData(final List<Branch> result) {
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
-
-
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<String, List<String>>();
 
         List<String> options = new ArrayList<String>();
-        options.add("Wijzigen");
-        options.add("Verwijderen");
+        options.add(getString(R.string.edit));
+        options.add(getString(R.string.delete));
+        List<Drawable> icons = new ArrayList<>();
+        icons.add(getDrawable(R.drawable.ic_edit));
+        icons.add(getDrawable(R.drawable.ic_recycle_bin));
         // Adding header/child data
         int i = 0;
         for (Branch b : result) {
@@ -132,7 +134,7 @@ public class AdminBranchDefaultActivity extends HomeActivity {
             i++;
         }
 
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild, icons);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);

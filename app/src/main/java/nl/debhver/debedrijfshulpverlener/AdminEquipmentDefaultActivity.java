@@ -3,6 +3,7 @@ package nl.debhver.debedrijfshulpverlener;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.parse.ParseObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import nl.debhver.debedrijfshulpverlener.enums.Table;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
@@ -59,9 +61,12 @@ public class AdminEquipmentDefaultActivity extends HomeActivity {
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<String, List<String>>();
-        List<String> options = new ArrayList<String>();
+        List<String> options = new ArrayList<>();
         options.add(getString(R.string.edit));
         options.add(getString(R.string.delete));
+        List<Drawable> icons = new ArrayList<>();
+        icons.add(getDrawable(R.drawable.ic_edit));
+        icons.add(getDrawable(R.drawable.ic_recycle_bin));
         // Adding header/child data
         int i = 0;
         for (Equipment e : result) {
@@ -70,7 +75,7 @@ public class AdminEquipmentDefaultActivity extends HomeActivity {
             i++;
         }
 
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild, icons);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
