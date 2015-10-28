@@ -196,9 +196,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         if (id == R.id.action_logout) {
             logoutButtonClicked();
