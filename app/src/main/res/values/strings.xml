@@ -174,5 +174,5 @@
     <string name="hint_user_training_failed">Gezakt</string>
     <string name="hint_user_training_alternate"><i>Naam - Datum \n</i></string>
     <string name="hint_user_training_default"><i>Naam - Behaald op - Verloopt op \n</i></string>
-    <string name="Description">Bescrijving: </string>
+    <string name="Description">Beschrijving: </string>
 </resources>
