@@ -180,13 +180,9 @@ public class AdminEquipmentDefaultActivity extends HomeActivity {
 
             @Override
             public boolean onQueryTextChange(final String searchViewString) {
-
                 if (searchView.getWidth() > 0) {
                     filterEquipmentListOnlyByName(searchViewString);
-                } else if (searchView.getWidth() == 0) {
-                    populateListView(equipmentList);
                 }
-
                 return false;
             }
         });

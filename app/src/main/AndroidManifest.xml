@@ -48,6 +48,7 @@
         </activity>
         <activity
             android:name=".AdminAddBranchActivity"
+            android:label="@string/title_activity_admin_branch_add"
             android:noHistory="true" >
         </activity>
         <activity
@@ -62,11 +63,11 @@
         </activity>
         <activity
             android:name=".EmergencyManualsActivity"
-            android:label="@string/title_activity_emergency_manuals">
+            android:label="@string/title_activity_emergency_manuals" >
         </activity>
         <activity
             android:name=".SingleEmergencyDetailsActivity"
-            android:label="@string/title_activity_emergency_single_details">
+            android:label="@string/title_activity_emergency_single_details" >
         </activity>
         <activity
             android:name=".AdminEquipmentDefaultActivity"
@@ -90,36 +91,29 @@
         </activity>
         <activity
             android:name=".AdminBranchDefaultActivity"
-            android:label="@string/title_activity_admin_branch_default">
+            android:label="@string/title_activity_admin_branch_default" >
         </activity>
         <activity
             android:name=".UserEquipmentDefaultActivity"
-            android:label="@string/title_activity_user_equipment_default">
+            android:label="@string/title_activity_user_equipment_default" >
         </activity>
         <activity
             android:name=".UserEquipmentShowActivity"
-            android:label="@string/title_activity_user_equipment_details">
+            android:label="@string/title_activity_user_equipment_details" >
         </activity>
         <activity
             android:name=".UserIncidentDefaultActivity"
-            android:label="@string/title_activity_user_incident_default">
+            android:label="@string/title_activity_user_incident_default" >
+        </activity>
+        <activity
+            android:name=".UserTrainingDefaultActivity"
+            android:label="@string/title_activity_user_training_default">
         </activity>
 
-        <service
-            android:name="com.parse.PushService"
-            />
+        <service android:name="com.parse.PushService" />
 
         <receiver
             android:name=".CustomPushReceiver"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.parse.push.intent.RECEIVE" />
-                <action android:name="com.parse.push.intent.DELETE" />
-                <action android:name="com.parse.push.intent.OPEN" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="com.parse.ParsePushBroadcastReceiver"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
@@ -139,5 +133,4 @@
             </intent-filter>
         </receiver>
     </application>
-
 </manifest>

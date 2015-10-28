@@ -1,34 +1,41 @@
 package nl.debhver.debedrijfshulpverlener;
 
-import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
-import nl.debhver.debedrijfshulpverlener.enums.UserRight;
+import nl.debhver.debedrijfshulpverlener.enums.Table;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
-import nl.debhver.debedrijfshulpverlener.models.User;
 
 public class AdminAddBranchActivity extends HomeActivity{
     private Branch selectedBranch = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String branchObjId = getIntent().getStringExtra(AdminBranchDefaultActivity.BRANCH_EXTRA);
+
+        if(branchObjId != null)
+            setTitle(R.string.title_activity_admin_branch_edit);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_branch);
         setBackButtonOnToolbar(true);
 
-        String branchObjId = getIntent().getStringExtra(AdminBranchDefaultActivity.BRANCH_EXTRA);
         if(branchObjId != null){ // user was added in intent
-            Button button = (Button)findViewById(R.id.buttonAddBranch);
-            button.setText(R.string.update_branch);
-            DBManager.getInstance().getSingleBranchById(this, branchObjId);
-            //
+            DBManager.getInstance().getParseObjectById(Table.BRANCH, branchObjId, new FindCallback<Branch>() {
+                @Override
+                public void done(List<Branch> objects, ParseException e) {
+                    if(e==null)
+                        loadSingleBranchDetails(objects);
+                }
+            });
         }
         else{
             System.out.println("NO EXTRA");
@@ -38,36 +45,34 @@ public class AdminAddBranchActivity extends HomeActivity{
     public boolean checkFields(){
         EditText tempField;
         tempField = (EditText)findViewById(R.id.inputName);
+        boolean valid = true;
 
         if(tempField.getText().toString().isEmpty()){
             this.popupShortToastMessage(getString(R.string.error_empty_name));
-            return false;
+            valid = false;
         }
 
         tempField = (EditText)findViewById(R.id.inputCity);
         if(tempField.getText().toString().isEmpty()){
-            this.popupShortToastMessage(getString(R.string.error_empty_telephone));
-            return false;
+            this.popupShortToastMessage(getString(R.string.error_empty_city));
+            valid = false;
         }
 
         tempField = (EditText)findViewById(R.id.inputPostalCode);
         if(tempField.getText().toString().isEmpty()){
-            this.popupShortToastMessage(getString(R.string.error_empty_email));
-            return false;
+            this.popupShortToastMessage(getString(R.string.error_empty_postal_code));
+            valid = false;
         }
 
         tempField = (EditText)findViewById(R.id.inputAddress);
         if(tempField.getText().toString().isEmpty()){
-            this.popupShortToastMessage(getString(R.string.error_empty_password));
-            return false;
+            this.popupShortToastMessage(getString(R.string.error_empty_address));
+            valid = false;
         }
-
-        else {
-            return true;
-        }
+        return valid;
     }
 
-    public void addBranch(View view){
+    public void FABSaveClicked(View view){
         if(checkFields()){
 
             if(selectedBranch == null) {
@@ -88,27 +93,22 @@ public class AdminAddBranchActivity extends HomeActivity{
             tempField = (EditText)findViewById(R.id.inputAddress);
             selectedBranch.setAddress(tempField.getText().toString());
 
-            DBManager.getInstance().createBranch(selectedBranch, this);
-
-            finish();
+            DBManager.getInstance().save(selectedBranch, new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if(e==null) {
+                        setSaved(true);
+                        popupShortToastMessage(getString(R.string.branch_save_succes));
+                        finish();
+                    } else {
+                        popupShortToastMessage(getString(R.string.branch_save_error));
+                    }
+                }
+            });
         }
     }
 
-    public void clearFieldsAfterAddingBranch() {
-        EditText tempField;
-        tempField = (EditText) findViewById(R.id.inputName);
-        tempField.setText("");
-        tempField = (EditText) findViewById(R.id.inputCity);
-        tempField.setText("");
-        tempField = (EditText) findViewById(R.id.inputPostalCode);
-        tempField.setText("");
-        tempField = (EditText) findViewById(R.id.inputAddress);
-        tempField.setText("");
-    }
-
     public void loadSingleBranchDetails(List<Branch> branches) {
-
-
         if(branches.size()==1){
             EditText editText;
             selectedBranch = branches.get(0);
