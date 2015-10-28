@@ -489,6 +489,7 @@ public class DBManager {
 
         ParseQuery<Incident> query = ParseQuery.getQuery(Incident.class);
         query.whereEqualTo("branch",branchObject);
+        query.orderByDescending("time");
         query.findInBackground(new FindCallback<Incident>() {
             public void done(List<Incident> objects, ParseException e) {
                 if (e == null) {
