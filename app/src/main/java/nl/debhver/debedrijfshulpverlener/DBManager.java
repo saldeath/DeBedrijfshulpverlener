@@ -219,6 +219,7 @@ public class DBManager {
             public void done(String object, ParseException e) {
                 if (e == null) {
                     adminAddUserActivity.popupShortToastMessage("OK: " + object);
+                    adminAddUserActivity.setSaved(true);
                     System.out.println(object);
                 } else {
                     adminAddUserActivity.popupShortToastMessage("ERROR: " + e.getMessage());
@@ -248,6 +249,7 @@ public class DBManager {
             public void done(String object, ParseException e) {
                 if (e == null) {
                     adminAddUserActivity.popupShortToastMessage("OK: " + object);
+                    adminAddUserActivity.setSaved(true);
                 } else {
                     adminAddUserActivity.popupShortToastMessage("ERROR: " + e.getMessage());
                 }
