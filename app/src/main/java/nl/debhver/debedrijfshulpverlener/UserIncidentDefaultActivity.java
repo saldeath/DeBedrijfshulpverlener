@@ -12,55 +12,49 @@ import android.widget.SearchView;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.debhver.debedrijfshulpverlener.models.Equipment;
+import nl.debhver.debedrijfshulpverlener.models.Incident;
 
 
+public class UserIncidentDefaultActivity extends HomeActivity {
+    public static String EXTRA_INCIDENTID = "incident_id";
+    public static String hasPreviousScreen = "hasPreviousScreen";
+    private List<Incident> incidentList = null;
 
-public class UserEquipmentDefaultActivity extends HomeActivity {
-    public static String EQUIP_EXTRA = "equip_extra";
-    private List<Equipment> equipList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_equipment_default);
+        setContentView(R.layout.activity_user_incident_default);
         addListenerToSearchView();
     }
-
     @Override
     protected void onResume(){
         super.onResume();
-        retrieveEquips();
-
+        retrieveIncidents();
     }
-
-    public void retrieveEquips(){
+    public void retrieveIncidents(){
         DBManager.getInstance().getBranchForUser(this, getBranchObjectId());
     }
-
-
-
-    public void setEquipmentList(List<Equipment> equipListFromDatabase){ // new listreset the ListView
-        this.equipList = equipListFromDatabase;
-        populateListView(equipList);
+    public void setIncidentList(List<Incident> incidentListFromDatabase){ // new listreset the ListView
+        this.incidentList = incidentListFromDatabase;
+        populateListView(incidentList);
     }
-
-    public void populateListView(List<Equipment> equipmentListPara){
-        final ListView equipmentListView = (ListView)findViewById(R.id.equipmentListView);
-        ArrayAdapter<Equipment> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, equipmentListPara);
-        equipmentListView.setAdapter(adapter);
-        equipmentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    public void populateListView(List<Incident> incidentListPara){
+        final ListView incidentListView = (ListView)findViewById(R.id.incidentListView);
+        ArrayAdapter<Incident> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, incidentListPara);
+        incidentListView.setAdapter(adapter);
+        incidentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Equipment equipment = (Equipment) equipmentListView.getItemAtPosition(position);
-                Intent intent = new Intent(UserEquipmentDefaultActivity.this, UserEquipmentShowActivity.class);
-                intent.putExtra(EQUIP_EXTRA, equipment.getObjectId());
-                UserEquipmentDefaultActivity.this.startActivity(intent);
+                Incident incident = (Incident) incidentListView.getItemAtPosition(position);
+                Intent intent = new Intent(UserIncidentDefaultActivity.this, IncidentOpener.class);
+                intent.putExtra(EXTRA_INCIDENTID, incident.getObjectId());
+                intent.putExtra(hasPreviousScreen, true);
+                UserIncidentDefaultActivity.this.startActivity(intent);
 
             }
         });
     }
-
     public void addListenerToSearchView(){
         final SearchView searchView = (SearchView)findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -73,7 +67,7 @@ public class UserEquipmentDefaultActivity extends HomeActivity {
             public boolean onQueryTextChange(final String searchViewString) {
 
                 if (searchView.getWidth() > 0) {
-                    filterEquipmentListOnlyByName(searchViewString);
+                    filterIncidentListOnlyByName(searchViewString);
                 }
 
                 return false;
@@ -81,19 +75,19 @@ public class UserEquipmentDefaultActivity extends HomeActivity {
         });
     }
 
-    public void filterEquipmentListOnlyByName(String nameMustContain){
-        List<Equipment> tempEquipList = new ArrayList<>(equipList);
+    public void filterIncidentListOnlyByName(String nameMustContain){
+        List<Incident> tempIncidentList = new ArrayList<>(incidentList);
 
-        List<Equipment> toRemove = new ArrayList<>();
+        List<Incident> toRemove = new ArrayList<>();
 
-        for(Equipment equip: tempEquipList){
-            if(containsIgnoreCase(equip.toString(),nameMustContain)==false){ // Equipment does not contain string
-                toRemove.add(equip);
+        for(Incident incident: tempIncidentList){
+            if(containsIgnoreCase(incident.toString(),nameMustContain)==false){ // Incident does not contain string
+                toRemove.add(incident);
             }
 
         }
-        tempEquipList.removeAll(toRemove);
-        populateListView(tempEquipList);
+        tempIncidentList.removeAll(toRemove);
+        populateListView(tempIncidentList);
     }
 
     public static boolean containsIgnoreCase(String src, String what) {

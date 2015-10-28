@@ -15,9 +15,19 @@ import nl.debhver.debedrijfshulpverlener.models.Incident;
 public class IncidentOpener extends HomeActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Boolean previous = getIntent().getBooleanExtra(UserIncidentDefaultActivity.hasPreviousScreen, false);
+
+        if(previous)
+            setTitle(R.string.title_activity_user_incident_details);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_incident_opener);
         String incidentId = getIntent().getStringExtra(CustomPushReceiver.EXTRA_INCIDENTID);
+
+
+        if(previous)
+            setBackButtonOnToolbar(false);
+
 
         if(incidentId != null){ // user was added in intent
             DBManager.getInstance().getSingleIncidentById(this, incidentId);

@@ -369,13 +369,26 @@ public class DBManager {
             }
         });
     }
-    void getBranchForEquipments(final UserEquipmentDefaultActivity userEquipmentDefaultActivity, String branchObjectId){
+    void getBranchForUser(final UserEquipmentDefaultActivity userEquipmentDefaultActivity, String branchObjectId){
         ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
         query.whereEqualTo("objectId",branchObjectId);
         query.findInBackground(new FindCallback<Branch>() {
             public void done(List<Branch> objects, ParseException e) {
                 if (e == null) {
                     getEquipmentByUserBranch(userEquipmentDefaultActivity, objects.get(0));
+                } else {
+                    // error
+                }
+            }
+        });
+    }
+    void getBranchForUser(final UserIncidentDefaultActivity userIncidentDefaultActivity, String branchObjectId){
+        ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
+        query.whereEqualTo("objectId",branchObjectId);
+        query.findInBackground(new FindCallback<Branch>() {
+            public void done(List<Branch> objects, ParseException e) {
+                if (e == null) {
+                    getIncidentsByUserBranch(userIncidentDefaultActivity, objects.get(0));
                 } else {
                     // error
                 }
@@ -468,6 +481,21 @@ public class DBManager {
                 } else {
                     Log.d("ParseError", e.toString());
                     userEquipmentDefaultActivity.popupShortToastMessage("ERROR: Nothing was retrieved from database.");
+                }
+            }
+        });
+    }
+    void getIncidentsByUserBranch(final UserIncidentDefaultActivity userIncidentDefaultActivity, Branch branchObject){
+
+        ParseQuery<Incident> query = ParseQuery.getQuery(Incident.class);
+        query.whereEqualTo("branch",branchObject);
+        query.findInBackground(new FindCallback<Incident>() {
+            public void done(List<Incident> objects, ParseException e) {
+                if (e == null) {
+                    userIncidentDefaultActivity.setIncidentList(objects);
+                } else {
+                    Log.d("ParseError", e.toString());
+                    userIncidentDefaultActivity.popupShortToastMessage("ERROR: Nothing was retrieved from database.");
                 }
             }
         });

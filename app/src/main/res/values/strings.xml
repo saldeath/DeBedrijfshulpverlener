@@ -65,7 +65,6 @@
     <string name="warning">Waarschuwing</string>
     <string name="warning_logout">Weet u zeker dat u uit wil loggen?</string>
     <string name="warning_exit_without_save">Weet u zeker dat u terug wil gaan zonder op te slaan?</string>
-    <string name="warning_delete_equipment">Weet u zeker dat u dit apparaat wilt verwijderen?</string>
 
     <string name="branch_name">Name</string>
     <string name="branch_city">City</string>
@@ -130,6 +129,8 @@
     <string name="equipment_show_inspection">Inspectiedatum: </string>
     <string name="equipment_show_image">Foto: </string>
 
+    <string name="incident_list_explaination">Type @ Locatie - tijd/datum</string>
+
     <string name="heart_attack">Heart attack</string>
     <string name="suffocation">Suffocation</string>
     <string name="evacuation_plan">Evacuation plan</string>
@@ -153,5 +154,8 @@
     <string name="suffocation_step5_details">Start met reanimeren als het slachtoffer bewusteloos is en niet meer normaal ademt.</string>
     <string name="suffocation_step6_details">Ga met kleine kinderen achteraf altijd naar de huisarts</string>
 
-    <string name="select_floor">Select a floor of which you want to see the evacuation plan:</string>
+    <string name="select_floor">Selecteer de verdieping waarvan je de evacuatieplan wilt zien:</string>
+    <string name="warning_delete_equipment">Weet u zeker dat u dit apparaat wilt verwijderen?</string>
+    <string name="title_activity_user_incident_details">Incident details</string>
+    <string name="title_activity_user_incident_default">Incidenten</string>
 </resources>

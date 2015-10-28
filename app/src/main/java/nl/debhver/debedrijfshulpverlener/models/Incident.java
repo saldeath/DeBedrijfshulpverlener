@@ -8,7 +8,10 @@ import org.json.JSONObject;
 
 import nl.debhver.debedrijfshulpverlener.enums.IncidentType;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Tim on 10/5/15.
@@ -64,4 +67,14 @@ public class Incident extends ParseObject{
     public Branch getBranch(){
         return (Branch) getParseObject("branch");
     }
+
+    private static DateFormat getDateFormat() {
+        return new SimpleDateFormat("HH:mm MMM dd, yyyy", Locale.getDefault());
+    }
+
+    @Override
+    public String toString() {
+        return  getType() + " @ " + getLocation() + " - " + getDateFormat().format(this.getTime());
+    }
+
 }

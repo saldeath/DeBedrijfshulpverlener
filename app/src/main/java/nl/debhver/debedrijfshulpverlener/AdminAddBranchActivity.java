@@ -1,5 +1,6 @@
 package nl.debhver.debedrijfshulpverlener;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +14,7 @@ import nl.debhver.debedrijfshulpverlener.enums.UserRight;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
 import nl.debhver.debedrijfshulpverlener.models.User;
 
-public class AdminAddBranchActivity extends HomeActivity {
+public class AdminAddBranchActivity extends HomeActivity{
     private Branch selectedBranch = null;
 
     @Override

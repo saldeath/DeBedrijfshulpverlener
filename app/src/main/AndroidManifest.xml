@@ -100,6 +100,10 @@
             android:name=".UserEquipmentShowActivity"
             android:label="@string/title_activity_user_equipment_details">
         </activity>
+        <activity
+            android:name=".UserIncidentDefaultActivity"
+            android:label="@string/title_activity_user_incident_default">
+        </activity>
 
         <service
             android:name="com.parse.PushService"
