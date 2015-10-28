@@ -29,31 +29,31 @@ import nl.debhver.debedrijfshulpverlener.models.User;
 public class AdminAddUserActivity extends HomeActivity {
     private boolean anyCheckboxChecked = true;
     private User selectedUser = null;
+    private String receivedUserId = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String userObjId = getIntent().getStringExtra(AdminUserDefaultActivity.USER_EXTRA);
-        if(userObjId != null)
-            setTitle(R.string.title_activity_admin_user_edit);
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_user);
         setBackButtonOnToolbar(true);
 
-        retrieveBranches();
-        populateEROFunctionList();
-        populateUserRightsDropdown();
-
-        if(userObjId != null){ // user was added in intent
+        String userObjId = getIntent().getStringExtra(AdminUserDefaultActivity.USER_EXTRA);
+        if(userObjId != null) {
+            setTitle(R.string.title_activity_admin_user_edit);
+            receivedUserId = userObjId;
             findViewById(R.id.inputPassword).setVisibility(View.GONE); // admin cannot change password
             Button button = (Button)findViewById(R.id.addUserButton);
             button.setText(R.string.update_user);
-            DBManager.getInstance().getSingleUserById(this, userObjId);
-            //
+
         }
         else{
             System.out.println("NO EXTRA");
         }
 
+        retrieveBranches();
+        populateEROFunctionList();
+        populateUserRightsDropdown();
 
     }
 
@@ -129,8 +129,13 @@ public class AdminAddUserActivity extends HomeActivity {
                 ArrayAdapter<Branch> adapter = new ArrayAdapter<Branch>(AdminAddUserActivity.this, android.R.layout.simple_spinner_dropdown_item, items);
 
                 dropdown.setAdapter(adapter);
+                if(!(receivedUserId.equals(""))){
+                    DBManager.getInstance().getSingleUserById(AdminAddUserActivity.this, receivedUserId);
+                    Log.d("AdminAddUser", "load single user");
+                }
             }
         });
+
     }
 
     public void populateEROFunctionList(){
@@ -320,13 +325,14 @@ public class AdminAddUserActivity extends HomeActivity {
         }
         selectedUser.setEROFunction(ERO);
         Log.d("AddUser", "Before testUpdate");
-        DBManager.getInstance().testUpdateUser(selectedUser);
+        DBManager.getInstance().updateUser(selectedUser, this);
         //DBManager.getInstance().updateUser(selectedUser, this);
     }
 
     public void createUser(){
         User userToCreate = new User();
         EditText tempField;
+        String password;
 
         tempField = (EditText)findViewById(R.id.inputName);
         userToCreate.setName(tempField.getText().toString());
@@ -339,7 +345,7 @@ public class AdminAddUserActivity extends HomeActivity {
         userToCreate.setUsername(tempField.getText().toString());
 
         tempField = (EditText)findViewById(R.id.inputPassword);
-        userToCreate.setPassword(tempField.getText().toString());
+        password = tempField.getText().toString();
 
         Spinner tempSpinner = (Spinner)findViewById(R.id.spinner_adminrights);
         int id = tempSpinner.getSelectedItemPosition();
@@ -373,7 +379,7 @@ public class AdminAddUserActivity extends HomeActivity {
 
 
 
-        DBManager.getInstance().createUser(userToCreate, this);
+        DBManager.getInstance().createUser(userToCreate, password, this);
     }
 
     public void clearFieldsAfterAddingUser(){

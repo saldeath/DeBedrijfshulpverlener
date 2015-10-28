@@ -22,6 +22,7 @@ public class AdminUserDefaultActivity extends HomeActivity {
     public static String FILTER_EXTRA_ERO = "filter_extra_ero";
     public static String FILTER_EXTRA_RIGHTS = "filter_extra_rights";
     public static String USER_EXTRA = "user_extra";
+    private boolean FILTER_RECEIVED = false;
     private List<User> userList = null;
 
     @Override
@@ -34,7 +35,16 @@ public class AdminUserDefaultActivity extends HomeActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        retrieveUsers();
+        if(FILTER_RECEIVED==false){
+            retrieveUsers();
+        }
+
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        FILTER_RECEIVED = false;
     }
 
     @Override
@@ -44,6 +54,7 @@ public class AdminUserDefaultActivity extends HomeActivity {
         if (requestCode == FILTER_PICK) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
+                FILTER_RECEIVED = true;
                 Bundle bundleObject = data.getExtras();
                 DBManager.getInstance().getFilteredUserList(this, bundleObject.getStringArrayList(FILTER_EXTRA_RIGHTS), bundleObject.getStringArrayList(FILTER_EXTRA_ERO));
             }
@@ -91,6 +102,10 @@ public class AdminUserDefaultActivity extends HomeActivity {
 
     public void setUserList(List<User> userListFromDatabase){ // new listreset the ListView
         this.userList = userListFromDatabase;
+        System.out.println("size " + userListFromDatabase.size());
+        for(User user : userListFromDatabase){
+            System.out.println( "set userlist " + user.getName());
+        }
         populateListView(userList);
     }
 
@@ -117,6 +132,12 @@ public class AdminUserDefaultActivity extends HomeActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 User user = (User) userListView.getItemAtPosition(position);
+                if(user == null){
+                    Log.d("AdminDefaultUser","null user ??");
+                }
+                else{
+                    Log.d("AdminDefaultUser", user.getName() + "selected");
+                }
                 Intent intent = new Intent(AdminUserDefaultActivity.this, AdminAddUserActivity.class);
                 intent.putExtra(USER_EXTRA, user.getObjectId());
                 AdminUserDefaultActivity.this.startActivity(intent);

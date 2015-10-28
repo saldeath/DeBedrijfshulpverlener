@@ -18,7 +18,6 @@ import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.parse.SendCallback;
-import com.parse.SignUpCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -193,30 +192,64 @@ public class DBManager {
         }
     }
 
-    void createUser(User u, final AdminAddUserActivity adminAddUserActivity) {
-        u.signUpInBackground(new SignUpCallback() {
+    void createUser(User user, String password, final AdminAddUserActivity adminAddUserActivity) {
+        Log.d("cloudecode", user.getName());
+        Log.d("cloudecode", user.getTelephoneNumber());
+        Log.d("cloudecode", user.getEmail());
+        Log.d("cloudecode", password);
+        Log.d("cloudecode", user.getEROFunction().toString());
+        Log.d("cloudecode", user.getRight().toString());
+
+        JSONArray jArray = new JSONArray();
+        for(UserEROFunction userEROFunction : user.getEROFunction()){
+            jArray.put(userEROFunction.name());
+        }
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("username", user.getUsername() );
+        params.put("branch", user.getBranch().getObjectId());
+        params.put("name", user.getName() );
+        params.put("email", user.getEmail());
+        params.put("password", password);
+        params.put("ERO_function", jArray);
+        params.put("right", user.getRight().name() );
+        params.put("telephone_number", user.getTelephoneNumber());
+        ParseCloud.callFunctionInBackground("addUser", params, new FunctionCallback<String>() {
             @Override
-            public void done(ParseException e) {
+            public void done(String object, ParseException e) {
                 if (e == null) {
-                    doToastMessageInView(adminAddUserActivity, "User saved to database.");
-                    adminAddUserActivity.clearFieldsAfterAddingUser();
+                    adminAddUserActivity.popupShortToastMessage("OK: " + object);
+                    System.out.println(object);
                 } else {
-                    Log.d("ParseError", e.toString());
-                    doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
+                    adminAddUserActivity.popupShortToastMessage("ERROR: " + e.getMessage());
+                    System.out.println(e.getMessage());
                 }
             }
         });
     }
 
-    void updateUser(User u, final AdminAddUserActivity adminAddUserActivity){
-        u.saveInBackground(new SaveCallback() {
+    void updateUser(User user, final AdminAddUserActivity adminAddUserActivity){
+        Log.d("cloudecode", user.getEROFunction().toString());
+
+        JSONArray jArray = new JSONArray();
+        for(UserEROFunction userEROFunction : user.getEROFunction()){
+            jArray.put(userEROFunction.name());
+        }
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("username", user.getUsername() );
+        params.put("branch", user.getBranch().getObjectId());
+        params.put("name", user.getName() );
+        params.put("ERO_function", jArray);
+        params.put("right", user.getRight().name() );
+        params.put("telephone_number",user.getTelephoneNumber());
+        ParseCloud.callFunctionInBackground("modifyUser", params, new FunctionCallback<String>() {
             @Override
-            public void done(ParseException e) {
+            public void done(String object, ParseException e) {
                 if (e == null) {
-                    doToastMessageInView(adminAddUserActivity, "User updated to database.");
+                    adminAddUserActivity.popupShortToastMessage("OK: " + object);
                 } else {
-                    Log.d("ParseError", e.toString());
-                    doToastMessageInView(adminAddUserActivity, "ERROR: User was not saved to database.");
+                    adminAddUserActivity.popupShortToastMessage("ERROR: " + e.getMessage());
                 }
             }
         });
@@ -255,7 +288,6 @@ public class DBManager {
             public void done(List<User> objects, ParseException e) {
                 if (e == null) {
                     adminDefaultActivity.setUserList(objects);
-                    adminDefaultActivity.populateListView(objects);
                 } else {
                     Log.d("ParseError", e.toString());
                     doToastMessageInView(adminDefaultActivity, "ERROR: Failed to retrieve users.");
@@ -306,13 +338,10 @@ public class DBManager {
         superQuery.findInBackground(new FindCallback<User>() {
             public void done(List<User> objects, ParseException e) {
                 if (e == null) {
-                    if (objects.size() != 0) {
-                        System.out.println("nietleeg");
-                    } else {
-                        System.out.println("lEEG");
+                    for(User userRec : objects){
+                        System.out.println(userRec.getName());
                     }
                     adminDefaultActivity.setUserList(objects);
-                    adminDefaultActivity.populateListView(objects);
                 } else {
                     Log.d("ParseError", e.toString());
                     doToastMessageInView(adminDefaultActivity, "ERROR: Failed to retrieve users.");
@@ -599,32 +628,4 @@ public class DBManager {
         }
     }
 
-    public void testUpdateUser(User user){
-        Log.d("cloudecode", user.getEROFunction().toString());
-
-        JSONArray jArray = new JSONArray();
-        for(UserEROFunction userEROFunction : user.getEROFunction()){
-            jArray.put(userEROFunction.name());
-        }
-
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("username", user.getUsername() );
-        params.put("branch", user.getBranch().getObjectId());
-        params.put("name", user.getName() );
-        params.put("ERO_function", jArray);
-        params.put("right", user.getRight().name() );
-        params.put("telephone_number",user.getTelephoneNumber());
-        ParseCloud.callFunctionInBackground("modifyUser", params, new FunctionCallback<String>() {
-            @Override
-            public void done(String object, ParseException e) {
-                if (e == null) {
-                    Log.d("cloudecode", object);
-                } else {
-
-                    Log.d("cloudecode", "error " + e.getCode() + " " + e.getMessage());
-                }
-            }
-        });
-    }
 }
