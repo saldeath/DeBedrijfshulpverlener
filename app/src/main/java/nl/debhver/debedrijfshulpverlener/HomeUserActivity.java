@@ -235,6 +235,8 @@ public class HomeUserActivity extends HomeActivity {
                                 DBManager.getInstance().createIncident(incident, HomeUserActivity.this);
                                 boxOpen = false;
                                 dialog.dismiss();
+
+                                resetFields();
                             }
                         }
                     });
@@ -242,5 +244,13 @@ public class HomeUserActivity extends HomeActivity {
             });
             dialog.show();
         }
+    }
+
+    private void resetFields() {
+        incidentLocation.setText("");
+        incidentDescription.setText("");
+        incidentTypes.setSelection(1);
+        model = null;
+        image = null;
     }
 }
