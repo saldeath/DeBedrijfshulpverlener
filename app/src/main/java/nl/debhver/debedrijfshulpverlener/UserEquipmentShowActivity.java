@@ -41,6 +41,7 @@ public class UserEquipmentShowActivity extends HomeActivity {
         String equipmentObjId = getIntent().getStringExtra(UserEquipmentDefaultActivity.EQUIP_EXTRA);
 
         if(equipmentObjId != null){ // equipment was added in intent
+            showProgressBar(true);
             DBManager.getInstance().getSingleEuipmentById(this, equipmentObjId);
             //
         }
@@ -94,5 +95,6 @@ public class UserEquipmentShowActivity extends HomeActivity {
                 }
             }
         }
+        showProgressBar(false);
     }
 }

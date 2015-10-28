@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
@@ -37,6 +38,7 @@ public class UserTrainingDefaultActivity extends HomeActivity {
     }
 
     private void retrieveTrainings(){
+        showProgressBar(true);
         Map<String, List<Object>> args = new HashMap<String, List<Object>>();
         List<Object> usersObject = new ArrayList<>();
         usersObject.add(getUser());
@@ -50,27 +52,33 @@ public class UserTrainingDefaultActivity extends HomeActivity {
         });
     }
 
-    private void setTrainingLists(List<UserTraining> trainingList){ // new listreset the ListView
-        trainingListAchieved = new ArrayList<>();
-        trainingListScheduled = new ArrayList<>();
-        trainingListExpired = new ArrayList<>();
-        trainingListFailed = new ArrayList<>();
+    private void setTrainingLists(final List<UserTraining> trainingList){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                trainingListAchieved = new ArrayList<>();
+                trainingListScheduled = new ArrayList<>();
+                trainingListExpired = new ArrayList<>();
+                trainingListFailed = new ArrayList<>();
 
-        for(UserTraining training : trainingList) {
-            if(training.isExpired()) {
-                trainingListExpired.add(training);
-            } else if(training.isAchieved() && !training.isExpired()) {
-                trainingListAchieved.add(training);
-            } else if(training.isScheduled()) {
-                trainingListScheduled.add(training);
-            } else if(training.isFailed()) {
-                trainingListFailed.add(training);
-            } else {
-                trainingListScheduled.add(training);
+                for(UserTraining training : trainingList) {
+                    if(training.isExpired()) {
+                        trainingListExpired.add(training);
+                    } else if(training.isAchieved() && !training.isExpired()) {
+                        trainingListAchieved.add(training);
+                    } else if(training.isScheduled()) {
+                        trainingListScheduled.add(training);
+                    } else if(training.isFailed()) {
+                        trainingListFailed.add(training);
+                    } else {
+                        trainingListScheduled.add(training);
+                    }
+                }
+
+                populateActivity();
             }
-        }
-
-        populateActivity();
+        });
+        t.start();
     }
 
     private void populateActivity(){
@@ -81,53 +89,110 @@ public class UserTrainingDefaultActivity extends HomeActivity {
         if(trainingListAchieved.size() > 0) {
             for (UserTraining training : trainingListAchieved) {
                 view = new TextView(this);
-                view.setText(training.toString());
-                list.addView(view);
+                view.setText(training.toString() + "\n");
+                final TextView finalView = view;
+                final LinearLayout finalList = list;
+                list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        finalList.addView(finalView);
+                    }
+                });
             }
         } else {
             view = new TextView(this);
             view.setText(getString(R.string.nothing));
-            list.addView(view);
+            final TextView finalView = view;
+            final LinearLayout finalList = list;
+            list.post(new Runnable() {
+                @Override
+                public void run() {
+                    finalList.addView(finalView);
+                }
+            });
         }
 
         list  = (LinearLayout)findViewById(R.id.listViewScheduled);
         if(trainingListScheduled.size() > 0) {
             for (UserTraining training : trainingListScheduled) {
                 view = new TextView(this);
-                view.setText(training.toString());
-                list.addView(view);
+                view.setText(training.toString() + "\n");
+                final TextView finalView = view;
+                final LinearLayout finalList = list;
+                list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        finalList.addView(finalView);
+                    }
+                });
             }
         } else {
             view = new TextView(this);
             view.setText(getString(R.string.nothing));
-            list.addView(view);
+            final TextView finalView = view;
+            final LinearLayout finalList = list;
+            list.post(new Runnable() {
+                @Override
+                public void run() {
+                    finalList.addView(finalView);
+                }
+            });
         }
 
         list  = (LinearLayout)findViewById(R.id.listViewExpired);
         if(trainingListExpired.size() > 0) {
             for (UserTraining training : trainingListExpired) {
                 view = new TextView(this);
-                view.setText(training.toString());
-                list.addView(view);
+                view.setText(training.toString() + "\n");
+                final TextView finalView = view;
+                final LinearLayout finalList = list;
+                list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        finalList.addView(finalView);
+                    }
+                });
             }
         } else {
             view = new TextView(this);
             view.setText(getString(R.string.nothing));
-            list.addView(view);
+            final TextView finalView = view;
+            final LinearLayout finalList = list;
+            list.post(new Runnable() {
+                @Override
+                public void run() {
+                    finalList.addView(finalView);
+                }
+            });
         }
 
         list  = (LinearLayout)findViewById(R.id.listViewFailed);
         if(trainingListFailed.size() > 0) {
             for (UserTraining training : trainingListFailed) {
                 view = new TextView(this);
-                view.setText(training.toString());
-                list.addView(view);
+                view.setText(training.toString() + "\n");
+                final TextView finalView = view;
+                final LinearLayout finalList = list;
+                list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        finalList.addView(finalView);
+                    }
+                });
             }
         } else {
             view = new TextView(this);
             view.setText(getString(R.string.nothing));
-            list.addView(view);
+            final TextView finalView = view;
+            final LinearLayout finalList = list;
+            list.post(new Runnable() {
+                @Override
+                public void run() {
+                    finalList.addView(finalView);
+                }
+            });
         }
+        showProgressBar(false);
         /*ArrayAdapter<UserTraining> adapter;
         ArrayAdapter<String> emptyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, new String[] { getString(R.string.nothing) });
         ListView listView;

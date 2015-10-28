@@ -97,6 +97,7 @@ public class AdminUserDefaultActivity extends HomeActivity {
     }
 
     public void retrieveUsers(){
+        showProgressBar(true);
         DBManager.getInstance().getUsers(this);
     }
 
@@ -145,6 +146,7 @@ public class AdminUserDefaultActivity extends HomeActivity {
             }
         });
         //intent.putExtra(USER_EXTRA,)
+        showProgressBar(false);
     }
 
     // code by http://stackoverflow.com/users/1705598/icza

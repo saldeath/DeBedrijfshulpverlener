@@ -167,6 +167,7 @@
 
     <string name="select_floor">Selecteer de verdieping waarvan je de evacuatieplan wilt zien:</string>
     <string name="warning_delete_equipment">Weet u zeker dat u dit apparaat wilt verwijderen?</string>
+    <string name="warning_delete_branch">Weet u zeker dat u deze vestiging wilt verwijderen?</string>
     <string name="nothing">geen</string>
     <string name="hint_user_training_achieved">Actief</string>
     <string name="hint_user_training_scheduled">Gepland</string>
@@ -174,5 +175,5 @@
     <string name="hint_user_training_failed">Gezakt</string>
     <string name="hint_user_training_alternate"><i>Naam - Datum \n</i></string>
     <string name="hint_user_training_default"><i>Naam - Behaald op - Verloopt op \n</i></string>
-    <string name="Description">Beschrijving: </string>
+    <string name="Description">Beschrijving</string>
 </resources>

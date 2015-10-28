@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import android.widget.TextView;
@@ -37,6 +39,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout fullView;
     private ActionBarDrawerToggle drawerToggle;
     private String currentActivityName = "";
+    private ProgressBar progressBar;
 
     private TextView currentUser, currentBranch;
     public static User getUser() {
@@ -57,6 +60,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void setValuesHeader() throws ParseException {
         currentUser = (TextView)findViewById(R.id.app_header_name);
         currentBranch = (TextView)findViewById(R.id.app_header_branch);
+        progressBar = (ProgressBar)findViewById(R.id.home_activity_progressbar);
 
         currentUser.setText(getUser().getName());
         currentBranch.setText(getUser().getBranch().fetchIfNeeded().getString("name"));
@@ -360,6 +364,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             alertDialog.show();
         } else {
             HomeActivity.super.finish();
+        }
+    }
+
+    public void showProgressBar(Boolean enable) {
+        if (enable) {
+            progressBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            });
+        } else {
+            progressBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            });
         }
     }
 

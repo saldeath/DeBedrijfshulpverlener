@@ -33,6 +33,7 @@ public class UserIncidentDefaultActivity extends HomeActivity {
         retrieveIncidents();
     }
     public void retrieveIncidents(){
+        showProgressBar(true);
         DBManager.getInstance().getBranchForUser(this, getBranchObjectId());
     }
     public void setIncidentList(List<Incident> incidentListFromDatabase){ // new listreset the ListView
@@ -54,6 +55,7 @@ public class UserIncidentDefaultActivity extends HomeActivity {
 
             }
         });
+        showProgressBar(false);
     }
     public void addListenerToSearchView(){
         final SearchView searchView = (SearchView)findViewById(R.id.searchView);

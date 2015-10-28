@@ -81,6 +81,7 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         populateEquipmentTypeSpinner();
 
         if (equipmentObjId != null) { // user was added in intent
+            showProgressBar(true);
             DBManager.getInstance().getParseObjectById(Table.EQUIPMENT, equipmentObjId, new FindCallback<Equipment>() {
                 @Override
                 public void done(List<Equipment> objects, ParseException e) {
@@ -411,6 +412,7 @@ public class AdminEquipmentAddActivity extends HomeActivity {
 
                     }
                 }
+                showProgressBar(false);
             }
         };
         t.start();

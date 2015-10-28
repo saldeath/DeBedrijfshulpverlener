@@ -29,6 +29,7 @@ public class AdminAddBranchActivity extends HomeActivity{
         setBackButtonOnToolbar(true);
 
         if(branchObjId != null){ // user was added in intent
+            showProgressBar(true);
             DBManager.getInstance().getParseObjectById(Table.BRANCH, branchObjId, new FindCallback<Branch>() {
                 @Override
                 public void done(List<Branch> objects, ParseException e) {
@@ -120,5 +121,7 @@ public class AdminAddBranchActivity extends HomeActivity{
             editText.setText(selectedBranch.getZipCode());
             editText = (EditText)findViewById(R.id.inputAddress);
             editText.setText(selectedBranch.getAddress());
-        }}
+        }
+        showProgressBar(false);
+    }
 }

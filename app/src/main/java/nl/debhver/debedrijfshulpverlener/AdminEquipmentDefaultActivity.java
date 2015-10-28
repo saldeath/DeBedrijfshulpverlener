@@ -123,9 +123,11 @@ public class AdminEquipmentDefaultActivity extends HomeActivity {
                 return true;
             }
         });
+        showProgressBar(false);
     }
 
     private void retrieveEquipment(){
+        showProgressBar(true);
         DBManager.getInstance().getListParseObjects(Table.EQUIPMENT, new FindCallback<Equipment>() {
             @Override
             public void done(List<Equipment> objects, ParseException e) {

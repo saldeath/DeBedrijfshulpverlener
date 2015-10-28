@@ -42,6 +42,7 @@ public class AdminAddUserActivity extends HomeActivity {
         if(userObjId != null) {
             setTitle(R.string.title_activity_admin_user_edit);
             receivedUserId = userObjId;
+            showProgressBar(true);
             findViewById(R.id.inputPassword).setVisibility(View.GONE); // admin cannot change password
             Button button = (Button)findViewById(R.id.addUserButton);
             button.setText(R.string.update_user);
@@ -117,6 +118,7 @@ public class AdminAddUserActivity extends HomeActivity {
             adapter2= (ArrayAdapter)spinner.getAdapter();
             spinner.setSelection(adapter2.getPosition(selectedUser.getBranch()));
             Log.d("AdminAddUser", "na branch ");
+            showProgressBar(false);
         }
     }
 

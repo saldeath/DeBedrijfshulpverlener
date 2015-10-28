@@ -72,12 +72,21 @@ public class UserTraining extends ParseObject {
             return null;
         }
 
+        StringBuilder builder = new StringBuilder();
+        builder.append(training.getName().toString());
+        builder.append(" - ");
+
         if(isAchieved())
-            return training.getName().toString() + " - " + getDateFormat().format(getDateAchieved()) + " - " + getDateFormat().format(getExpirationDate()) + "\n" + ParseApplication.getContext().getString(R.string.Description) + "  " + training.getDescription() + "\n";
+            builder.append(getDateFormat().format(getDateAchieved()) + " - " + getDateFormat().format(getExpirationDate()));
         else if(!isAchieved())
-            return training.getName().toString() + " - " + getDateFormat().format(getScheduleDate()) + "\n" + ParseApplication.getContext().getString(R.string.Description) + training.getDescription() + "  " + "\n";
-        else
-            return null;
+            builder.append(getDateFormat().format(getScheduleDate()));
+
+        builder.append("\n");
+        builder.append(ParseApplication.getContext().getString(R.string.Description));
+        builder.append(":  ");
+        builder.append(training.getDescription());
+
+        return builder.toString();
     }
 
     public boolean isAchieved() {

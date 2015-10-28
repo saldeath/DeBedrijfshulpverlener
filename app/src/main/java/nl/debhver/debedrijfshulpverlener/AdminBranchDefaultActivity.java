@@ -81,6 +81,7 @@ public class AdminBranchDefaultActivity extends HomeActivity {
     }
 
     public void retrieveBranches(){
+        showProgressBar(true);
         DBManager.getInstance().getListParseObjects(Table.BRANCH, new FindCallback<Branch>() {
             @Override
             public void done(List<Branch> objects, ParseException e) {
@@ -148,7 +149,7 @@ public class AdminBranchDefaultActivity extends HomeActivity {
                             AdminBranchDefaultActivity.this);
                     alertDialogBuilder
                             .setTitle(R.string.warning)
-                            .setMessage(getString(R.string.warning_delete_equipment) + "\n" + result.get(groupPosition).toString())
+                            .setMessage(getString(R.string.warning_delete_branch) + "\n" + result.get(groupPosition).toString())
                             .setCancelable(false)
                             .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
@@ -185,6 +186,7 @@ public class AdminBranchDefaultActivity extends HomeActivity {
                 return true;
             }
         });
+        showProgressBar(false);
     }
                 // code by http://stackoverflow.com/users/1705598/icza
 

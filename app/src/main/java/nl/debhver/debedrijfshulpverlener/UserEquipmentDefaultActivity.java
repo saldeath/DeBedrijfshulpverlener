@@ -35,6 +35,7 @@ public class UserEquipmentDefaultActivity extends HomeActivity {
     }
 
     public void retrieveEquips(){
+        showProgressBar(true);
         DBManager.getInstance().getBranchForUser(this, getBranchObjectId());
     }
 
@@ -59,6 +60,7 @@ public class UserEquipmentDefaultActivity extends HomeActivity {
 
             }
         });
+        showProgressBar(false);
     }
 
     public void addListenerToSearchView(){
