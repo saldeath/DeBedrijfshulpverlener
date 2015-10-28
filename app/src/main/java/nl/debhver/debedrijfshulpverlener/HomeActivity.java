@@ -100,7 +100,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if(right != UserRight.NONE) {
             MenuItem item;
             if(right != UserRight.TRAINING) {
-                menu.add(R.string.title_activity_admin_equipment_default);
+                menu.add(R.id.menu_group_admin, Menu.NONE, Menu.NONE, R.string.title_activity_admin_equipment_default);
                 item = menu.getItem(menu.size() - 1);
                 item.setIcon(getDrawable(R.drawable.ic_add_fire_extinguisher_18dp));
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -119,7 +119,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 });
             }
             if(right != UserRight.EQUIPMENT) {
-                menu.add(R.string.title_activity_admin_training_default);
+                menu.add(R.id.menu_group_admin, Menu.NONE, Menu.NONE, R.string.title_activity_admin_training_default);
                 item = menu.getItem(menu.size() - 1);
                 item.setIcon(getDrawable(R.drawable.ic_add_file_document_box_white_18dp));
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -138,7 +138,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 });
             }
             if(right == UserRight.ADMIN) {
-                menu.add(R.string.title_activity_admin_user_default);
+                menu.add(R.id.menu_group_admin, Menu.NONE, Menu.NONE, R.string.title_activity_admin_user_default);
                 item = menu.getItem(menu.size() - 1);
                 item.setIcon(getDrawable(R.drawable.ic_add_account_white_18dp));
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -155,7 +155,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         return false;
                     }
                 });
-                menu.add(R.string.title_activity_admin_branch_default);
+                menu.add(R.id.menu_group_admin, Menu.NONE, Menu.NONE, R.string.title_activity_admin_branch_default);
                 item = menu.getItem(menu.size() - 1);
                 item.setIcon(getDrawable(R.drawable.ic_add_branch_18dp));
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -247,8 +247,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch (menuItem.getItemId()) {
             case R.id.navigation_item_1:
                 fullView.closeDrawer(GravityCompat.START);
-                if (!currentActivityName.equals(HomeUserActivity.class + "")) {
-
+                if (!currentActivityName.equals(UserTrainingDefaultActivity.class + "")) {
+                    intent = new Intent(HomeActivity.this, UserTrainingDefaultActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
                     return true;
                 }
 
@@ -302,8 +305,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 ParseUser.logOut();
                 dialog.dismiss();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
             }
         });
         builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

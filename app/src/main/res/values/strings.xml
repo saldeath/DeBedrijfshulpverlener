@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">De BHV\'er</string>
-    <string name="company_name"></string>
+    <string name="company_name">De Haagse Hogeschool</string>
 
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
@@ -54,6 +54,9 @@
     <string name="error_empty_adminrights">Adminrights cannot be empty.</string>
     <string name="error_empty_erofunctions">No ERO functions selected. Are you sure you want to create this user without an ERO function?</string>
     <string name="error_empty_password">Password cannot be empty.</string>
+    <string name="error_empty_city">Stad mag niet leeg zijn</string>
+    <string name="error_empty_address">Adres mag niet leeg zijn</string>
+    <string name="error_empty_postal_code">Postcode mag niet leeg zijn</string>
 
     <string name="yes">Ja</string>
     <string name="no">Nee</string>
@@ -66,11 +69,10 @@
     <string name="warning_logout">Weet u zeker dat u uit wil loggen?</string>
     <string name="warning_exit_without_save">Weet u zeker dat u terug wil gaan zonder op te slaan?</string>
 
-    <string name="branch_name">Name</string>
-    <string name="branch_city">City</string>
-    <string name="branch_postal_code">Postal code</string>
-    <string name="branch_address">Address</string>
-    <string name="add_branch">Add branch</string>
+    <string name="branch_name">Naam vestiging</string>
+    <string name="branch_city">Stad</string>
+    <string name="branch_postal_code">Postcodee</string>
+    <string name="branch_address">Adres</string>
     <string name="incident_description">Beschrijving</string>
     <string name="incident_location">Locatie</string>
 
@@ -83,11 +85,15 @@
     <string name="hint_equipment_date_of_inspection">Laatste inspectie datum</string>
     <string name="hint_equipment_image">Apparaat afbeelding</string>
     <string name="hint_equipment_branch">Selecteer vestiging</string>
+    <string name="hint_user_training_default">Naam - Behaald - Verloopt op</string>
 
     <string name="title_activity_home_user">Incident melden</string>
     <string name="title_activity_admin_equipment_add">Apparaat toevoegen</string>
     <string name="title_activity_admin_equipment_edit">Apparaat wijzigen</string>
     <string name="title_activity_admin_equipment_default">Apparaten Beheren</string>
+    <string name="title_activity_admin_branch_default">Vestiging beheren</string>
+    <string name="title_activity_admin_branch_add">Vestiging toevoegen</string>
+    <string name="title_activity_admin_branch_edit">Vestiging wijzigen</string>
 	<string name="title_activity_admin_user_add">Gebruiker toevoegen</string>
     <string name="title_activity_admin_user_edit">Gebruiker wijzigen</string>
     <string name="title_activity_admin_user_default">Gebruikers Beheren</string>
@@ -97,6 +103,9 @@
     <string name="title_activity_user_equipment_default">Apparaten</string>
     <string name="title_activity_user_equipment_details">Apparaat overzicht</string>
     <string name="title_activity_incident_opener">Ontvangen incident</string>
+    <string name="title_activity_user_incident_details">Incident details</string>
+    <string name="title_activity_user_incident_default">Incidenten</string>
+    <string name="title_activity_user_training_default">Cursussen</string>
 
     <string name="title_activity_emergency_manuals">Possible emergencies</string>
     <string name="title_activity_emergency_single_details">Emergency manual</string>
@@ -105,7 +114,6 @@
 
     <string name="description">Description</string>
     <string name="location">Location</string>
-    <string name="title_activity_admin_branch_default">Afdelingen beheren</string>
     <string name="update_branch">Update branch</string>
     <string name="emergency_type">Emergency type</string>
 
@@ -118,6 +126,10 @@
     <string name="equipment_save_error">Error: apparaat niet opgeslagen</string>
     <string name="equipment_delete_succes">Apparaat succesvol verweiderd</string>
     <string name="equipment_delete_error">Error: apparaat niet verweiderd</string>
+    <string name="branch_save_succes">Vestiging succesvol opgeslagen</string>
+    <string name="branch_save_error">Error: vestiging niet opgeslagen</string>
+    <string name="branch_delete_succes">Vestiging succesvol verwijderd</string>
+    <string name="branch_delete_error">Error: vestiging niet verwijderd</string>
     <string name="error_loading_picture">Error met het ophalen van de afbeelding</string>
 
     <string name="equipment_show_name">Naam: </string>
@@ -156,6 +168,4 @@
 
     <string name="select_floor">Selecteer de verdieping waarvan je de evacuatieplan wilt zien:</string>
     <string name="warning_delete_equipment">Weet u zeker dat u dit apparaat wilt verwijderen?</string>
-    <string name="title_activity_user_incident_details">Incident details</string>
-    <string name="title_activity_user_incident_default">Incidenten</string>
 </resources>

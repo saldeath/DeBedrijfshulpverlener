@@ -71,13 +71,16 @@ public class DBManager {
         query.findInBackground(callback);
     }
 
-    public void getListParseObjects(Table table, Map<String, List<String>> argsEquelTo, final FindCallback callback) {
+    public void getListParseObjects(Table table, Map<String, List<Object>> argsEquelTo, String columnExists, final FindCallback callback) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(table.toString());
-        for (Map.Entry<String, List<String>> entry : argsEquelTo.entrySet()) {
-            for(String arg : entry.getValue()) {
+        for (Map.Entry<String, List<Object>> entry : argsEquelTo.entrySet()) {
+            for(Object arg : entry.getValue()) {
                 query.whereEqualTo(entry.getKey(),arg);
             }
         }
+        if(!columnExists.equals(""))
+            query.whereExists(columnExists);
+
         query.findInBackground(callback);
     }
 
@@ -269,21 +272,6 @@ public class DBManager {
         }
     }
 
-    void createBranch(Branch b, final AdminAddBranchActivity adminAddBranchActivity){
-        b.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    doToastMessageInView(adminAddBranchActivity, "Branch saved to database.");
-                    adminAddBranchActivity.clearFieldsAfterAddingBranch();
-                } else {
-                    Log.d("ParseError", e.toString());
-                    doToastMessageInView(adminAddBranchActivity, "ERROR: Branch was not saved to database.");
-                }
-            }
-        });
-    }
-
     void getUsers(final AdminUserDefaultActivity adminDefaultActivity){
         ParseQuery<User> query = ParseQuery.getQuery(User.class);
         query.findInBackground(new FindCallback<User>() {
@@ -372,34 +360,6 @@ public class DBManager {
         });
     }
 
-    void getBranchesOld(final AdminBranchDefaultActivity adminBranchDefaultActivity){
-        ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
-        query.findInBackground(new FindCallback<Branch>() {
-            public void done(List<Branch> objects, ParseException e) {
-                if (e == null) {
-                    adminBranchDefaultActivity.setBranchList(objects);
-                    adminBranchDefaultActivity.prepareListData(objects);
-                } else {
-                    Log.d("ParseError", e.toString());
-                    doToastMessageInView(adminBranchDefaultActivity, "ERROR: Failed to retrieve users.");
-                }
-            }
-        });
-    }
-
-    void getSingleBranchById(final AdminAddBranchActivity adminAddBranchActivity, String branchObjId){
-        ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
-        query.whereEqualTo("objectId",branchObjId);
-        query.findInBackground(new FindCallback<Branch>() {
-            public void done(List<Branch> objects, ParseException e) {
-                if (e == null) {
-                    adminAddBranchActivity.loadSingleBranchDetails(objects);
-                } else {
-                    // error
-                }
-            }
-        });
-    }
     void getBranchForUser(final UserEquipmentDefaultActivity userEquipmentDefaultActivity, String branchObjectId){
         ParseQuery<Branch> query = ParseQuery.getQuery(Branch.class);
         query.whereEqualTo("objectId",branchObjectId);

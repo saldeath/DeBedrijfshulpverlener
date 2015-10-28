@@ -1,15 +1,23 @@
 package nl.debhver.debedrijfshulpverlener.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Tim on 10/5/15.
  */
 @ParseClassName("user_training")
 public class UserTraining extends ParseObject {
+    private static DateFormat getDateFormat() {
+        return new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+    }
+
     public UserTraining() {
         super();
     }
@@ -43,5 +51,20 @@ public class UserTraining extends ParseObject {
     }
     public Training getTraining()  {
         return (Training) getParseObject("training");
+    }
+
+    @Override
+    public String toString() {
+        Training training;
+        try {
+            training = getTraining().fetch();
+        } catch (ParseException e) {
+            return null;
+        }
+
+        if(getDateAchieved() != null)
+            return training.getName().toString() + " - " + getDateFormat().format(getDateAchieved()) + " - " + getDateFormat().format(getExpirationDate());
+        else
+            return null;
     }
 }

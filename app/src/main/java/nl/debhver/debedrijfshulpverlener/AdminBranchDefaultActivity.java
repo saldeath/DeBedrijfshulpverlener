@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,10 +19,13 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.parse.DeleteCallback;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
 
+import nl.debhver.debedrijfshulpverlener.enums.Table;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
+import nl.debhver.debedrijfshulpverlener.models.Equipment;
 
 
 public class AdminBranchDefaultActivity extends HomeActivity {
@@ -76,7 +81,13 @@ public class AdminBranchDefaultActivity extends HomeActivity {
     }
 
     public void retrieveBranches(){
-        DBManager.getInstance().getBranchesOld(this);
+        DBManager.getInstance().getListParseObjects(Table.BRANCH, new FindCallback<Branch>() {
+            @Override
+            public void done(List<Branch> objects, ParseException e) {
+                if(e==null)
+                    setBranchList(objects);
+            }
+        });
     }
 
     public void setBranchList(List<Branch> branchListFromDatabase){ // new listreset the ListView
@@ -102,7 +113,7 @@ public class AdminBranchDefaultActivity extends HomeActivity {
 
     }
 
-    public void prepareListData(final List<Branch> branchListPara) {
+    public void prepareListData(final List<Branch> result) {
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
 
@@ -114,7 +125,7 @@ public class AdminBranchDefaultActivity extends HomeActivity {
         options.add("Verwijderen");
         // Adding header/child data
         int i = 0;
-        for (Branch b : branchListPara) {
+        for (Branch b : result) {
             listDataHeader.add(i, b.toString());
             listDataChild.put(listDataHeader.get(i), options); // Header, Child data
             i++;
@@ -126,24 +137,50 @@ public class AdminBranchDefaultActivity extends HomeActivity {
         expListView.setAdapter(listAdapter);
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+            public boolean onChildClick(ExpandableListView parent, View v, final int groupPosition, int childPosition, long id) {
                 if(childPosition == 0){
                     Intent intent = new Intent(AdminBranchDefaultActivity.this, AdminAddBranchActivity.class);
-                    intent.putExtra(BRANCH_EXTRA, branchListPara.get(groupPosition).getObjectId());
+                    intent.putExtra(BRANCH_EXTRA, result.get(groupPosition).getObjectId());
                     AdminBranchDefaultActivity.this.startActivity(intent);
                 }
                 if(childPosition == 1){
-                    branchListPara.get(groupPosition).deleteInBackground(new DeleteCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if(e == null){
-                                Toast.makeText(getApplicationContext(), "Branch was deleted", Toast.LENGTH_SHORT).show();
-                                retrieveBranches();
-                            }else{
-                                Toast.makeText(getApplicationContext(), "Branch was not deleted", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                    final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            AdminBranchDefaultActivity.this);
+                    alertDialogBuilder
+                            .setTitle(R.string.warning)
+                            .setMessage(getString(R.string.warning_delete_equipment) + "\n" + result.get(groupPosition).toString())
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    String objectId = result.get(groupPosition).getObjectId();
+                                    DBManager.getInstance().getParseObjectById(Table.BRANCH, objectId, new FindCallback<Equipment>() {
+                                        @Override
+                                        public void done(List<Equipment> objects, ParseException e) {
+                                            DBManager.getInstance().delete(objects.get(0), new DeleteCallback() {
+                                                @Override
+                                                public void done(ParseException e) {
+                                                    if (e == null) {
+                                                        popupShortToastMessage(getString(R.string.branch_delete_succes));
+                                                        retrieveBranches();
+                                                    } else {
+                                                        Log.d("ParseError", e.toString());
+                                                        popupShortToastMessage(getString(R.string.branch_delete_error));
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 }
                 return true;
             }
