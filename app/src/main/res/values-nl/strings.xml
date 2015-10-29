@@ -90,14 +90,15 @@
    <string name="title_activity_admin_equipment_add">Apparaat toevoegen</string>
    <string name="title_activity_admin_equipment_edit">Apparaat wijzigen</string>
    <string name="title_activity_admin_equipment_default">Apparaten Beheren</string>
-   <string name="title_activity_admin_branch_default">Vestiging beheren</string>
+   <string name="title_activity_admin_branch_default">Vestiging Beheren</string>
    <string name="title_activity_admin_branch_add">Vestiging toevoegen</string>
    <string name="title_activity_admin_branch_edit">Vestiging wijzigen</string>
   <string name="title_activity_admin_user_add">Gebruiker toevoegen</string>
    <string name="title_activity_admin_user_edit">Gebruiker wijzigen</string>
    <string name="title_activity_admin_user_default">Gebruikers Beheren</string>
    <string name="title_activity_admin_training_default">Cursussen Beheren</string>
-   <string name="title_activity_admin_training_edit">Cursussen Wijzigen</string>
+   <string name="title_activity_admin_training_edit">Cursussen wijzigen</string>
+    <string name="title_activity_admin_training_add">Cursussen toevoegen</string>
    <string name="title_activity_admin_user_filter">Gebruikers filters</string>
    <string name="title_activity_user_equipment_default">Apparaten</string>
    <string name="title_activity_user_equipment_details">Apparaat overzicht</string>
@@ -185,6 +186,20 @@
    <string name="error_empty_description">Beschrijving is verplicht</string>
    <string name="Ok">Ok</string>
    <string name="cancel">Annuleren</string>
+    <string name="add">Toevoegen</string>
+    <string name="error_empty_schedule_date">Geplande datum mag niet leeg zijn</string>
+    <string name="hint_training_name">Cursus naam</string>
+    <string name="hint_training_description">Cursus beschrijving</string>
+    <string name="hint_training_type">Cursus type</string>
+    <string name="hint_training_schedule_date">Geplande datum</string>
+    <string name="hint_training_expiration_date">Verloop datum</string>
+    <string name="save">Opslaan</string>
+    <string name="user">Gebruiker</string>
+    <string name="name">Naam</string>
+    <string name="type">Type</string>
+    <string name="add_training">Cursus toevoegen</string>
+    <string name="delete_training">Cursus verwijderen</string>
+    <string name="add_users_to_training">Voeg gebruiker toe aan cursus</string>
 
 </resources>
 

@@ -100,13 +100,27 @@ public class UserTraining extends ParseObject {
     }
 
     public boolean isAchieved() {
-        if(getDateAchieved() != null)
-            return true;
+        if (getScheduleDate() != null) {
+            Calendar calendar = Calendar.getInstance();
+            Calendar scheduled = Calendar.getInstance();
+            scheduled.setTime(getScheduleDate());
+            if (scheduled.get(Calendar.YEAR) < calendar.get(Calendar.YEAR)) {
+                return true;
+            } else if (scheduled.get(Calendar.YEAR) == calendar.get(Calendar.YEAR)) {
+                if(scheduled.get(Calendar.DAY_OF_YEAR) <= calendar.get(Calendar.DAY_OF_YEAR)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
         return false;
     }
 
     public boolean isScheduled() {
-        if(!isAchieved()) {
+        //if(!isAchieved()) {
             if (getScheduleDate() != null) {
                 Calendar calendar = Calendar.getInstance();
                 Calendar scheduled = Calendar.getInstance();
@@ -123,7 +137,7 @@ public class UserTraining extends ParseObject {
                     return false;
                 }
             }
-        }
+        //}
         return false;
     }
 

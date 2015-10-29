@@ -21,16 +21,21 @@ public class AdminTrainingAddActivity extends HomeActivity {
     private boolean ableToDeleteTraining = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String trainingObjectID = getIntent().getStringExtra("Training");
+        if(trainingObjectID != null)
+            setTitle(R.string.title_activity_admin_training_edit);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training_add);
+        setBackButtonOnToolbar(true);
+
         Button editBtn = (Button) findViewById(R.id.addTrainingButton);
         Button delBtn = (Button)findViewById(R.id.deleteTrainingButton);
         Button addUserToTrainingBtn = (Button)findViewById(R.id.addUserToTrainingbutton);
-        String trainingObjectID = getIntent().getStringExtra("Training");
         fillSpinner();
         if(trainingObjectID != null)
         {
-            editBtn.setText("Aanpassen");
+            editBtn.setText(getString(R.string.save));
             DBManager.getInstance().getTrainingbyID(this, trainingObjectID);
         }
         else
@@ -41,6 +46,7 @@ public class AdminTrainingAddActivity extends HomeActivity {
     }
 
     void loadSingleTraining(Training object){
+        showProgressBar(true);
         oldTraining = object;
         EditText name = (EditText)findViewById(R.id.inputTrainingName);
         EditText description = (EditText)findViewById(R.id.inputTrainingDescription);

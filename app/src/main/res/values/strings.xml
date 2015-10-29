@@ -17,7 +17,7 @@
 
     <string name="action_settings">Options</string>
     <string name="action_logout">Log out</string>
-    <string name="home">Report incident</string>
+    <string name="home">Report Incident</string>
     <string name="courses">Courses</string>
     <string name="devices">Equipment</string>
     <string name="incidents">Incidents</string>
@@ -89,15 +89,16 @@
     <string name="title_activity_home_user">Report incident</string>
     <string name="title_activity_admin_equipment_add">Add equipment</string>
     <string name="title_activity_admin_equipment_edit">Edit equipment</string>
-    <string name="title_activity_admin_equipment_default">Manage equipment</string>
-    <string name="title_activity_admin_branch_default">Manage branch</string>
+    <string name="title_activity_admin_equipment_default">Manage Equipment</string>
+    <string name="title_activity_admin_branch_default">Manage Branch</string>
     <string name="title_activity_admin_branch_add">Add branch</string>
     <string name="title_activity_admin_branch_edit">Edit branch </string>
     <string name="title_activity_admin_user_add">Add user</string>
     <string name="title_activity_admin_user_edit">Edit user</string>
-    <string name="title_activity_admin_user_default">Manage user</string>
+    <string name="title_activity_admin_user_default">Manage User</string>
     <string name="title_activity_admin_training_default">Manage Courses</string>
     <string name="title_activity_admin_training_edit">Edit course </string>
+    <string name="title_activity_admin_training_add">Add course </string>
     <string name="title_activity_admin_user_filter">Filters user</string>
     <string name="title_activity_user_equipment_default">Equipment</string>
     <string name="title_activity_user_equipment_details">Equipment overview</string>
@@ -185,6 +186,20 @@
     <string name="error_empty_description">Description can not be empty</string>
     <string name="Ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="error_empty_schedule_date">Schedule date cannot be empty</string>
+    <string name="hint_training_name">Course name</string>
+    <string name="hint_training_description">Course description</string>
+    <string name="hint_training_type">Course type</string>
+    <string name="hint_training_schedule_date">Schedule date</string>
+    <string name="hint_training_expiration_date">Expiration date</string>
+    <string name="save">Save</string>
+    <string name="user">User</string>
+    <string name="name">Name</string>
+    <string name="type">Type</string>
+    <string name="add_training">Add course</string>
+    <string name="delete_training">Delete course</string>
+    <string name="add_users_to_training">Add users to course</string>
 
 </resources>
 

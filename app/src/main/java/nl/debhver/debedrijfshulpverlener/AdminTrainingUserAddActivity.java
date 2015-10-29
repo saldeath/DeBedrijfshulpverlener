@@ -38,11 +38,16 @@ public class AdminTrainingUserAddActivity extends HomeActivity {
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String trainingObjectID = this.getIntent().getStringExtra("Training");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training_user_add);
-        String trainingObjectID = this.getIntent().getStringExtra("Training");
+
+        setBackButtonOnToolbar(true);
+
         if(trainingObjectID != null)
         {
+            showProgressBar(true);
             DBManager.getInstance().getTrainingbyID(AdminTrainingUserAddActivity.this, trainingObjectID);
         }
         UsersBranches();
@@ -57,6 +62,7 @@ public class AdminTrainingUserAddActivity extends HomeActivity {
         trainingName.setText(object.getName());
         trainingDescription.setText(object.getDescription());
         trainingType.setText(object.getType().toString());
+        showProgressBar(false);
     }
 
 
@@ -84,23 +90,25 @@ public class AdminTrainingUserAddActivity extends HomeActivity {
         LinearLayout layout = (LinearLayout) findViewById(R.id.UserTrainingLayout);
         int count = layout.getChildCount();
         CheckBox checkBox = null;
+        if (userTraining.getDateAchieved() == null || userTraining.getExpirationDate() == null){
+            Toast dateWarning = null;
+            if(userTraining.getDateAchieved() == null)
+                dateWarning = Toast.makeText(this, getString(R.string.error_empty_schedule_date), Toast.LENGTH_LONG);
+            if (userTraining.getExpirationDate() == null)
+                dateWarning = Toast.makeText(this, getString(R.string.error_empty_expiration_date), Toast.LENGTH_LONG);
+            dateWarning.show();
+            return;
+        }
         for(int i=0; i<count; i++) {
             checkBox = (CheckBox)layout.getChildAt(i);
             if(checkBox != null && checkBox.isChecked()){
                 UserTraining ut = new UserTraining();
                 ut.setTraining(this.training);
                 ut.setUser(userList.get(i));
-                if (userTraining.getDateAchieved() == null || userTraining.getExpirationDate() == null){
-                    Toast dateWarning = Toast.makeText(this, "Geen datum ingevuld", Toast.LENGTH_LONG);
-                    dateWarning.show();
-                }
-                else
-                {
-                    ut.setScheduleDate(userTraining.getScheduleDate());
-                    ut.setExpirationDate(userTraining.getExpirationDate());
-                    ut.setDateAchieved(userTraining.getDateAchieved());
-                    DBManager.getInstance().createUserTraining(AdminTrainingUserAddActivity.this, ut);
-                }
+                ut.setScheduleDate(userTraining.getScheduleDate());
+                ut.setExpirationDate(userTraining.getExpirationDate());
+                ut.setDateAchieved(userTraining.getDateAchieved());
+                DBManager.getInstance().createUserTraining(AdminTrainingUserAddActivity.this, ut);
             }
         }
     }

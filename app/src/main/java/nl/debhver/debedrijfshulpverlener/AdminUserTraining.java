@@ -28,11 +28,13 @@ public class AdminUserTraining extends HomeActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_user_training);
+        setBackButtonOnToolbar(false);
         fillUserTrainingList();
     }
 
     private void fillUserTrainingList()
     {
+        showProgressBar(true);
         DBManager.getInstance().getAllUserTraining(AdminUserTraining.this);
     }
 
@@ -56,6 +58,7 @@ public class AdminUserTraining extends HomeActivity{
                 startActivity(i);
             }
         });
+        showProgressBar(false);
     }
 
 

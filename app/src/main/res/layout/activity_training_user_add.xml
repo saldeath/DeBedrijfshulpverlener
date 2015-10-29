@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Training Name"
+        android:text="@string/hint_training_name"
         android:id="@+id/TrainingNametextView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Training Description"
+        android:text="@string/hint_training_description"
         android:id="@+id/TrainingDescriptiontextView"
         android:layout_below="@+id/TrainingNametextView"
         android:layout_alignParentLeft="true"
@@ -28,7 +28,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Training Type"
+        android:text="@string/hint_training_type"
         android:id="@+id/TrainingTypetextView"
         android:layout_below="@+id/TrainingDescriptiontextView"
         android:layout_alignParentLeft="true"
@@ -37,7 +37,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Scheldule Date"
+        android:text="@string/hint_training_schedule_date"
         android:onClick="showDatePickerDialog"
         android:id="@+id/schelduleDateBtn"
         android:layout_below="@+id/TrainingTypetextView"
@@ -47,7 +47,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Expiration Date"
+        android:text="@string/hint_training_expiration_date"
         android:id="@+id/expirationDateBtn"
         android:onClick="showDatePickerDialog"
         android:layout_alignTop="@+id/schelduleDateBtn"
@@ -57,7 +57,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:text="@string/save"
         android:onClick="saveUserstoTraining"
         android:id="@+id/saveUserstoTraining"
         android:layout_alignParentBottom="true"
@@ -66,7 +66,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User"
+        android:text="@string/user"
         android:id="@+id/textView8"
         android:layout_below="@+id/expirationDateBtn"
         android:layout_alignParentLeft="true"

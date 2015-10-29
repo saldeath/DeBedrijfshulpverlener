@@ -379,6 +379,7 @@ public class DBManager {
             public void done(ParseException e) {
                 if (e == null) {
                     doToastMessageInView(adminTrainingAddActivity, "Gelukt cursus aan te maken");
+                    adminTrainingAddActivity.setSaved(true);
                     adminTrainingAddActivity.finish();
                 } else {
                     doToastMessageInView(adminTrainingAddActivity, "Niet gelukt om cursus aan te maken");
@@ -394,6 +395,7 @@ public class DBManager {
             public void done(ParseException e) {
                 if (e == null) {
                     doToastMessageInView(adminTrainingAddActivity, "Cursus geupdated");
+                    adminTrainingAddActivity.setSaved(true);
                     adminTrainingAddActivity.finish();
                 } else {
                     adminTrainingAddActivity.popupShortToastMessage("niet gelukt om cursus aan te passen");
@@ -408,6 +410,7 @@ public class DBManager {
             public void done(ParseException e) {
                 if (e == null) {
                     doToastMessageInView(adminTrainingAddActivity, "Gelukt om crusus te verwijderen");
+                    adminTrainingAddActivity.setSaved(true);
                     adminTrainingAddActivity.finish();
 
                 } else {
@@ -595,6 +598,7 @@ public class DBManager {
             public void done(ParseException e) {
                 if (e == null) {
                     doToastMessageInView(adminEditUserTraining, "GebruikerscCursus Opgeslagen");
+                    adminEditUserTraining.setSaved(true);
                     adminEditUserTraining.finish();
                 } else {
                     doToastMessageInView(adminEditUserTraining, "GebruikerscCursus niet opgeslagen");
@@ -608,6 +612,7 @@ public class DBManager {
             public void done(ParseException e) {
                 if (e == null) {
                     doToastMessageInView(adminTrainingUserAddActivity, "GebruikerscCursus Opgeslagen");
+                    adminTrainingUserAddActivity.setSaved(true);
                     adminTrainingUserAddActivity.finish();
                 } else {
                     doToastMessageInView(adminTrainingUserAddActivity, "GebruikerscCursus niet opgeslagen");
@@ -654,6 +659,7 @@ public class DBManager {
             public void done(ParseException e) {
                 if (e == null) {
                     doToastMessageInView(adminEditUserTraining, "Gelukt om crusus te verwijderen");
+                    adminEditUserTraining.setSaved(true);
                     adminEditUserTraining.finish();
 
                 } else {
@@ -668,6 +674,7 @@ public class DBManager {
         query.findInBackground(new FindCallback<UserTraining>() {
             public void done(List<UserTraining> objects, ParseException e) {
                 if (e == null) {
+                    adminTrainingAddActivity.showProgressBar(false);
                     for (UserTraining ut : objects)
                     {
                         if(ut.getTraining().getObjectId() == oldTraining.getObjectId()){
