@@ -6,8 +6,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="nl.debhver.debedrijfshulpverlener.TrainingAddActivity"
-    android:background="@android:color/darker_gray"
+    tools:context="nl.debhver.debedrijfshulpverlener.AdminTrainingAddActivity"
     android:weightSum="1">
 
     <android.support.design.widget.TextInputLayout
@@ -54,23 +53,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/trainingSpinner" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Users"
-        android:id="@+id/textView3"
-        android:textSize="12dp" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="94dp"
-        android:id="@+id/TrainingUserlistView"
-        android:layout_weight="0.89" />
-
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Add Training"
+        android:text="Training Toevoegen"
         android:id="@+id/addTrainingButton"
         android:onClick="addTrainingClicked"
         android:layout_gravity="center_horizontal"
@@ -78,13 +64,19 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Delete Training"
+        android:text="Training Verwijderen"
         android:onClick="deleteTrainingClicked"
         android:id="@+id/deleteTrainingButton"
-        android:layout_gravity="center_horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Gebruikers aan Training Toevoegen"
+        android:onClick="addUsertoTrainingClicked"
+        android:id="@+id/addUserToTrainingbutton" />
 
 </LinearLayout>

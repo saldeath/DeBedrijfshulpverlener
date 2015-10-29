@@ -79,11 +79,11 @@
             android:label="@string/title_activity_admin_equipment_default" >
         </activity>
         <activity
-            android:name=".TrainingActivity"
+            android:name=".AdminTrainingActivity"
             android:label="@string/title_activity_admin_training_default" >
         </activity>
         <activity
-            android:name=".TrainingAddActivity"
+            android:name=".AdminTrainingAddActivity"
             android:label="@string/title_activity_admin_training_edit"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
@@ -116,7 +116,16 @@
             android:name=".UserTrainingDefaultActivity"
             android:label="@string/title_activity_user_training_default">
         </activity>
-
+        <activity
+            android:name=".AdminUserTraining"
+            android:label="@string/title_activity_user_training_default" >
+        </activity>
+        <activity android:name=".AdminTrainingUserAddActivity"
+            android:label="@string/title_activity_user_training_default">
+        </activity>
+        <activity android:name=".AdminEditUserTraining"
+            android:label="@string/title_activity_user_training_default">
+        </activity>
         <service android:name="com.parse.PushService" />
 
         <receiver

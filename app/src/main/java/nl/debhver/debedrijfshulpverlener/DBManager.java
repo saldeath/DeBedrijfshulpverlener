@@ -37,6 +37,7 @@ import nl.debhver.debedrijfshulpverlener.models.ImageModel;
 import nl.debhver.debedrijfshulpverlener.models.Incident;
 import nl.debhver.debedrijfshulpverlener.models.Training;
 import nl.debhver.debedrijfshulpverlener.models.User;
+import nl.debhver.debedrijfshulpverlener.models.UserTraining;
 
 /**
  * Created by Koen on 6-10-2015.
@@ -325,7 +326,7 @@ public class DBManager {
         superQuery.findInBackground(new FindCallback<User>() {
             public void done(List<User> objects, ParseException e) {
                 if (e == null) {
-                    for(User userRec : objects){
+                    for (User userRec : objects) {
                         System.out.println(userRec.getName());
                     }
                     adminDefaultActivity.setUserList(objects);
@@ -384,75 +385,74 @@ public class DBManager {
         });
     }
 
-    void createTraining(Training training, final TrainingAddActivity trainingAddActivity) {
+    void createTraining(Training training, final AdminTrainingAddActivity adminTrainingAddActivity) {
         training.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    trainingAddActivity.popupShortToastMessage("Saved Succesfully");
-                    trainingAddActivity.finish();
+                    doToastMessageInView(adminTrainingAddActivity, "Gelukt cursus aan te maken");
+                    adminTrainingAddActivity.finish();
                 } else {
-                    trainingAddActivity.popupShortToastMessage("Unable to save");
-
+                    doToastMessageInView(adminTrainingAddActivity, "Niet gelukt om cursus aan te maken");
                 }
             }
         });
     }
 
-    void updateTraining(Training training, final TrainingAddActivity trainingAddActivity)
+    void updateTraining(Training training, final AdminTrainingAddActivity adminTrainingAddActivity)
     {
         training.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    trainingAddActivity.popupShortToastMessage("Updated Succesfully");
-                    trainingAddActivity.finish();
+                    doToastMessageInView(adminTrainingAddActivity, "Cursus geupdated");
+                    adminTrainingAddActivity.finish();
                 } else {
-                    trainingAddActivity.popupShortToastMessage("Unable to save");
+                    adminTrainingAddActivity.popupShortToastMessage("niet gelukt om cursus aan te passen");
                 }
             }
         });
     }
 
-    void deleteTraining(Training oldTraining, final TrainingAddActivity trainingAddActivity) {
+    void deleteTraining(Training oldTraining, final AdminTrainingAddActivity adminTrainingAddActivity) {
         oldTraining.deleteInBackground(new DeleteCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    trainingAddActivity.popupShortToastMessage("Deleted Succesfully");
-                    trainingAddActivity.finish();
+                    doToastMessageInView(adminTrainingAddActivity, "Gelukt om crusus te verwijderen");
+                    adminTrainingAddActivity.finish();
 
                 } else {
-                    trainingAddActivity.popupShortToastMessage("Unable to Delete");
+                    doToastMessageInView(adminTrainingAddActivity, "Niet gelukt om cursus te verwijderen");
                 }
             }
         });
     }
 
 
-    void getAllTraining(final TrainingActivity trainingActivity) {
+    void getAllTraining(final AdminTrainingActivity adminTrainingActivity) {
         ParseQuery<Training> query = ParseQuery.getQuery("training");
         query.findInBackground(new FindCallback<Training>() {
             public void done(List<Training> objects, ParseException e) {
                 if (e == null) {
-                    trainingActivity.populateTrainingList(objects);
+                    adminTrainingActivity.populateTrainingList(objects);
                 } else {
                     Log.d("ParseError", e.toString());
-                    trainingActivity.popupShortToastMessage("ERROR: Nothing was retrieved from database.");
+                    doToastMessageInView(adminTrainingActivity, "Net gelukt om cursussen op te halen");
                 }
             }
         });
     }
 
-    void getTrainingbyID(final TrainingAddActivity trainingAddActivity, String trainingObjectId) {
+    void getTrainingbyID(final AdminTrainingAddActivity adminTrainingAddActivity, String trainingObjectId) {
         ParseQuery<Training> query = ParseQuery.getQuery("training");
         query.getInBackground(trainingObjectId, new GetCallback<Training>() {
             @Override
             public void done(Training object, com.parse.ParseException e) {
                 if (e == null) {
-                    trainingAddActivity.loadSingleTraining(object);
+                    adminTrainingAddActivity.loadSingleTraining(object);
                 } else {
-                    // something went wrong
+                    doToastMessageInView(adminTrainingAddActivity, "Niet gelukt om cursus op te halen");
                 }
             }
         });
@@ -492,16 +492,16 @@ public class DBManager {
 
     void getSingleIncidentById(final IncidentOpener incidentOpener, String incidentId){
         ParseQuery<Incident> query = ParseQuery.getQuery(Incident.class);
-        query.whereEqualTo("objectId",incidentId);
+        query.whereEqualTo("objectId", incidentId);
         query.findInBackground(new FindCallback<Incident>() {
             public void done(List<Incident> objects, ParseException e) {
                 if (e == null) {
-                    if(!objects.isEmpty()){
-                        for(Incident incident : objects){
+                    if (!objects.isEmpty()) {
+                        for (Incident incident : objects) {
                             incidentOpener.loadIncidentDetails(incident);
-                            try{
+                            try {
                                 ImageModel image = incident.getImage();
-                                if(image != null){
+                                if (image != null) {
                                     image = image.fetchIfNeeded();
                                     ParseFile imageParseFile = image.getParseFile("image");
                                     imageParseFile.getDataInBackground(new GetDataCallback() {
@@ -588,4 +588,109 @@ public class DBManager {
         }
     }
 
+    void getTrainingbyID(final AdminTrainingUserAddActivity adminTrainingUserAddActivity, String trainingObjectId) {
+        ParseQuery<Training> query = ParseQuery.getQuery("training");
+        query.getInBackground(trainingObjectId, new GetCallback<Training>() {
+            @Override
+            public void done(Training object, com.parse.ParseException e) {
+                if (e == null) {
+                    adminTrainingUserAddActivity.loadSingleTraining(object);
+                } else {
+                    doToastMessageInView(adminTrainingUserAddActivity, "Niet geukt om gebruikerscursus op te halen");
+                }
+            }
+        });
+    }
+    void editUserTraining(final AdminEditUserTraining adminEditUserTraining, UserTraining userTraining){
+        userTraining.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    doToastMessageInView(adminEditUserTraining, "GebruikerscCursus Opgeslagen");
+                    adminEditUserTraining.finish();
+                } else {
+                    doToastMessageInView(adminEditUserTraining, "GebruikerscCursus niet opgeslagen");
+                }
+            }
+        });
+    }
+    void createUserTraining(final AdminTrainingUserAddActivity adminTrainingUserAddActivity, UserTraining userTraining){
+        userTraining.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    doToastMessageInView(adminTrainingUserAddActivity, "GebruikerscCursus Opgeslagen");
+                    adminTrainingUserAddActivity.finish();
+                } else {
+                    doToastMessageInView(adminTrainingUserAddActivity, "GebruikerscCursus niet opgeslagen");
+                }
+            }
+        });
+    }
+
+    void getAllUserTraining(final AdminUserTraining adminUserTraining)
+    {
+        ParseQuery<UserTraining> query = ParseQuery.getQuery("user_training");
+        query.findInBackground(new FindCallback<UserTraining>() {
+            public void done(List<UserTraining> objects, ParseException e) {
+                if (e == null) {
+                    adminUserTraining.populateUserTrainingList(objects);
+                } else {
+                    Log.d("ParseError", e.toString());
+                    doToastMessageInView(adminUserTraining, "Niet gelukt om usertraining op te halen");
+                }
+            }
+        });
+    }
+
+    void getUserTrainingbyID(final AdminEditUserTraining adminEditUserTraining, String userTrainingID)
+    {
+        ParseQuery<UserTraining> query = ParseQuery.getQuery("user_training");
+        query.getInBackground(userTrainingID, new GetCallback<UserTraining>() {
+            @Override
+            public void done(UserTraining object, ParseException e) {
+                if (e == null) {
+                    adminEditUserTraining.loadSingleUserTraining(object);
+                } else {
+                    Log.d("ParseError", e.toString());
+                    doToastMessageInView(adminEditUserTraining, "Niet gelukt om usertraining op te halen");
+                }
+            }
+        });
+
+    }
+
+    public void deleteUserTraining(final AdminEditUserTraining adminEditUserTraining, UserTraining userTraining) {
+        userTraining.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    doToastMessageInView(adminEditUserTraining, "Gelukt om crusus te verwijderen");
+                    adminEditUserTraining.finish();
+
+                } else {
+                    doToastMessageInView(adminEditUserTraining, "Niet gelukt om cursus te verwijderen");
+                }
+            }
+        });
+    }
+
+    public void checkAvailibleUserTraining(final Training oldTraining, final AdminTrainingAddActivity adminTrainingAddActivity) {
+        ParseQuery<UserTraining> query = ParseQuery.getQuery("user_training");
+        query.findInBackground(new FindCallback<UserTraining>() {
+            public void done(List<UserTraining> objects, ParseException e) {
+                if (e == null) {
+                    for (UserTraining ut : objects)
+                    {
+                        if(ut.getTraining().getObjectId() == oldTraining.getObjectId()){
+                            adminTrainingAddActivity.ableToDeleteTraining(false);
+                        }
+                    }
+                } else {
+                    Log.d("ParseError", e.toString());
+                    doToastMessageInView(adminTrainingAddActivity, "Niet gelukt om usertraining op te halen");
+                }
+            }
+        });
+    }
 }

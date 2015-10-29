@@ -128,8 +128,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         fullView.closeDrawer(GravityCompat.START);
-                        if (!currentActivityName.equals(TrainingActivity.class + "")) {
-                            Intent i = new Intent(HomeActivity.this, TrainingActivity.class);
+                        if (!currentActivityName.equals(AdminTrainingActivity.class + "")) {
+                            Intent i = new Intent(HomeActivity.this, AdminTrainingActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();

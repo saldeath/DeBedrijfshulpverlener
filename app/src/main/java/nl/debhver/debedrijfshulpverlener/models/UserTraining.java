@@ -51,13 +51,23 @@ public class UserTraining extends ParseObject {
         put("achieved", achieved);
     }
     public User getUser()  {
-        return (User) getParseObject("user");
+        try {
+            return (User) getParseObject("user").fetchIfNeeded();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     public void setUser(User user) {
         put("user", user);
     }
     public Training getTraining()  {
-        return (Training) getParseObject("training");
+        try {
+            return (Training) getParseObject("training").fetchIfNeeded();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     public void setTraining(Training training) {
         put("training", training);
