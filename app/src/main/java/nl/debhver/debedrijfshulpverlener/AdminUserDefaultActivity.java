@@ -1,13 +1,18 @@
 package nl.debhver.debedrijfshulpverlener;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.SearchView;
+
+import com.parse.FunctionCallback;
+import com.parse.ParseException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -204,15 +209,48 @@ public class AdminUserDefaultActivity extends HomeActivity {
         expListView.setAdapter(listAdapter);
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+            public boolean onChildClick(ExpandableListView parent, View v, final int groupPosition, int childPosition, long id) {
                 if (childPosition == 0) {
                     System.out.println(userListPara.get(groupPosition).getName());
                     Intent intent = new Intent(AdminUserDefaultActivity.this, AdminAddUserActivity.class);
                     intent.putExtra(USER_EXTRA, userListPara.get(groupPosition).getObjectId());
                     AdminUserDefaultActivity.this.startActivity(intent);
                 }
-                if (childPosition == 1) {
-                    DBManager.getInstance().deleteUserById(AdminUserDefaultActivity.this, userListPara.get(groupPosition).getObjectId());
+                else if(childPosition == 1){
+
+                    final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            AdminUserDefaultActivity.this);
+
+                    alertDialogBuilder
+                            .setTitle(R.string.warning)
+                            .setMessage(getString(R.string.warning_delete_user) + "\n" + userListPara.get(groupPosition).toString())
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    String objectId = userListPara.get(groupPosition).getObjectId();
+                                    DBManager.getInstance().deleteUserById(AdminUserDefaultActivity.this , userListPara.get(groupPosition).getObjectId(), new FunctionCallback<String>(){
+                                        @Override
+                                        public void done(String object, ParseException e) {
+                                            if (e == null) {
+                                                popupShortToastMessage(getString(R.string.user_delete_succes));
+                                                retrieveUsers();
+                                            } else {
+                                                Log.d("ParseError", e.toString());
+                                                popupShortToastMessage(getString(R.string.user_delete_error));
+                                            }
+                                        }
+                                    });
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 }
                 return true;
             }

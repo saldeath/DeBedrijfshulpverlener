@@ -218,11 +218,11 @@ public class DBManager {
             @Override
             public void done(String object, ParseException e) {
                 if (e == null) {
-                    adminAddUserActivity.popupShortToastMessage("OK: " + object);
+                    adminAddUserActivity.popupShortToastMessage(adminAddUserActivity.getResources().getString(R.string.user_save_succes));
                     adminAddUserActivity.setSaved(true);
                     System.out.println(object);
                 } else {
-                    adminAddUserActivity.popupShortToastMessage("ERROR: " + e.getMessage());
+                    adminAddUserActivity.popupShortToastMessage(adminAddUserActivity.getResources().getString(R.string.user_save_error));
                     System.out.println(e.getMessage());
                 }
             }
@@ -248,10 +248,10 @@ public class DBManager {
             @Override
             public void done(String object, ParseException e) {
                 if (e == null) {
-                    adminAddUserActivity.popupShortToastMessage("OK: " + object);
+                    adminAddUserActivity.popupShortToastMessage(adminAddUserActivity.getResources().getString(R.string.user_save_succes));
                     adminAddUserActivity.setSaved(true);
                 } else {
-                    adminAddUserActivity.popupShortToastMessage("ERROR: " + e.getMessage());
+                    adminAddUserActivity.popupShortToastMessage(adminAddUserActivity.getResources().getString(R.string.user_save_error));
                 }
             }
         });
@@ -337,24 +337,12 @@ public class DBManager {
         });
     }
 
-    void deleteUserById(final AdminUserDefaultActivity adminUserDefaultActivity, String userObjId){
-        ParseQuery<User> query = ParseQuery.getQuery(User.class);
-        query.whereEqualTo("objectId",userObjId);
-        query.findInBackground(new FindCallback<User>() {
-            public void done(List<User> objects, ParseException e) {
-                if (e == null) {
-                    // iterate over all messages and delete them
-                    for (User user : objects) {
-                        user.deleteInBackground();
-                        doToastMessageInView(adminUserDefaultActivity, user.getName() + " deleted from database.");
-                    }
-                    adminUserDefaultActivity.retrieveUsers();
-                } else {
-                    Log.d("ParseError", e.toString());
-                    doToastMessageInView(adminUserDefaultActivity, "ERROR: Couldnt delete user.");
-                }
-            }
-        });
+
+
+    void deleteUserById(final AdminUserDefaultActivity adminUserDefaultActivity, String userObjId, final FunctionCallback functionCallback){
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("objectId", userObjId);
+        ParseCloud.callFunctionInBackground("deleteUser", params, functionCallback);
     }
 
     void getBranchForUser(final UserEquipmentDefaultActivity userEquipmentDefaultActivity, String branchObjectId){

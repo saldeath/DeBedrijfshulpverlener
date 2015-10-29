@@ -118,17 +118,21 @@
 
     <string name="save_succes">Succesvol opgeslagen</string>
     <string name="save_error">Error: er is niets opgeslagen</string>
-    <string name="delete_succes">Succesvol verweiderd</string>
-    <string name="delete_error">Error: er is niets verweiderd</string>
+    <string name="delete_succes">Succesvol verwijderd</string>
+    <string name="delete_error">Error: er is niets verwijderd</string>
 
     <string name="equipment_save_succes">Apparaat succesvol opgeslagen</string>
     <string name="equipment_save_error">Error: apparaat niet opgeslagen</string>
-    <string name="equipment_delete_succes">Apparaat succesvol verweiderd</string>
-    <string name="equipment_delete_error">Error: apparaat niet verweiderd</string>
+    <string name="equipment_delete_succes">Apparaat succesvol verwijderd</string>
+    <string name="equipment_delete_error">Error: apparaat niet verwijderd</string>
     <string name="branch_save_succes">Vestiging succesvol opgeslagen</string>
     <string name="branch_save_error">Error: vestiging niet opgeslagen</string>
     <string name="branch_delete_succes">Vestiging succesvol verwijderd</string>
     <string name="branch_delete_error">Error: vestiging niet verwijderd</string>
+    <string name="user_save_succes">Gebruiker succesvol opgeslagen</string>
+    <string name="user_save_error">Error: Gebruiker niet opgeslagen</string>
+    <string name="user_delete_succes">Gebruiker succesvol verwijderd</string>
+    <string name="user_delete_error">Error: Gebruiker niet verwijderd</string>
     <string name="error_loading_picture">Error met het ophalen van de afbeelding</string>
 
     <string name="equipment_show_name">Naam: </string>
@@ -168,6 +172,7 @@
     <string name="select_floor">Selecteer de verdieping waarvan je de evacuatieplan wilt zien:</string>
     <string name="warning_delete_equipment">Weet u zeker dat u dit apparaat wilt verwijderen?</string>
     <string name="warning_delete_branch">Weet u zeker dat u deze vestiging wilt verwijderen?</string>
+    <string name="warning_delete_user">Weet u zeker dat u deze user wilt verwijderen?</string>
     <string name="nothing">geen</string>
     <string name="hint_user_training_achieved">Actief</string>
     <string name="hint_user_training_scheduled">Gepland</string>
