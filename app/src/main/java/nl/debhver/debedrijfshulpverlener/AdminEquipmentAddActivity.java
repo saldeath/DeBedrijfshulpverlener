@@ -244,16 +244,20 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         Button gallery = (Button) dialog.findViewById(R.id.gallaryButton);
         Button camera = (Button) dialog.findViewById(R.id.cameraButton);
 
-        Drawable recycleBinIcon = getDrawable(R.drawable.ic_recycle_bin);
-        Drawable galleryIcon = getDrawable(R.drawable.ic_gallery);
-        Drawable cameraIcon = getDrawable(R.drawable.ic_camera);
+        Drawable recycleBinIcon = ContextCompat.getDrawable(this, R.drawable.ic_recycle_bin);
+        Drawable galleryIcon = ContextCompat.getDrawable(this, R.drawable.ic_gallery);
+        Drawable cameraIcon = ContextCompat.getDrawable(this, R.drawable.ic_camera);
         recycleBinIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
         galleryIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
         cameraIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
 
-        delete.setCompoundDrawablesRelativeWithIntrinsicBounds(recycleBinIcon, null, null, null);
-        gallery.setCompoundDrawablesRelativeWithIntrinsicBounds(galleryIcon, null, null, null);
-        camera.setCompoundDrawablesRelativeWithIntrinsicBounds(cameraIcon, null, null, null);
+        recycleBinIcon.setBounds(0, 0, recycleBinIcon.getIntrinsicWidth(), recycleBinIcon.getIntrinsicHeight());
+        galleryIcon.setBounds(0, 0, galleryIcon.getIntrinsicWidth(), galleryIcon.getIntrinsicHeight() );
+        cameraIcon.setBounds(0, 0, cameraIcon.getIntrinsicWidth(), cameraIcon.getIntrinsicHeight() );
+
+        delete.setCompoundDrawables(recycleBinIcon, null, null, null);
+        gallery.setCompoundDrawables(galleryIcon, null, null, null);
+        camera.setCompoundDrawables(cameraIcon, null, null, null);
 
         if (equipmentImage == null) {
             delete.setVisibility(View.GONE);
