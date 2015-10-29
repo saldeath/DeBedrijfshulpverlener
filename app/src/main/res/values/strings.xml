@@ -6,43 +6,43 @@
     <string name="drawer_close">Close</string>
 
     <string name="hint_firstandlastname">First and last name</string>
-    <string name="hint_Telephonenumber">Telephonenumber</string>
-    <string name="hint_email">Email address</string>
-    <string name="hint_ERO">ERO functions</string>
-    <string name="hint_rights">Adminrights</string>
+    <string name="hint_Telephonenumber">Phone number</string>
+    <string name="hint_email">E-mail address</string>
+    <string name="hint_ERO">ERO Functions</string>
+    <string name="hint_rights">Admin rights</string>
     <string name="hint_branch">Branch</string>
     <string name="hint_password">Password</string>
     <string name="add_user">Add user</string>
     <string name="update_user">Update user</string>
 
-    <string name="action_settings">Opties</string>
-    <string name="action_logout">Uitloggen</string>
-    <string name="home">Incident melden</string>
-    <string name="courses">Cursussen</string>
-    <string name="devices">Apparaten</string>
-    <string name="incidents">Incidenten</string>
-    <string name="manuals">Handleiding</string>
+    <string name="action_settings">Options</string>
+    <string name="action_logout">Log out</string>
+    <string name="home">Report incident</string>
+    <string name="courses">Courses</string>
+    <string name="devices">Devices</string>
+    <string name="incidents">Incidents</string>
+    <string name="manuals">Manual</string>
 
-    <string name="user_right_none">Geen</string>
+    <string name="user_right_none">None</string>
     <string name="user_right_admin">Admin</string>
-    <string name="user_right_equipment">Alleen apparaten</string>
-    <string name="user_right_training">Alleen cursussen</string>
-    <string name="user_right_equipment_training">Apparaten en cursussen</string>
+    <string name="user_right_equipment">Only devices</string>
+    <string name="user_right_training">Only courses</string>
+    <string name="user_right_equipment_training">Devices and courses</string>
 
-    <string name="user_ERO_function_fire">Brand blussen</string>
-    <string name="user_ERO_function_first_aid">EHBO</string>
+    <string name="user_ERO_function_fire">Extinguish fire</string>
+    <string name="user_ERO_function_first_aid">First Aid</string>
     <string name="user_ERO_function_AED">AED</string>
-    <string name="user_ERO_function_none">Geen</string>
+    <string name="user_ERO_function_none">None</string>
 
-    <string name="equipment_type_fire">Brand</string>
-    <string name="equipment_type_medical">Medisch</string>
-    <string name="equipment_type_personnel_equipment">Personeel\'s uitrusting</string>
+    <string name="equipment_type_fire">Fire</string>
+    <string name="equipment_type_medical">Medical</string>
+    <string name="equipment_type_personnel_equipment">Staff equipment</string>
 
-    <string name="incident_type_fire">Brand</string>
-    <string name="incident_type_medical">Medisch</string>
+    <string name="incident_type_fire">Fire</string>
+    <string name="incident_type_medical">Medical</string>
 
-    <string name="training_type_basis">Basis</string>
-    <string name="training_type_repeat">Herhaling</string>
+    <string name="training_type_basis">Basic</string>
+    <string name="training_type_repeat">Repeat</string>
 
     <string name="error_empty_name">Name cannot be empty.</string>
     <string name="error_empty_location">Location cannot be empty.</string>
@@ -53,138 +53,138 @@
     <string name="error_empty_expiration_date">Expiration date cannot be empty.</string>
     <string name="error_empty_adminrights">Adminrights cannot be empty.</string>
     <string name="error_empty_erofunctions">No ERO functions selected. Are you sure you want to create this user without an ERO function?</string>
-    <string name="error_empty_password">Password cannot be empty.</string>
-    <string name="error_empty_city">Stad mag niet leeg zijn</string>
-    <string name="error_empty_address">Adres mag niet leeg zijn</string>
-    <string name="error_empty_postal_code">Postcode mag niet leeg zijn</string>
+    <string name="error_empty_password">Password can not be empty</string>
+    <string name="error_empty_city">City can not be empty</string>
+    <string name="error_empty_address">Address can not be empty</string>
+    <string name="error_empty_postal_code">Postcode can not be empty</string>
 
-    <string name="yes">Ja</string>
-    <string name="no">Nee</string>
-    <string name="delete">Verwijderen</string>
-    <string name="edit">Wijzigen</string>
-    <string name="gallery">Galerij</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
-    <string name="image">Afbeelding</string>
-    <string name="warning">Waarschuwing</string>
-    <string name="warning_logout">Weet u zeker dat u uit wil loggen?</string>
-    <string name="warning_exit_without_save">Weet u zeker dat u terug wil gaan zonder op te slaan?</string>
+    <string name="image">Image</string>
+    <string name="warning">Warning</string>
+    <string name="warning_logout">Are you sure you want to log out?</string>
+    <string name="warning_exit_without_save">Are you sure you want to go back without saving?</string>
 
-    <string name="branch_name">Naam vestiging</string>
-    <string name="branch_city">Stad</string>
-    <string name="branch_postal_code">Postcodee</string>
-    <string name="branch_address">Adres</string>
-    <string name="incident_description">Beschrijving</string>
-    <string name="incident_location">Locatie</string>
+    <string name="branch_name">Name branch</string>
+    <string name="branch_city">City</string>
+    <string name="branch_postal_code">zip code</string>
+    <string name="branch_address">Address</string>
+    <string name="incident_description">Description</string>
+    <string name="incident_location">Location</string>
 
-    <string name="hint_equipment_name">Naam</string>
-    <string name="hint_equipment_description">Beschrijving</string>
-    <string name="hint_equipment_location">Locatie beschrijving</string>
-    <string name="hint_equipment_type">Soort apparaat</string>
-    <string name="hint_equipment_date_of_purchase">Aanschaffings datum</string>
-    <string name="hint_equipment_expiration_date">Expiratiedatum</string>
-    <string name="hint_equipment_date_of_inspection">Laatste inspectie datum</string>
-    <string name="hint_equipment_image">Apparaat afbeelding</string>
-    <string name="hint_equipment_branch">Selecteer vestiging</string>
+    <string name="hint_equipment_name">Name</string>
+    <string name="hint_equipment_description">Description</string>
+    <string name="hint_equipment_location">Location description</string>
+    <string name="hint_equipment_type">Equipment type</string>
+    <string name="hint_equipment_date_of_purchase">Date of purchase</string>
+    <string name="hint_equipment_expiration_date">Expiration date</string>
+    <string name="hint_equipment_date_of_inspection">Last date of inspection</string>
+    <string name="hint_equipment_image">Equipment picture</string>
+    <string name="hint_equipment_branch">Select branch</string>
 
-    <string name="title_activity_home_user">Incident melden</string>
-    <string name="title_activity_admin_equipment_add">Apparaat toevoegen</string>
-    <string name="title_activity_admin_equipment_edit">Apparaat wijzigen</string>
-    <string name="title_activity_admin_equipment_default">Apparaten Beheren</string>
-    <string name="title_activity_admin_branch_default">Vestiging beheren</string>
-    <string name="title_activity_admin_branch_add">Vestiging toevoegen</string>
-    <string name="title_activity_admin_branch_edit">Vestiging wijzigen</string>
-	<string name="title_activity_admin_user_add">Gebruiker toevoegen</string>
-    <string name="title_activity_admin_user_edit">Gebruiker wijzigen</string>
-    <string name="title_activity_admin_user_default">Gebruikers Beheren</string>
-    <string name="title_activity_admin_training_default">Cursussen Beheren</string>
-    <string name="title_activity_admin_training_edit">Cursussen Wijzigen</string>
-    <string name="title_activity_admin_user_filter">Gebruikers filters</string>
-    <string name="title_activity_user_equipment_default">Apparaten</string>
-    <string name="title_activity_user_equipment_details">Apparaat overzicht</string>
-    <string name="title_activity_incident_opener">Ontvangen incident</string>
+    <string name="title_activity_home_user">Report incident</string>
+    <string name="title_activity_admin_equipment_add">Add equipment</string>
+    <string name="title_activity_admin_equipment_edit">Edit equipment</string>
+    <string name="title_activity_admin_equipment_default">Manage equipment</string>
+    <string name="title_activity_admin_branch_default">Manage branch</string>
+    <string name="title_activity_admin_branch_add">Add branch</string>
+    <string name="title_activity_admin_branch_edit">Edit branch </string>
+    <string name="title_activity_admin_user_add">Add user</string>
+    <string name="title_activity_admin_user_edit">Edit user</string>
+    <string name="title_activity_admin_user_default">Manage user</string>
+    <string name="title_activity_admin_training_default">Manage Courses</string>
+    <string name="title_activity_admin_training_edit">Edit course </string>
+    <string name="title_activity_admin_user_filter">Filters user</string>
+    <string name="title_activity_user_equipment_default">Equipment</string>
+    <string name="title_activity_user_equipment_details">Equipment overview</string>
+    <string name="title_activity_incident_opener">Receive incident</string>
     <string name="title_activity_user_incident_details">Incident details</string>
-    <string name="title_activity_user_incident_default">Incidenten</string>
-    <string name="title_activity_user_training_default">Cursussen</string>
+    <string name="title_activity_user_incident_default">Incidents</string>
+    <string name="title_activity_user_training_default">Courses</string>
 
     <string name="title_activity_emergency_manuals">Possible emergencies</string>
     <string name="title_activity_emergency_single_details">Emergency manual</string>
 
-	<string name="filter_apply_button">Apply filter</string>
+    <string name="filter_apply_button">Apply filter</string>
 
     <string name="description">Description</string>
     <string name="location">Location</string>
     <string name="update_branch">Update branch</string>
     <string name="emergency_type">Emergency type</string>
 
-    <string name="save_succes">Succesvol opgeslagen</string>
-    <string name="save_error">Error: er is niets opgeslagen</string>
-    <string name="delete_succes">Succesvol verwijderd</string>
-    <string name="delete_error">Error: er is niets verwijderd</string>
+    <string name="save_succes">Successfully saved</string>
+    <string name="save_error">Error: nothing has been saved</string>
+    <string name="delete_succes">Successfully deleted</string>
+    <string name="delete_error">Error: nothing has been deleted</string>
 
-    <string name="equipment_save_succes">Apparaat succesvol opgeslagen</string>
-    <string name="equipment_save_error">Error: apparaat niet opgeslagen</string>
-    <string name="equipment_delete_succes">Apparaat succesvol verwijderd</string>
-    <string name="equipment_delete_error">Error: apparaat niet verwijderd</string>
-    <string name="branch_save_succes">Vestiging succesvol opgeslagen</string>
-    <string name="branch_save_error">Error: vestiging niet opgeslagen</string>
-    <string name="branch_delete_succes">Vestiging succesvol verwijderd</string>
-    <string name="branch_delete_error">Error: vestiging niet verwijderd</string>
-    <string name="user_save_succes">Gebruiker succesvol opgeslagen</string>
-    <string name="user_save_error">Error: Gebruiker niet opgeslagen</string>
-    <string name="user_delete_succes">Gebruiker succesvol verwijderd</string>
-    <string name="user_delete_error">Error: Gebruiker niet verwijderd</string>
-    <string name="error_loading_picture">Error met het ophalen van de afbeelding</string>
+    <string name="equipment_save_succes">Equipment successfully saved</string>
+    <string name="equipment_save_error">Error: equipment not saved</string>
+    <string name="equipment_delete_succes">Equipment successfully deleted</string>
+    <string name="equipment_delete_error">Error: equipment not deleted</string>
+    <string name="branch_save_succes">Branch successfully saved</string>
+    <string name="branch_save_error">Error: branch not saved</string>
+    <string name="branch_delete_succes">Branch successfully deleted</string>
+    <string name="branch_delete_error">Error: branch not deleted</string>
+    <string name="user_save_succes">User successfully saved</string>
+    <string name="user_save_error">Error: user not saved</string>
+    <string name="user_delete_succes">User successfully deleted</string>
+    <string name="user_delete_error">Error: user not deleted</string>
+    <string name="error_loading_picture">Error with retrieving the picture</string>
 
-    <string name="equipment_show_name">Naam: </string>
-    <string name="equipment_show_description">Omschrijving: </string>
-    <string name="equipment_show_location">Locatie: </string>
+    <string name="equipment_show_name">Name: </string>
+    <string name="equipment_show_description">Description: </string>
+    <string name="equipment_show_location">Location: </string>
     <string name="equipment_show_type">Type: </string>
-    <string name="equipment_show_purchase">Aankoopdatum: </string>
-    <string name="equipment_show_expire">Verloopdatum: </string>
-    <string name="equipment_show_inspection">Inspectiedatum: </string>
-    <string name="equipment_show_image">Foto: </string>
+    <string name="equipment_show_purchase">Date of purchase: </string>
+    <string name="equipment_show_expire">Expiration date: </string>
+    <string name="equipment_show_inspection">Date of inspection: </string>
+    <string name="equipment_show_image">Picture: </string>
 
-    <string name="incident_list_explaination">Type @ Locatie - tijd/datum</string>
+    <string name="incident_list_explaination">Type @ location- time/date</string>
 
     <string name="heart_attack">Heart attack</string>
     <string name="suffocation">Suffocation</string>
     <string name="evacuation_plan">Evacuation plan</string>
 
-
     <string name="step">Step</string>
 
-    <string name="ha_step1_details">Controleer het bewustzijn van het slachtoffer</string>
-    <string name="ha_step2_details">Roep om hulp</string>
-    <string name="ha_step3_details">Wanneer er geen ademhaling is bij het slachtoffer, bel dan direct 112</string>
-    <string name="ha_step4_details">Laat iemand zo snel mogelijk een AED halen</string>
-    <string name="ha_step5_details">Geef 30 borstcompressies</string>
-    <string name="ha_step6_details">Beadem na iedere 30 borstcompressies het slachtoffer twee keer</string>
-    <string name="ha_step7_details">Als de AED er is, gebruik deze dan zo snel mogelijk</string>
-    <string name="ha_step8_details">Ga door met de reanimatie totdat de professionele hulpverleners zeggen dat je mag stoppen</string>
+    <string name="ha_step1_details">Check the victim for consciousness</string>
+    <string name="ha_step2_details">Call for help</string>
+    <string name="ha_step3_details">When the victim does not breath, immediately call 911.</string>
+    <string name="ha_step4_details">Let someone get an AED as fast as possible</string>
+    <string name="ha_step5_details">Give thirty chest compressions</string>
+    <string name="ha_step6_details">After every thirty chest compressions, give the victim two rescue breaths</string>
+    <string name="ha_step7_details">If the AED is at sight, use it immediately</string>
+    <string name="ha_step8_details">Keep on performing CPR until professional rescuers tell you to stop</string>
 
-    <string name="suffocation_step1_details">Sla direct maximaal vijf keer tussen de schouderbladen. Kijk na elke klap of het probleem is opgelost</string>
-    <string name="suffocation_step2_details">Helpt slaan op de rug niet, voer dan maximaal vijf buikstoten uit</string>
-    <string name="suffocation_step3_details">Geef afwisselend vijf slagen tussen de schouderbladen en vijf buikstoten</string>
-    <string name="suffocation_step4_details">Bel direct 112 als het slachtoffer het bewustzijn verliest</string>
-    <string name="suffocation_step5_details">Start met reanimeren als het slachtoffer bewusteloos is en niet meer normaal ademt.</string>
-    <string name="suffocation_step6_details">Ga met kleine kinderen achteraf altijd naar de huisarts</string>
+    <string name="suffocation_step1_details">immediately give the victim five blows between the shoulder blades. Check after every blow if the problem is solved.</string>
+    <string name="suffocation_step2_details">If blows on the back do not help, then perform five abdominal thrusts</string>
+    <string name="suffocation_step3_details">Give alternating five blows between the shoulder blades and five abdominal thrusts</string>
+    <string name="suffocation_step4_details">Call 911 if the victim loses consciousness</string>
+    <string name="suffocation_step5_details">Start CPR if the victim is unconscious and not breathing normally.</string>
+    <string name="suffocation_step6_details">If the victim is a child, always go to see a doctor afterwards.</string>
 
-    <string name="select_floor">Selecteer de verdieping waarvan je de evacuatieplan wilt zien:</string>
-    <string name="warning_delete_equipment">Weet u zeker dat u dit apparaat wilt verwijderen?</string>
-    <string name="warning_delete_branch">Weet u zeker dat u deze vestiging wilt verwijderen?</string>
-    <string name="warning_delete_user">Weet u zeker dat u deze user wilt verwijderen?</string>
-    <string name="nothing">geen</string>
-    <string name="hint_user_training_achieved">Actief</string>
-    <string name="hint_user_training_scheduled">Gepland</string>
-    <string name="hint_user_training_expired">Verlopen</string>
-    <string name="hint_user_training_failed">Gezakt</string>
-    <string name="hint_user_training_alternate"><i>Naam - Datum \n</i></string>
-    <string name="hint_user_training_default"><i>Naam - Behaald op - Verloopt op \n</i></string>
-    <string name="Description">Beschrijving</string>
+    <string name="select_floor">Select a floor of which you want to see the evacuation plan of:</string>
+    <string name="warning_delete_equipment">Are you sure you want to delete this equipment?</string>
+    <string name="warning_delete_branch">Are you sure you want to delete this branch?</string>
+    <string name="warning_delete_user">Are you sure you want to delete this user?</string>
+    <string name="nothing">Nothing</string>
+    <string name="hint_user_training_achieved">Achieved</string>
+    <string name="hint_user_training_scheduled">Scheduled</string>
+    <string name="hint_user_training_expired">Expired</string>
+    <string name="hint_user_training_failed">Failed</string>
+    <string name="hint_user_training_alternate"><i>Name - Date \n</i></string>
+    <string name="hint_user_training_default"><i>Name - Obtained - Expires \n</i></string>
+    <string name="Description">Description</string>
 
-    <string name="modify">Aanpassen</string>
-    <string name="error_empty_description">Beschrijving is verplicht</string>
+    <string name="modify">Modify</string>
+    <string name="error_empty_description">Description can not be empty</string>
     <string name="Ok">Ok</string>
-    <string name="cancel">Annuleren</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
+
