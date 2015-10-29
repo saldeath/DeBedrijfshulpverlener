@@ -1,8 +1,5 @@
 package nl.debhver.debedrijfshulpverlener;
 
-import java.util.HashMap;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -14,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.HashMap;
+import java.util.List;
 
 import nl.debhver.debedrijfshulpverlener.parse.ParseApplication;
 
@@ -109,7 +109,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
-
         return convertView;
     }
 
@@ -122,5 +121,4 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
 }

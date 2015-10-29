@@ -1,28 +1,23 @@
 package nl.debhver.debedrijfshulpverlener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.SaveCallback;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import nl.debhver.debedrijfshulpverlener.enums.Table;
 import nl.debhver.debedrijfshulpverlener.models.Branch;
@@ -124,8 +119,8 @@ public class AdminBranchDefaultActivity extends HomeActivity {
         options.add(getString(R.string.edit));
         options.add(getString(R.string.delete));
         List<Drawable> icons = new ArrayList<>();
-        icons.add(getDrawable(R.drawable.ic_edit));
-        icons.add(getDrawable(R.drawable.ic_recycle_bin));
+        icons.add(ContextCompat.getDrawable(this, R.drawable.ic_edit));
+        icons.add(ContextCompat.getDrawable(this, R.drawable.ic_recycle_bin));
         // Adding header/child data
         int i = 0;
         for (Branch b : result) {

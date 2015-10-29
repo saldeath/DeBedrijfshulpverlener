@@ -4,31 +4,22 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Spinner;
 
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import nl.debhver.debedrijfshulpverlener.enums.Table;
-import nl.debhver.debedrijfshulpverlener.models.Branch;
 import nl.debhver.debedrijfshulpverlener.models.Equipment;
 
 public class AdminEquipmentDefaultActivity extends HomeActivity {
@@ -65,8 +56,8 @@ public class AdminEquipmentDefaultActivity extends HomeActivity {
         options.add(getString(R.string.edit));
         options.add(getString(R.string.delete));
         List<Drawable> icons = new ArrayList<>();
-        icons.add(getDrawable(R.drawable.ic_edit));
-        icons.add(getDrawable(R.drawable.ic_recycle_bin));
+        icons.add(ContextCompat.getDrawable(this, R.drawable.ic_edit));
+        icons.add(ContextCompat.getDrawable(this, R.drawable.ic_recycle_bin));
         // Adding header/child data
         int i = 0;
         for (Equipment e : result) {

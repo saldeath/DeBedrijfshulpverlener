@@ -1,7 +1,9 @@
 package nl.debhver.debedrijfshulpverlener;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -183,8 +185,12 @@ public class AdminUserDefaultActivity extends HomeActivity {
         listDataChild = new HashMap<String, List<String>>();
 
         List<String> options = new ArrayList<String>();
-        options.add(getResources().getString(R.string.modify));
+        options.add(getResources().getString(R.string.edit));
         options.add(getResources().getString(R.string.delete));
+
+        List<Drawable> icons = new ArrayList<>();
+        icons.add(ContextCompat.getDrawable(this, R.drawable.ic_edit));
+        icons.add(ContextCompat.getDrawable(this, R.drawable.ic_recycle_bin));
         // Adding header/child data
         int i = 0;
         for (User u : userListPara) {
@@ -193,20 +199,19 @@ public class AdminUserDefaultActivity extends HomeActivity {
             i++;
         }
 
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
-
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild, icons);
         // setting list adapter
         expListView.setAdapter(listAdapter);
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if(childPosition == 0){
+                if (childPosition == 0) {
                     System.out.println(userListPara.get(groupPosition).getName());
                     Intent intent = new Intent(AdminUserDefaultActivity.this, AdminAddUserActivity.class);
                     intent.putExtra(USER_EXTRA, userListPara.get(groupPosition).getObjectId());
                     AdminUserDefaultActivity.this.startActivity(intent);
                 }
-                if(childPosition == 1){
+                if (childPosition == 1) {
                     DBManager.getInstance().deleteUserById(AdminUserDefaultActivity.this, userListPara.get(groupPosition).getObjectId());
                 }
                 return true;

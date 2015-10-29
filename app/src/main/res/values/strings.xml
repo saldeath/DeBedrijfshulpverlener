@@ -176,8 +176,6 @@
     <string name="hint_user_training_alternate"><i>Naam - Datum \n</i></string>
     <string name="hint_user_training_default"><i>Naam - Behaald op - Verloopt op \n</i></string>
     <string name="Description">Beschrijving</string>
-    <string name="title_activity_user_incident_details">Incident details</string>
-    <string name="title_activity_user_incident_default">Incidenten</string>
 
     <string name="modify">Aanpassen</string>
 </resources>
