@@ -46,11 +46,13 @@
         <activity
             android:name=".AdminAddUserActivity"
             android:label="@string/title_activity_admin_user_add"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name=".AdminAddBranchActivity"
             android:label="@string/title_activity_admin_branch_add"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
@@ -83,6 +85,7 @@
         <activity
             android:name=".TrainingAddActivity"
             android:label="@string/title_activity_admin_training_edit"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
