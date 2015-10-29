@@ -249,14 +249,11 @@ public class AdminEquipmentAddActivity extends HomeActivity {
         Drawable cameraIcon = getDrawable(R.drawable.ic_camera);
         recycleBinIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
         galleryIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
-        cameraIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY );
+        cameraIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
 
         delete.setCompoundDrawablesRelativeWithIntrinsicBounds(recycleBinIcon, null, null, null);
         gallery.setCompoundDrawablesRelativeWithIntrinsicBounds(galleryIcon, null, null, null);
         camera.setCompoundDrawablesRelativeWithIntrinsicBounds(cameraIcon, null, null, null);
-        delete.getBackground().setColorFilter(ContextCompat.getColor(ParseApplication.getContext(), R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
-        gallery.getBackground().setColorFilter(ContextCompat.getColor(ParseApplication.getContext(), R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
-        camera.getBackground().setColorFilter(ContextCompat.getColor(ParseApplication.getContext(), R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
 
         if (equipmentImage == null) {
             delete.setVisibility(View.GONE);
