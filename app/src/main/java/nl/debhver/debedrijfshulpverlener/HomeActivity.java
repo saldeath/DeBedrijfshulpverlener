@@ -358,7 +358,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         public void onClick(DialogInterface dialog, int id) {
                             HomeActivity.super.finish();
                             dialog.dismiss();
-                            //BACK_PRESSED--;
                         }
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -371,7 +370,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             alertDialog.show();
         } else {
             HomeActivity.super.finish();
-            //BACK_PRESSED--;
         }
     }
 
