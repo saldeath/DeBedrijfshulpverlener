@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -24,7 +23,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import nl.debhver.debedrijfshulpverlener.enums.IncidentType;
-import nl.debhver.debedrijfshulpverlener.models.Branch;
 import nl.debhver.debedrijfshulpverlener.models.ImageModel;
 import nl.debhver.debedrijfshulpverlener.models.Incident;
 import nl.debhver.debedrijfshulpverlener.models.User;
@@ -128,12 +126,12 @@ public class HomeUserActivity extends HomeActivity {
     public boolean checkInputFields() {
 
         if (incidentLocation.getText().toString().isEmpty()) {
-            popupShortToastMessage("Locatie is verplicht");
+            popupShortToastMessage(getResources().getString(R.string.error_empty_location));
             return false;
         }
 
         if (incidentDescription.getText().toString().isEmpty()) {
-            popupShortToastMessage("Beschrijving is verplicht");
+            popupShortToastMessage(getResources().getString(R.string.error_empty_description));
             return false;
         }
 
@@ -185,15 +183,15 @@ public class HomeUserActivity extends HomeActivity {
             incidentTypes.setSelection(spinnerId);
             boxOpen = true;
 
-            alertDialog.setPositiveButton("ok", null);
+            alertDialog.setPositiveButton(getResources().getString(R.string.Ok), null);
 
-            alertDialog.setNegativeButton("Annuleren", new DialogInterface.OnClickListener() {
+            alertDialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     boxOpen = false;
                     dialog.dismiss();
                 }
             });
-            alertDialog.setTitle("Incident Melden");
+            alertDialog.setTitle(getResources().getString(R.string.title_activity_home_user));
             Dialog dialog = alertDialog.create();
 
 
