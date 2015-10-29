@@ -46,7 +46,6 @@ public class AdminTrainingAddActivity extends HomeActivity {
     }
 
     void loadSingleTraining(Training object){
-        showProgressBar(true);
         oldTraining = object;
         EditText name = (EditText)findViewById(R.id.inputTrainingName);
         EditText description = (EditText)findViewById(R.id.inputTrainingDescription);
