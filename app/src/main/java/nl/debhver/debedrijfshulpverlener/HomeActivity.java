@@ -4,13 +4,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
@@ -18,13 +18,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-
 import android.widget.TextView;
-
-import com.parse.ParseException;
-
 import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import nl.debhver.debedrijfshulpverlener.enums.UserRight;
@@ -107,7 +104,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             if(right != UserRight.TRAINING) {
                 menu.add(R.id.menu_group_admin, Menu.NONE, Menu.NONE, R.string.title_activity_admin_equipment_default);
                 item = menu.getItem(menu.size() - 1);
-                item.setIcon(getDrawable(R.drawable.ic_add_fire_extinguisher_18dp));
+                item.setIcon(R.drawable.ic_add_fire_extinguisher_18dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -126,7 +123,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             if(right != UserRight.EQUIPMENT) {
                 menu.add(R.id.menu_group_admin, Menu.NONE, Menu.NONE, R.string.title_activity_admin_training_default);
                 item = menu.getItem(menu.size() - 1);
-                item.setIcon(getDrawable(R.drawable.ic_add_file_document_box_white_18dp));
+                item.setIcon(R.drawable.ic_add_file_document_box_white_18dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -145,13 +142,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             if(right == UserRight.ADMIN) {
                 menu.add(R.id.menu_group_admin, Menu.NONE, Menu.NONE, R.string.title_activity_admin_user_default);
                 item = menu.getItem(menu.size() - 1);
-                item.setIcon(getDrawable(R.drawable.ic_add_account_white_18dp));
+                item.setIcon(R.drawable.ic_add_account_white_18dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         fullView.closeDrawer(GravityCompat.START);
                         if (!currentActivityName.equals(AdminUserDefaultActivity.class + "")) {
-                            Intent i  = new Intent(HomeActivity.this, AdminUserDefaultActivity.class);
+                            Intent i = new Intent(HomeActivity.this, AdminUserDefaultActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();
@@ -162,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 });
                 menu.add(R.id.menu_group_admin, Menu.NONE, Menu.NONE, R.string.title_activity_admin_branch_default);
                 item = menu.getItem(menu.size() - 1);
-                item.setIcon(getDrawable(R.drawable.ic_add_branch_18dp));
+                item.setIcon(R.drawable.ic_add_branch_18dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {

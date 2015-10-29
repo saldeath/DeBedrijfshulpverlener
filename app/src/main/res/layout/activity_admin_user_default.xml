@@ -23,10 +23,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/searchView" />
 
-            <ListView
+            <ExpandableListView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/userListView" />
+                android:id="@+id/userExpendableListView" />
 
         </LinearLayout>
 

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -44,9 +43,6 @@ public class AdminAddUserActivity extends HomeActivity {
             receivedUserId = userObjId;
             showProgressBar(true);
             findViewById(R.id.inputPassword).setVisibility(View.GONE); // admin cannot change password
-            Button button = (Button)findViewById(R.id.addUserButton);
-            button.setText(R.string.update_user);
-
         }
         else{
             System.out.println("NO EXTRA");
@@ -74,9 +70,7 @@ public class AdminAddUserActivity extends HomeActivity {
     }
 
     public void loadSingleUserDetails(List<User> users){
-        Log.d("AdminAddUser", "before size");
         if(users.size()==1){
-            Log.d("AdminAddUser", "na size");
             EditText editText;
             selectedUser = users.get(0);
             editText = (EditText)findViewById(R.id.inputName);
@@ -87,7 +81,6 @@ public class AdminAddUserActivity extends HomeActivity {
             editText.setText(selectedUser.getEmail());
             editText = (EditText)findViewById(R.id.inputPassword);
             editText.setText("dummy"); // not used, but needs to be set in order to pass checkFields()
-            Log.d("AdminAddUser", "na text ");
 
             List<UserEROFunction> userEROFunctions = selectedUser.getEROFunction();
             if(userEROFunctions != null){
@@ -106,13 +99,11 @@ public class AdminAddUserActivity extends HomeActivity {
 
             }
 
-            Log.d("AdminAddUser", "na ERO ");
             Spinner spinner;
             spinner = (Spinner)findViewById(R.id.spinner_adminrights);
             ArrayAdapter<UserRight> adapter1;
             adapter1= (ArrayAdapter)spinner.getAdapter();
             spinner.setSelection(adapter1.getPosition(selectedUser.getRight()));
-            Log.d("AdminAddUser", "na rights ");
             spinner = (Spinner)findViewById(R.id.spinner_working_at_branch);
             ArrayAdapter<Branch> adapter2;
             adapter2= (ArrayAdapter)spinner.getAdapter();
@@ -410,4 +401,6 @@ public class AdminAddUserActivity extends HomeActivity {
             checkBox.setChecked(false);
         }
     }
+
+
 }

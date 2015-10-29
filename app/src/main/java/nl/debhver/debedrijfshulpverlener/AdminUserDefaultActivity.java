@@ -4,12 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 import android.widget.SearchView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import nl.debhver.debedrijfshulpverlener.models.User;
@@ -24,6 +23,11 @@ public class AdminUserDefaultActivity extends HomeActivity {
     public static String USER_EXTRA = "user_extra";
     private boolean FILTER_RECEIVED = false;
     private List<User> userList = null;
+
+    ExpandableListAdapter listAdapter;
+    ExpandableListView expListView;
+    List<String> listDataHeader;
+    HashMap<String, List<String>> listDataChild;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +111,8 @@ public class AdminUserDefaultActivity extends HomeActivity {
         for(User user : userListFromDatabase){
             System.out.println( "set userlist " + user.getName());
         }
-        populateListView(userList);
+        prepareListData(userList);
+        //populateListView(userList);
     }
 
     public void filterUserListOnlyByName(String nameMustContain){
@@ -122,32 +127,31 @@ public class AdminUserDefaultActivity extends HomeActivity {
 
         }
         tempUserList.removeAll(toRemove);
-        populateListView(tempUserList);
+        prepareListData(tempUserList);
+        //populateListView(userList);
     }
 
-    public void populateListView(List<User> userListPara){
-        final ListView userListView = (ListView)findViewById(R.id.userListView);
-        ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_dropdown_item, userListPara);
-        userListView.setAdapter(adapter);
-        userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                User user = (User) userListView.getItemAtPosition(position);
-                if(user == null){
-                    Log.d("AdminDefaultUser","null user ??");
-                }
-                else{
-                    Log.d("AdminDefaultUser", user.getName() + "selected");
-                }
-                Intent intent = new Intent(AdminUserDefaultActivity.this, AdminAddUserActivity.class);
-                intent.putExtra(USER_EXTRA, user.getObjectId());
-                AdminUserDefaultActivity.this.startActivity(intent);
-
-            }
-        });
-        //intent.putExtra(USER_EXTRA,)
-        showProgressBar(false);
-    }
+//    public void populateListView(List<User> userListPara){
+//        final ListView userListView = (ListView)findViewById(R.id.userListView);
+//        ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_dropdown_item, userListPara);
+//        userListView.setAdapter(adapter);
+//        userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View view,
+//                                    int position, long id) {
+//                User user = (User) userListView.getItemAtPosition(position);
+//                if (user == null) {
+//                    Log.d("AdminDefaultUser", "null user ??");
+//                } else {
+//                    Log.d("AdminDefaultUser", user.getName() + "selected");
+//                }
+//                Intent intent = new Intent(AdminUserDefaultActivity.this, AdminAddUserActivity.class);
+//                intent.putExtra(USER_EXTRA, user.getObjectId());
+//                AdminUserDefaultActivity.this.startActivity(intent);
+//
+//            }
+//        });
+//        //intent.putExtra(USER_EXTRA,)
+//    }
 
     // code by http://stackoverflow.com/users/1705598/icza
     public static boolean containsIgnoreCase(String src, String what) {
@@ -169,6 +173,46 @@ public class AdminUserDefaultActivity extends HomeActivity {
         }
 
         return false;
+    }
+
+    public void prepareListData(final List<User> userListPara) {
+        expListView = (ExpandableListView) findViewById(R.id.userExpendableListView);
+        expListView.setGroupIndicator(null);
+
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<String, List<String>>();
+
+        List<String> options = new ArrayList<String>();
+        options.add(getResources().getString(R.string.modify));
+        options.add(getResources().getString(R.string.delete));
+        // Adding header/child data
+        int i = 0;
+        for (User u : userListPara) {
+            listDataHeader.add(i, u.toString());
+            listDataChild.put(listDataHeader.get(i), options); // Header, Child data
+            i++;
+        }
+
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                if(childPosition == 0){
+                    System.out.println(userListPara.get(groupPosition).getName());
+                    Intent intent = new Intent(AdminUserDefaultActivity.this, AdminAddUserActivity.class);
+                    intent.putExtra(USER_EXTRA, userListPara.get(groupPosition).getObjectId());
+                    AdminUserDefaultActivity.this.startActivity(intent);
+                }
+                if(childPosition == 1){
+                    DBManager.getInstance().deleteUserById(AdminUserDefaultActivity.this, userListPara.get(groupPosition).getObjectId());
+                }
+                return true;
+            }
+        });
+		showProgressBar(false);
     }
 
 }
