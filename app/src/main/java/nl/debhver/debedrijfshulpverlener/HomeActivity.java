@@ -113,7 +113,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             Intent i = new Intent(HomeActivity.this, AdminEquipmentDefaultActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
-                            finish();
+                            if(!isUserHomeActivity())
+                                finish();
                             return true;
                         }
                         return false;
@@ -132,7 +133,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             Intent i = new Intent(HomeActivity.this, TrainingActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
-                            finish();
+                            if(!isUserHomeActivity())
+                                finish();
                             return true;
                         }
                         return false;
@@ -151,7 +153,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             Intent i = new Intent(HomeActivity.this, AdminUserDefaultActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
-                            finish();
+                            if(!isUserHomeActivity())
+                                finish();
                             return true;
                         }
                         return false;
@@ -168,7 +171,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             Intent i  = new Intent(HomeActivity.this, AdminBranchDefaultActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
-                            finish();
+                            if(!isUserHomeActivity())
+                                finish();
                             return true;
                         }
                         return false;
@@ -240,7 +244,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     intent = new Intent(HomeActivity.this, HomeUserActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    finish();
+                    if(!isUserHomeActivity())
+                        finish();
                     return true;
                 }
 
@@ -252,7 +257,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     intent = new Intent(HomeActivity.this, UserTrainingDefaultActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    finish();
+                    if(!isUserHomeActivity())
+                        finish();
                     return true;
                 }
 
@@ -264,7 +270,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     intent = new Intent(HomeActivity.this, UserEquipmentDefaultActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    finish();
+                    if(!isUserHomeActivity())
+                        finish();
                     return true;
                 }
 
@@ -276,7 +283,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     intent = new Intent(HomeActivity.this, UserIncidentDefaultActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    finish();
+                    if(!isUserHomeActivity())
+                        finish();
                     return true;
                 }
 
@@ -288,7 +296,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     intent = new Intent(HomeActivity.this, EmergencyManualsActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    finish();
+                    if(!isUserHomeActivity())
+                        finish();
                     return true;
                 }
 
@@ -349,6 +358,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         public void onClick(DialogInterface dialog, int id) {
                             HomeActivity.super.finish();
                             dialog.dismiss();
+                            //BACK_PRESSED--;
                         }
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -361,6 +371,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             alertDialog.show();
         } else {
             HomeActivity.super.finish();
+            //BACK_PRESSED--;
         }
     }
 
@@ -388,12 +399,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-
             if (fullView.isDrawerOpen(Gravity.LEFT)){
                 fullView.closeDrawer(Gravity.LEFT);
             }else{
                 super.onBackPressed();
             }
+    }
 
+    private boolean isUserHomeActivity() {
+        if(currentActivityName.equals(HomeUserActivity.class + ""))
+            return true;
+        return false;
     }
 }
