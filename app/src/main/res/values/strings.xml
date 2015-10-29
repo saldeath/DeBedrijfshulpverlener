@@ -183,4 +183,8 @@
     <string name="Description">Beschrijving</string>
 
     <string name="modify">Aanpassen</string>
+    <string name="error_empty_description">Beschrijving is verplicht</string>
+    <string name="Ok">Ok</string>
+    <string name="cancel">Annuleren</string>
+
 </resources>
