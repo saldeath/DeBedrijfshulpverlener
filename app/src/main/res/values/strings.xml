@@ -19,15 +19,15 @@
     <string name="action_logout">Log out</string>
     <string name="home">Report incident</string>
     <string name="courses">Courses</string>
-    <string name="devices">Devices</string>
+    <string name="devices">Equipment</string>
     <string name="incidents">Incidents</string>
     <string name="manuals">Manual</string>
 
     <string name="user_right_none">None</string>
     <string name="user_right_admin">Admin</string>
-    <string name="user_right_equipment">Only devices</string>
+    <string name="user_right_equipment">Only equipment</string>
     <string name="user_right_training">Only courses</string>
-    <string name="user_right_equipment_training">Devices and courses</string>
+    <string name="user_right_equipment_training">Equipment and courses</string>
 
     <string name="user_ERO_function_fire">Extinguish fire</string>
     <string name="user_ERO_function_first_aid">First Aid</string>
