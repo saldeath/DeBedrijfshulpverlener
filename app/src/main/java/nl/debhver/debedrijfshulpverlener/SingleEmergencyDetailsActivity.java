@@ -153,6 +153,7 @@ public class SingleEmergencyDetailsActivity extends HomeActivity {
         evacuationPlan = (ImageView)findViewById(R.id.evacuationPlanImageView);
         photoViewAttacher = new PhotoViewAttacher(evacuationPlan);
         spinner = (Spinner)findViewById(R.id.floorSpinner);
+        showProgressBar(true);
         DBManager.getInstance().getEvacuationPlansFromCurrentBranch(this);
     }
 
@@ -177,6 +178,7 @@ public class SingleEmergencyDetailsActivity extends HomeActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 Log.d("spinner", "selected" + position);
+                showProgressBar(true);
                 DBManager.getInstance().getEvacuationPlan(SingleEmergencyDetailsActivity.this, (EvacuationPlan) spinner.getSelectedItem());
             }
 
@@ -194,6 +196,7 @@ public class SingleEmergencyDetailsActivity extends HomeActivity {
         Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
         evacuationPlan.setImageBitmap(bmp);
         photoViewAttacher.update();
+        showProgressBar(false);
     }
 }
 

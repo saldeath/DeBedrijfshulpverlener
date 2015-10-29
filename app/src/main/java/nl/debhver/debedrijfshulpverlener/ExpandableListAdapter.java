@@ -49,8 +49,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
         final String childText = (String) getChild(groupPosition, childPosition);
-        final Drawable icon = icons.get(childPosition);
-        icon.setColorFilter(ContextCompat.getColor(ParseApplication.getContext(), R.color.colorAccent), PorterDuff.Mode.MULTIPLY );
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -64,7 +62,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.lblListItem);
 
-        iconView.setImageDrawable(icon);
+        if(icons != null) {
+            if(icons.size() >= childPosition) {
+                final Drawable icon = icons.get(childPosition);
+                icon.setColorFilter(ContextCompat.getColor(ParseApplication.getContext(), R.color.colorAccent), PorterDuff.Mode.MULTIPLY );
+                iconView.setImageDrawable(icon);
+            }
+        }
+
         txtListChild.setText(childText);
         return convertView;
     }

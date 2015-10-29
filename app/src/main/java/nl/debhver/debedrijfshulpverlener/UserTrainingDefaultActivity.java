@@ -85,65 +85,41 @@ public class UserTrainingDefaultActivity extends HomeActivity {
         LinearLayout list;
         TextView view;
 
-        list  = (LinearLayout)findViewById(R.id.listViewAchieved);
-        if(trainingListAchieved.size() > 0) {
-            for (UserTraining training : trainingListAchieved) {
-                view = new TextView(this);
-                view.setText(training.toString() + "\n");
-                final TextView finalView = view;
-                final LinearLayout finalList = list;
-                list.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        finalList.addView(finalView);
-                    }
-                });
-            }
-        } else {
-            view = new TextView(this);
-            view.setText(getString(R.string.nothing));
-            final TextView finalView = view;
-            final LinearLayout finalList = list;
-            list.post(new Runnable() {
-                @Override
-                public void run() {
-                    finalList.addView(finalView);
-                }
-            });
-        }
+        for(int i = 0; i < 4;i++) {
+            List<UserTraining> tempList;
 
-        list  = (LinearLayout)findViewById(R.id.listViewScheduled);
-        if(trainingListScheduled.size() > 0) {
-            for (UserTraining training : trainingListScheduled) {
-                view = new TextView(this);
-                view.setText(training.toString() + "\n");
-                final TextView finalView = view;
-                final LinearLayout finalList = list;
-                list.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        finalList.addView(finalView);
-                    }
-                });
+            if(i == 0) {
+                list = (LinearLayout) findViewById(R.id.listViewAchieved);
+                tempList = trainingListAchieved;
+            } else if(i == 1) {
+                list = (LinearLayout) findViewById(R.id.listViewScheduled);
+                tempList = trainingListScheduled;
+            } else if(i == 2) {
+                list = (LinearLayout) findViewById(R.id.listViewExpired);
+                tempList = trainingListExpired;
+            } else if(i == 3) {
+                list = (LinearLayout) findViewById(R.id.listViewFailed);
+                tempList = trainingListFailed;
+            } else {
+                continue;
             }
-        } else {
-            view = new TextView(this);
-            view.setText(getString(R.string.nothing));
-            final TextView finalView = view;
-            final LinearLayout finalList = list;
-            list.post(new Runnable() {
-                @Override
-                public void run() {
-                    finalList.addView(finalView);
-                }
-            });
-        }
 
-        list  = (LinearLayout)findViewById(R.id.listViewExpired);
-        if(trainingListExpired.size() > 0) {
-            for (UserTraining training : trainingListExpired) {
+            if(tempList.size() > 0) {
+                for (UserTraining training : tempList) {
+                    view = new TextView(this);
+                    view.setText(training.toString() + "\n");
+                    final TextView finalView = view;
+                    final LinearLayout finalList = list;
+                    list.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            finalList.addView(finalView);
+                        }
+                    });
+                }
+            } else {
                 view = new TextView(this);
-                view.setText(training.toString() + "\n");
+                view.setText(getString(R.string.nothing));
                 final TextView finalView = view;
                 final LinearLayout finalList = list;
                 list.post(new Runnable() {
@@ -153,80 +129,7 @@ public class UserTrainingDefaultActivity extends HomeActivity {
                     }
                 });
             }
-        } else {
-            view = new TextView(this);
-            view.setText(getString(R.string.nothing));
-            final TextView finalView = view;
-            final LinearLayout finalList = list;
-            list.post(new Runnable() {
-                @Override
-                public void run() {
-                    finalList.addView(finalView);
-                }
-            });
-        }
-
-        list  = (LinearLayout)findViewById(R.id.listViewFailed);
-        if(trainingListFailed.size() > 0) {
-            for (UserTraining training : trainingListFailed) {
-                view = new TextView(this);
-                view.setText(training.toString() + "\n");
-                final TextView finalView = view;
-                final LinearLayout finalList = list;
-                list.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        finalList.addView(finalView);
-                    }
-                });
-            }
-        } else {
-            view = new TextView(this);
-            view.setText(getString(R.string.nothing));
-            final TextView finalView = view;
-            final LinearLayout finalList = list;
-            list.post(new Runnable() {
-                @Override
-                public void run() {
-                    finalList.addView(finalView);
-                }
-            });
         }
         showProgressBar(false);
-        /*ArrayAdapter<UserTraining> adapter;
-        ArrayAdapter<String> emptyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, new String[] { getString(R.string.nothing) });
-        ListView listView;
-
-        listView = (ListView) findViewById(R.id.listViewAchieved);
-        if(trainingListAchieved.size() > 0) {
-            adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, trainingListAchieved);
-            listView.setAdapter(adapter);
-        } else {
-            listView.setAdapter(emptyAdapter);
-        }
-
-        listView = (ListView) findViewById(R.id.listViewScheduled);
-        if(trainingListScheduled.size() > 0) {
-            adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, trainingListScheduled);
-            listView.setAdapter(adapter);
-        } else {
-            listView.setAdapter(emptyAdapter);
-        }
-
-        listView = (ListView) findViewById(R.id.listViewExpired);
-        if(trainingListExpired.size() > 0) {
-            adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, trainingListExpired);
-            listView.setAdapter(adapter);
-        } else {
-            listView.setAdapter(emptyAdapter);
-        }
-
-        listView = (ListView) findViewById(R.id.listViewFailed);
-        if(trainingListFailed.size() > 0) {
-            adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, trainingListFailed);
-            listView.setAdapter(adapter);
-        } else {
-            listView.setAdapter(emptyAdapter);
-        }*/
     }
 }
